@@ -1,7 +1,7 @@
 require "thor"
 
 # Create Thor classes if they don't exist already
-module Thor
+class Thor
   class AmbiguousTaskError; end
   class UndefinedTaskError; end
   class Error; end

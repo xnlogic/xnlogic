@@ -64,5 +64,10 @@ module Xnlogic
       require 'xnlogic/cli/application'
       Application.new(options, name, self).run
     end
+
+    def self.source_root
+      File.expand_path(File.join(File.dirname(__FILE__), 'templates'))
+    end
+
   end
 end

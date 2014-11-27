@@ -46,7 +46,7 @@ module Xnlogic
       }
 
       templates.each do |src, dst|
-        thor.template("newgem/#{src}", target.join(dst), opts)
+        thor.template("application/#{src}", target.join(dst), opts)
       end
 
       Xnlogic.ui.info "Initializing git repo in #{target}"
