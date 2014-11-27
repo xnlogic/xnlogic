@@ -1,0 +1,10 @@
+module <%= config[:constant_name] %>
+  module HasNotes
+    xn_part
+
+    not_descriptive!
+    not_cloneable!
+
+    to_many :Note, custom_sort: proc { |a, b| b[:created_at] <=> a[:created_at] }
+  end
+end

@@ -1,0 +1,37 @@
+module <%= config[:constant_name] %>
+  module M
+  end
+
+  # NOTE: The ORDER that the class parts are specified in within each model
+  #       IS IMPORTANT here. If two parts define the same method, the one that is
+  #       included later will win. It can also call `super` because a real class
+  #       heirarchy is created.
+  #
+  #       Tools rely on models' parts being defined in order of significance.
+  #
+  # NOTE                                                          NOTE
+  # NOTE The LAST PART in the list SHOULD BEST DESCRIBE THE MODEL NOTE
+  # NOTE                       (if possible)                      NOTE
+  #
+  client_models = {
+    user_account:      [PacerModel::Extensions::Permission, PacerModel::Extensions::User],
+    group:             [PacerModel::Extensions::Permission, PacerModel::Extensions::Group],
+    token:             [PacerModel::Extensions::Token],
+    external_record:   [PacerModel::Extensions::ExternalRecord],
+    data_source:       [PacerModel::Extensions::DataSource],
+    import_record:     [PacerModel::Extensions::ImportRecord],
+    import:            [PacerModel::Extensions::Import],
+
+    # Metadata models
+    note:              [Note],
+  }
+
+  client_models.each do |name, parts|
+    <%= config[:constant_name] %>.models[name.to_s] = PacerModel::Model.new(:gemname,
+      name: name,
+      namespace: <%= config[:constant_name] %>::M,
+      core_parts: [PacerModel::Extensions::Record],
+      parts: ([HasNotes] + parts)
+    )
+  end
+end

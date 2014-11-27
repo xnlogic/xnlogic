@@ -1,0 +1,86 @@
+# <%= config[:name] %>
+
+This gem provides the domain model and business logic for ...
+
+# Getting a New Environment Set Up
+
+TODO: Add vagrant setup instructions.
+
+# Starting up the Development Console
+
+To use this model, simply require the gem and work the graph like you're used to with pacer.
+
+To start an IRB console session in the terminal, log into the VM and:
+
+```
+  xn console <%= config[:name] %>
+```
+
+The first time you use the application, you must instantiate a client application. To do that from the console:
+
+```ruby
+  PM.create_client '<%= config[:name] %>', 'client_app_name'
+```
+
+You can create as many clients for your application as you like. Once you create a client, it will still be available across restarts of the
+application. To get a reference to your client application and the graph that it points to, run:
+
+```ruby
+  app = PM['client_app_name']
+  graph = app.graph
+```
+
+And that's it!  Now just rock your XN skills and Pacer-foo on top of your application model ;)
+
+## Testing the REST API within the Dev Console
+
+Start by getting a reference to the application instance (see above). Once you have that, you'll need to get XN to generate the
+console REST endpoints with this command:
+
+```ruby
+  include app.console
+```
+
+Now you can execute commands with `xget`, `xpost`, `xpatch`, `xdelete`, `xput`, as follows:
+
+```ruby
+  xget '/model/some_model/id/123'
+
+  # NOTE that hash keys in requests must be strings:
+
+  xput '/model/some_model', {'name' => 'Record Name'}
+```
+
+
+# Fixtures
+
+You can create fixture data for your app or for a sample app by creating fixture files in
+`lib/fixtures`. Run `xn sample_fixtures` to see a sample fixtures file.
+
+Load:
+
+```ruby
+  require 'gemname/fixtures.rb'
+  GemName::Fixtures.load_fixtures app
+```
+
+# Export to GraphML
+
+(yFiles)[http://www.yworks.com/en/products_yed_about.html] (yfiles will not recognize the file with an incorrect extension):
+
+```ruby
+  require 'pacer/utils/y_files'
+  exp = Pacer::Util::YFiles.new
+  exp.export graph, "/tmp/example.graphml"
+```
+
+
+Also, you can load and GraphML back into the graph with:
+
+```ruby
+  Pacer::GraphML.import graph, "/tmp/example.graphml"
+```
+
+# Copyright
+Copyright XN Logic Corporation, 2014. All rights reserved.
+Contact us@xnlogic.com for usage restrictions.

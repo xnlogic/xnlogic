@@ -1,0 +1,13 @@
+# Some of our part/model names aren't inflected correctly by default.
+# Here we exclude them:
+ActiveSupport::Inflector.inflections do |inflect|
+  inflect.uncountable "media"
+  inflect.uncountable "software"
+
+  inflect.irregular "vrf", "vrfs"
+
+  inflect.acronym 'DNS'
+  inflect.acronym 'FEX'
+  inflect.acronym 'GW'
+  inflect.acronym 'GWs'
+end

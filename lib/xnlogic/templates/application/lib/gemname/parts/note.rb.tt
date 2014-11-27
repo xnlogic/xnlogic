@@ -1,0 +1,41 @@
+module <%= config[:constant_name] %>
+  module Note
+    xn_part
+
+    not_cloneable!
+
+    from_one PacerModel::Extensions::User, from: :author, to: :authored_notes, default: ->{ Thread.current[:context].current_user }
+    from_one :HasNotes
+
+    property :text, type: :text, filter: true
+
+    display :author_info do
+      if author
+        {
+          id: author.element_id,
+          name: author.name,
+          email: author.email,
+          email_md5: author.email_md5
+        }
+      end
+    end
+
+    action :delete_note, guard: :guard_delete_note do |ctx|
+      delete!
+    end
+
+    module Vertex
+      def guard_delete_note(errors)
+        if created_at < 15.minutes.ago
+          errors.add(:created_at, "Notes can only be deleted for 15 minutes")
+        end
+
+        if author != Thread.current[:context].current_user
+          errors.add(:author, "You can only delete notes you created")
+        end
+
+        # TODO Discuss the pros cons to having additional rules here, like only deleting the last note
+      end
+    end
+  end
+end

@@ -1,0 +1,7 @@
+require 'spec_helper'
+
+describe <%= config[:constant_name] %> do
+  it 'should boot' do
+    <%= config[:constant_name] %>.should be_a Module
+  end
+end

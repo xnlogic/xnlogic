@@ -1,0 +1,53 @@
+module <%= config[:constant_name] %>
+  module Fixtures
+
+    # TODO: create your own fixtures!
+    class UsersFixture < Fixture
+      # We define that the UsersFixture depends on the GroupsFixture
+      def self.depends_on
+        [:GroupsFixture]
+      end
+
+      # This method is optional. Use it to clean up fixture data.
+      #
+      # NB: This is called each time before load is called.
+      def delete
+        app.find(<%= config[:constant_name] %>::M::UserAccount, 'david').delete!
+        app.find(<%= config[:constant_name] %>::M::UserAccount, 'darrick').delete!
+      end
+
+      def load
+        # This fixture method just calls the helper defined below
+        create_user 'david', 'David Colebatch', 'dc@xnlogic.com', ['support']
+        create_user 'darrick', 'Darrick Wiebe', 'dw@xnlogic.com', ['support']
+      end
+
+      private # HELPERS
+
+      # This is just a helper method to demonstrate that fixtures are just regular Ruby code.
+      def create_user(id, name, email, groups)
+        groups = groups.map { |g| app.find(<%= config[:constant_name] %>::M::Group, g) }
+        app.create(<%= config[:constant_name] %>::M::UserAccount, id, name: name, email: email) do |user|
+          groups.each do |group|
+            user.inherit_full_access group
+          end
+        end
+      end
+    end
+
+
+    class GroupsFixture < Fixture
+      # This method is optional. Use it to clean up fixture data.
+      #
+      # NB: This is called each time before load is called.
+      def delete
+        app.find(<%= config[:constant_name] %>::M::Group, 'support').delete!
+      end
+
+      def load
+        # We specify the Group model, an ID and then a list of property values:
+        app.create(<%= config[:constant_name] %>::M::Group, 'support', name: 'XN Logic Support')
+      end
+    end
+  end
+end

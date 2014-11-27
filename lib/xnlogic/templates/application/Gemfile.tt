@@ -1,0 +1,6 @@
+source "http://rubygems.org"
+
+gem 'pacer'
+gem 'pacer-neo4j'
+gem 'pacer-model'
+gem 'pacer-mcfly'

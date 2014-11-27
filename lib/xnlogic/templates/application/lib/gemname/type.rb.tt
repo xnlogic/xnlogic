@@ -1,0 +1,10 @@
+module <%= config[:constant_name] %>
+  module Type
+    module Argument; end
+    module Property; end
+  end
+end
+
+# Specialized types
+require '<%= config[:namespaced_path] %>/type/url'
+

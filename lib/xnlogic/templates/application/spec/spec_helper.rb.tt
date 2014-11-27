@@ -1,0 +1,44 @@
+require 'rubygems'
+require 'bundler'
+Bundler.setup :default, :development
+
+require '<%= config[:namespaced_path] %>'
+
+Bundler.require :development
+require 'pp'
+
+Dir['./spec/support/**/*.rb'].map {|f| require f}
+
+class RSpec::Core::ExampleGroup
+  def self.run_all(reporter=nil)
+    run(reporter || NullObject.new)
+  end
+end
+
+def in_editor?
+  ENV.has_key?('TM_MODE') || ENV.has_key?('EMACS') || ENV.has_key?('VIM')
+end
+
+RSpec.configure do |c|
+  c.color_enabled = !in_editor?
+  c.filter_run :focus => true
+  c.run_all_when_everything_filtered = true
+  Pacer.hide_route_elements = true
+  Pacer.verbose = false
+  JRuby.objectspace = true
+  c.mock_with :rr
+
+  SpecApp = <%= config[:constant_name] %>.app graph: Pacer.tg, client_name: 'specs'
+  SpecApp.add_to_models!
+  SpecApp.add_to_parts!
+
+  puts "Using JRuby #{ JRUBY_VERSION } in #{ RUBY_VERSION } mode."
+end
+
+
+def use_simple_fixtures
+  before          { <%= config[:constant_name] %>.graph = Pacer.tg }
+  let(:graph)     { <%= config[:constant_name] %>.graph }
+  let(:manufacturer) { graph.create_vertex <%= config[:constant_name] %>::Manufacturer }
+  let(:device_model){ graph.create_vertex <%= config[:constant_name] %>::DeviceModel }
+end

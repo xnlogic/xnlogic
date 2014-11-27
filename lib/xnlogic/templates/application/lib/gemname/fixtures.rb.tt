@@ -1,0 +1,108 @@
+require 'tsort'
+
+module <%= config[:constant_name] %>
+  module Fixtures
+    class Fixture
+      class << self
+        include TSort
+
+        def inherited(klass)
+          @inherited ||= []
+          @inherited = (@inherited + [klass]).sort_by &:name
+        end
+
+        def tsort_each_child(node, &block)
+          if node.respond_to? :depends_on
+            children = node.depends_on.flat_map do |n|
+              @inherited.select do |f|
+                f.name.split(/::/).last.to_sym == n
+              end
+            end
+            children.each &block
+          end
+        end
+
+        def tsort_each_node(&block)
+          @inherited.each &block if @inherited
+        end
+      end
+
+      attr_reader :app
+
+      def initialize(app, commit, rollback)
+        @app = app
+        @commit = commit
+        @rollback = rollback
+      end
+
+      def load
+        throw "Fixture #{ self.class.name } does nothing. Define a load method."
+      end
+
+      def delete
+      end
+
+      def commit
+        @commit.call
+      end
+
+      def rollback
+        @rollback.call
+      end
+    end
+  end
+end
+
+module <%= config[:constant_name] %>
+  module Fixtures
+    class << self
+      def load_fixtures(app)
+        delete_fixtures(app)
+        start_time = Time.now
+        app.graph.transaction do |commit, rollback|
+          <%= config[:constant_name] %>::Fixtures::Fixture.tsort.each do |fixture|
+            puts "Loading fixture: #{ fixture }"
+            f = fixture.new(app, commit, rollback)
+            f.load
+          end
+        end
+        puts "Loaded fixtures in #{ Time.now - start_time } seconds (#{app.graph.v.count} vertices, #{app.graph.e.count} edges)"
+      end
+
+      def delete_fixtures(app)
+        if app.graph.v.count > 300
+          raise "Error deleting fixture data. Node count > 300, possible production data."
+        end
+        reload_fixture_files
+        start_time = Time.now
+        app.create_indices!(app.graph)
+        app.graph.transaction do |commit, rollback|
+          <%= config[:constant_name] %>::Fixtures::Fixture.tsort.each do |fixture|
+            puts "Deleting fixture data: #{ fixture }"
+            fixture.new(app, commit, rollback).delete
+          end
+        end
+        app.generate_metadata!
+        puts "Deleted fixtures in #{ Time.now - start_time } seconds (#{app.graph.v.count} vertices, #{app.graph.e.count} edges)"
+      end
+
+      private
+
+      def fixtures_dir
+        <%= config[:constant_name] %>.lib_dir + 'fixtures'
+      end
+
+      def reload_fixture_files
+        if Dir[fixtures_dir + '*.rb'].any?
+          puts "Loading .rb fixtures from #{fixtures_dir}:"
+          Dir[fixtures_dir + '*.rb'].each do |path|
+            puts "Loading ruby file: #{path}"
+            load path
+          end
+        else
+          puts "Can't reload fixtures without the source code"
+        end
+      end
+    end
+  end
+end

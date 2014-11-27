@@ -2,9 +2,8 @@
 *.gem
 .bundle
 Gemfile.lock
+Jarfile.lock
+Jarfile.*.lock
 pkg/*
 bin/*
 tmp/
-vendor/
-classes/
-.idea

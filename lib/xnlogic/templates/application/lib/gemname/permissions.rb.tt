@@ -1,0 +1,136 @@
+# This module maps out the groups to Part permissions.
+#
+# We define CRUD permissions as well as an 'action_access' permission and the scheme
+# is DENY all unless explicitly allowed by this matrix.
+#
+# NB: 'action_access' refers to both the 'action' and 'job' methods in PacerModel
+#     'read_access' includes the route_traversal, document and display methds
+#
+# Also, these permissions are merely the default. Clients may choose to modify them
+# in any way they wish.
+#
+# Some standard users and groups are also created in PacerModel::Application::Security.
+module <%= config[:constant_name] %>
+  module CreatePermissions
+    # Implementation details. See module/classes defined below.
+    def initialize(app)
+      @app = app
+    end
+    def load!
+      @app.graph.transaction(nesting: true) do
+        groups.inject({}) do |result, (key, name)|
+          result[key] = group key
+          result
+        end
+      end
+    end
+    # This method completely resets existing groups' permissions.
+    def group(key)
+      name = groups[key]
+      group = @app.find_or_create @app.group_model, name: name, key: key.to_s
+      group.revoke_access!
+      group.inherit_full_access [ @app.core_permissions_group ]
+      access_types.each do |access|
+        metaparts = send(key, access).map do |part|
+          mp = @app.find_metapart part
+          puts "WARNING: No metapart for #{ part.inspect }" unless mp
+          mp
+        end
+        group.send("add_#{ access }", metaparts.compact)
+      end
+    end
+    def access_types
+      [:create_access, :read_access, :update_access, :action_access, :delete_access]
+    end
+  end
+
+
+  # This module is used to create Groups of parts that can easily be assigned to
+  # user groups in the permission generation strategy classes, below:
+  module PartGroups
+    include <%= config[:constant_name] %>
+
+    # Use this method to determine if any of the app's parts are not part of
+    # any of the group definitions below.
+    def missing
+      @app.all_parts - internal_only - users - external - client_models
+    end
+
+    # Use this technique to group together subgroups of parts, which is very useful in larger, more complex models!
+    def client_models
+      base + note + comments
+    end
+
+    # NOTE: only the xnlogic administrator should have access to these
+    def internal_only
+      Set[ PacerModel::Extensions::Part, PacerModel::Extensions::Token,
+           PacerModel::Extensions::XnInfraAdmin ]
+    end
+
+    # Other parts that are built in to XN
+
+    def users
+      Set[ PacerModel::Extensions::Permission, PacerModel::Extensions::User, PacerModel::Extensions::Group ]
+    end
+
+    def external
+      Set[ PacerModel::Extensions::DataSource, PacerModel::Extensions::ExternalRecord ]
+    end
+
+    def base
+      Set[ PacerModel::Extensions::Record, HasNotes, PacerModel::Extensions::User, ]
+    end
+
+    # Your Application-specific parts should go in a bunch of groups starting here:
+
+    def note
+      Set[ Note, ]
+    end
+
+    def comments
+      # Placeholder for theoretical comments part...
+      Set[ ]
+    end
+  end
+
+
+  # A sophisticated role based access model
+  class RoleBasedPermissions
+    include CreatePermissions
+    include PartGroups
+
+    def initialize(app)
+      super
+    end
+
+    def groups
+      {
+        support: 'Support',
+        staff: 'Staff',
+        read_only: 'Read Only'
+      }
+    end
+
+    def support(access)
+      base + users + client_models
+    end
+
+    def read_only(access)
+      case access
+      when :read_access
+        base + client_models
+      else
+        []
+      end
+    end
+
+    def staff(access)
+      case access
+      when :delete_access
+        base + comments
+      when :read_access, :update_access, :create_access, :action_access
+        base + client_models
+      end
+    end
+  end
+end

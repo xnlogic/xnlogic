@@ -1,0 +1,13 @@
+module <%= config[:constant_name] %>
+  module Type
+
+    # URL can be a property's type
+    Property::URL = {
+      type: :text,
+      label: 'URL',
+    }.freeze
+
+    # URL can be an argument in an action as well. Definition is identical to Property::URL:
+    Argument::URL = Property::URL
+  end
+end
