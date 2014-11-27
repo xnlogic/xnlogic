@@ -1,7 +1,7 @@
 require "bundler/gem_tasks"
 
 require 'xn_gem_release_tasks'
-XNGemReleaseTasks.setup PacerModel, 'lib/pacer-model/version.rb'
+XNGemReleaseTasks.setup Xnlogic, 'lib/xnlogic/version.rb'
 
 begin
   require 'ronn'
