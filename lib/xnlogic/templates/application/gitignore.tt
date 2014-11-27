@@ -1,0 +1,10 @@
+*.sw?
+*.gem
+.bundle
+Gemfile.lock
+pkg/*
+bin/*
+tmp/
+vendor/
+classes/
+.idea
