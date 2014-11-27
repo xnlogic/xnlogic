@@ -9,19 +9,18 @@ module Xnlogic
       @app_name = app_name
       @thor = thor
 
-      @name = app_name.chomp("/") # remove trailing slash if present
+      @name = app_name.chomp("/").tr('-', '_') # remove trailing slash if present
       @target = Pathname.pwd.join(name)
     end
 
     def run
-      underscored_name = name.tr('-', '_')
-      namespaced_path = name.tr('-', '_')
+      namespaced_path = name
       constant_name = namespaced_path.split('_').map{|p| p[0..0].upcase + p[1..-1] }.join
       git_user_name = `git config user.name`.chomp
       git_user_email = `git config user.email`.chomp
 
       opts = {
-        :name            => underscored_name,
+        :name            => name,
         :namespaced_path => namespaced_path,
         :constant_name   => constant_name,
         :author          => git_user_name.empty? ? "TODO: Write your name" : git_user_name,
@@ -46,7 +45,7 @@ module Xnlogic
         "lib/fixtures/sample_fixtures.rb.tt" => "lib/fixtures/sample_fixtures.rb",
 
         "spec/spec_helper.rb.tt" => "spec/spec_helper.rb",
-        "spec/gemname/gemname_spec.rb.tt" => "spec/#{namespaced_path}/#{underscored_name}_spec.rb",
+        "spec/gemname/gemname_spec.rb.tt" => "spec/#{namespaced_path}/#{name}_spec.rb",
       }
 
       templates.each do |src, dst|
