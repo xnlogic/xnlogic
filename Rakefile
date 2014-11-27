@@ -39,3 +39,5 @@ rescue LoadError
     task(:clean) { warn "Install the ronn gem to be able to release!" }
   end
 end
+
+task :build => ['man:clean', 'man:build']
