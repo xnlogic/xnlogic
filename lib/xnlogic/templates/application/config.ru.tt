@@ -1,0 +1,12 @@
+begin
+  require 'pacer-model'
+  require '<%= config[:namespaced_path] %>'
+  logger = TorqueBox::Logger.new("XN")
+  container = PacerModel::AppsContainer.new(ENV['APPS_PATH'], logger)
+  run PacerModel::RackWrapper.new(container)
+rescue LoadError => e
+  puts "ERROR: failed to load <%= config[:name] %>"
+  puts e
+  puts e.backtrace.join("\n")
+end
+

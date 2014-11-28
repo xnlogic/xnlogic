@@ -27,11 +27,11 @@ module <%= config[:constant_name] %>
   }
 
   client_models.each do |name, parts|
-    <%= config[:constant_name] %>.models[name.to_s] = PacerModel::Model.new(:gemname,
-      name: name,
-      namespace: <%= config[:constant_name] %>::M,
-      core_parts: [PacerModel::Extensions::Record],
-      parts: ([HasNotes] + parts)
-    )
+    <%= config[:constant_name] %>.models[name.to_s] =
+      PacerModel::Model.new(:<%= config[:name] %>,
+                            name: name,
+                            namespace: <%= config[:constant_name] %>::M,
+                            core_parts: [PacerModel::Extensions::Record],
+                            parts: ([HasNotes] + parts))
   end
 end
