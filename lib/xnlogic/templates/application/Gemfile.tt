@@ -1,6 +1,9 @@
 source "http://rubygems.org"
 
-gem 'pacer'
+gem 'torquebox',      '3.1.1'
+gem 'rack',           '1.5.2'
+gem 'jruby-openssl',  '0.9.5'
+gem 'pacer',          '>= 2.0.6'
 gem 'pacer-neo4j'
 gem 'pacer-model'
 gem 'pacer-mcfly'
