@@ -133,3 +133,10 @@ hr
 sudo cp $HOME/xn.dev/config/etc_init_datomic.conf /etc/init/datomic.conf
 sudo initctl reload-configuration
 sudo start datomic
+
+hr
+echo "Configuring <%= config[:name] %>"
+hr
+cd /vagrant/<%= config[:name] %>
+bundle
+torquebox deploy
