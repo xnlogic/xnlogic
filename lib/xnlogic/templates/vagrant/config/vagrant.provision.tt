@@ -41,21 +41,18 @@ silent sudo dpkg-reconfigure --frontend noninteractive tzdata
 
 hr
 echo "Installing base packages"
-hr
 silent sudo apt-get update
 silent sudo apt-get install -y --force-yes software-properties-common python-software-properties
 silent sudo apt-get install -y git curl wget vim maven node nodejs npm unzip zsh htop
 
 hr
 echo "Configuring shell"
-hr
 silent git clone git://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh || true
 cp ~/.oh-my-zsh/templates/zshrc.zsh-template ~/.zshrc
 sudo chsh -s /usr/bin/zsh vagrant
 
 hr
 echo "Installing RVM"
-hr
 echo progress-bar > ~/.curlrc
 echo gem: --no-document > ~/.gemrc
 silent gpg --keyserver hkp://keys.gnupg.net --recv-keys D39DC0E3
@@ -64,7 +61,6 @@ source $HOME/.rvm/scripts/rvm
 
 hr
 echo "Installing jRuby"
-hr
 silent rvm mount -r https://s3.amazonaws.com/jruby.org/downloads/${jruby_version}/jruby-bin-${jruby_version}.tar.gz --verify-downloads 1
 rvm use jruby-${jruby_version} --default
 gem source -a https://rubygems.org
@@ -72,7 +68,6 @@ gem source -r http://rubygems.org/
 
 hr
 echo "Installing Java"
-hr
 silent sudo add-apt-repository ppa:webupd8team/java
 silent sudo apt-get update
 echo oracle-java7-installer shared/accepted-oracle-license-v1-1 select true | sudo /usr/bin/debconf-set-selections
@@ -82,13 +77,11 @@ sudo update-java-alternatives -s java-7-oracle
 
 hr
 echo "Updating PATH"
-hr
 echo 'export PATH="$HOME/bin:~/xn.dev/cli-utils/bin:$PATH"' >> ~/.zshrc
 export PATH="$HOME/bin:~/xn.dev/cli-utils/bin:$PATH"
 
 hr
 echo "Installing Lein"
-hr
 cd $HOME
 mkdir -p bin
 cd bin
@@ -115,7 +108,6 @@ rm pacer-mcfly-0.7.2.pre-java.gem pacer-model-0.6.3.pre-java.gem
 
 hr
 echo "Configuring XN"
-hr
 mkdir -p /opt/xn_apps
 cd
 wget https://www.dropbox.com/s/1j4hyrzlfgra9gp/xn.dev.1.tbz -O $HOME/xn.dev.1.tbz --quiet
@@ -128,14 +120,14 @@ rake --quiet new_tb_version bundle_fe_server fresh_fe_config fe_server_db_init
 
 hr
 echo "Starting Datomic"
-hr
 sudo cp $HOME/xn.dev/config/etc_init_datomic.conf /etc/init/datomic.conf
 sudo initctl reload-configuration
 sudo start datomic
 
 hr
 echo "Configuring <%= config[:name] %>"
-hr
 cd /vagrant/<%= config[:name] %>
 bundle
 torquebox deploy
+hr
+echo "Done!"
