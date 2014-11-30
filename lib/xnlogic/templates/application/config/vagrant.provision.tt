@@ -9,78 +9,98 @@ if [ -z "$4" ]; then echo "DATOMIC_VERSION not set" && exit 1; else echo "DATOMI
 jruby_version=$1
 timezone=$2
 
-# setup env
+echo "Configuring environment"
+echo "________________________________________________________________________"
 export XN_CLIENT=$3
 export DATOMIC_VERSION=$4
 export DEBIAN_FRONTEND=noninteractive
-sudo locale-gen en_US.UTF-8
 export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
-#export BIND_IP=`facter ipaddress_eth1`
+sudo locale-gen en_US.UTF-8
+sudo dpkg-reconfigure locales
 
-# time
+echo "Setting timezone to $timezone"
+echo "________________________________________________________________________"
 echo "$timezone" | sudo tee /etc/timezone
-sudo dpkg-reconfigure --frontend noninteractive tzdata
+sudo dpkg-reconfigure --frontend noninteractive tzdata &> /dev/null
 
-# basics
-sudo apt-get -q update
-sudo apt-get install -qy --force-yes software-properties-common python-software-properties
-sudo apt-get install -qy git curl wget vim maven node nodejs npm unzip zsh htop
+echo "Installing base packages"
+echo "________________________________________________________________________"
+sudo apt-get update &> /dev/null
+sudo apt-get install -y --force-yes software-properties-common python-software-properties &> /dev/null
+sudo apt-get install -y git curl wget vim maven node nodejs npm unzip zsh htop &> /dev/null
 
-# oh-my-zsh
-git clone git://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh
+echo "Configuring shell"
+echo "________________________________________________________________________"
+git clone git://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh &> /dev/null
 cp ~/.oh-my-zsh/templates/zshrc.zsh-template ~/.zshrc
 sudo chsh -s /usr/bin/zsh vagrant
 
-# ruby
+echo "Installing RVM"
+echo "________________________________________________________________________"
 echo progress-bar > ~/.curlrc
 echo gem: --no-document > ~/.gemrc
-gpg --keyserver hkp://keys.gnupg.net --recv-keys D39DC0E3
-curl -sSL https://get.rvm.io | bash -s stable
-source ~/.rvm/scripts/rvm
-rvm mount -r https://s3.amazonaws.com/jruby.org/downloads/${jruby_version}/jruby-bin-${jruby_version}.tar.gz --verify-downloads 1 > /dev/null
+gpg --keyserver hkp://keys.gnupg.net --recv-keys D39DC0E3 &> /dev/null
+curl -sSL https://get.rvm.io | bash -s stable --auto-dotfiles &> /dev/null
+source $HOME/.rvm/scripts/rvm
+
+echo "Installing jRuby"
+echo "________________________________________________________________________"
+rvm mount -r https://s3.amazonaws.com/jruby.org/downloads/${jruby_version}/jruby-bin-${jruby_version}.tar.gz --verify-downloads 1 &> /dev/null
 rvm use jruby-${jruby_version} --default
 gem source -a https://rubygems.org
 gem source -r http://rubygems.org/
 
-# java
-sudo add-apt-repository ppa:webupd8team/java
-sudo apt-get update
-sudo apt-get install -yq oracle-java7-installer
-sudo apt-get install -yq oracle-java7-set-default
+echo "Installing Java"
+echo "________________________________________________________________________"
+sudo add-apt-repository ppa:webupd8team/java &> /dev/null
+sudo apt-get update &> /dev/null
+echo oracle-java7-installer shared/accepted-oracle-license-v1-1 select true | sudo /usr/bin/debconf-set-selections
+sudo apt-get install -yq oracle-java7-installer &> /dev/null
+sudo apt-get install -yq oracle-java7-set-default &> /dev/null
+sudo update-java-alternatives -s java-7-oracle
 
-# add bin to path
+echo "Updating PATH"
+echo "________________________________________________________________________"
 echo 'export PATH="$HOME/bin:~/xn.dev/cli-utils/bin:$PATH"' >> ~/.zshrc
 export PATH="$HOME/bin:~/xn.dev/cli-utils/bin:$PATH"
 
-# lein
+echo "Installing Lein"
+echo "________________________________________________________________________"
 cd $HOME
-mkdir bin
+mkdir -p bin
 cd bin
-wget https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein
+wget https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein &> /dev/null
 chmod a+x $HOME/bin/lein
-lein
 
-# build
-mkdir -p /opt/xn_apps
-sudo npm install -g jshint coffee-script jasmine-node issues # can be done via 'rake tools'
+echo "Installing Node deps"
+echo "________________________________________________________________________"
+sudo npm install -g jshint coffee-script jasmine-node issues &> /dev/null
+
+echo "Installing Torquebox"
+echo "________________________________________________________________________"
 gem install torquebox-server -v '3.1.1'
 
-# install gem dependencies
+echo "Installing gems"
+echo "________________________________________________________________________"
 wget https://www.dropbox.com/s/7ujc7jp508uxews/pacer-mcfly-0.7.2.pre-java.gem\?dl\=1 -O pacer-mcfly-0.7.2.pre-java.gem --quiet
 wget https://www.dropbox.com/s/jdo5yel0ya4cqv3/pacer-model-0.6.3.pre-java.gem?dl=1 -O pacer-model-0.6.3.pre-java.gem --quiet
 gem install xnlogic pacer-mcfly-0.7.2.pre-java.gem pacer-model-0.6.3.pre-java.gem
 rm pacer-mcfly-0.7.2.pre-java.gem pacer-model-0.6.3.pre-java.gem
 
+echo "Configuring xn"
+echo "________________________________________________________________________"
+mkdir -p /opt/xn_apps
 cd
 wget https://www.dropbox.com/s/1j4hyrzlfgra9gp/xn.dev.1.tbz -O $HOME/xn.dev.1.tbz --quiet
 tar -xjf xn.dev.1.tbz
 cd xn.dev
 source script/setup_stack
-(cd fe/xn.js && npm install)
+(cd fe/xn.js && npm install) &> /dev/null
 rake new_tb_version bundle_fe_server fresh_fe_config fe_server_db_init
 
-# datomic
-sudo cp ~/xn.dev/config/etc_init_datomic.conf /etc/init/datomic.conf
+echo "Starting Datomic"
+echo "________________________________________________________________________"
+sudo cp $HOME/xn.dev/config/etc_init_datomic.conf /etc/init/datomic.conf
 sudo initctl reload-configuration
 sudo start datomic
