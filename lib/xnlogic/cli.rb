@@ -27,8 +27,8 @@ module Xnlogic
     # is useful if you have a task that can receive arbitrary additional options, and where those additional options should not be handled by Thor.
     stop_on_unknown_option! :exec
 
-    class_option "no-color", :type => :boolean, :banner => "Disable colorization in output"
-    class_option "verbose",  :type => :boolean, :banner => "Enable verbose output mode", :aliases => "-V"
+    class_option "color", :type => :boolean, default: true, :banner => "Enable colorization in output"
+    class_option "verbose",  :type => :boolean, :banner => "Enable verbose output mode"
 
     def help(cli = nil)
       case cli
@@ -54,7 +54,7 @@ module Xnlogic
     end
 
     desc "application NAME [OPTIONS]", "Creates a skeleton of an XN Logic application"
-    option "base", type: :string, default: 'xnlogic', banner:
+    method_option "base", type: :string, default: 'xnlogic', banner:
       "The project is structured ./base_directory/application_directory. Name the base_directory"
     def application(name)
       require 'xnlogic/cli/application'
