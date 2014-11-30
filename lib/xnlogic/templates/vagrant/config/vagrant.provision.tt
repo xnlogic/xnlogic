@@ -3,9 +3,9 @@
 echo "Configuring XN VM. This process will take several minutes."
 
 if [ -z "$1" ]; then echo "jruby_version not set" && exit 1; else echo "jruby_version is set to $1"; fi
-if [ -z "$2" ]; then echo "timezone not set" && exit 1; else echo "timezone is set to $2"; fi
+if [ -z "$2" ]; then echo "timezone not set" && exit 1; fi
 if [ -z "$3" ]; then echo "XN_CLIENT not set" && exit 1; else echo "XN_CLIENT is set to $3"; fi
-if [ -z "$4" ]; then echo "DATOMIC_VERSION not set" && exit 1; else echo "DATOMIC_VERSION is set to $4"; fi
+if [ -z "$4" ]; then echo "DATOMIC_VERSION not set" && exit 1; fi
 
 # variables
 debug=
@@ -35,8 +35,7 @@ sudo locale-gen en_US.UTF-8
 #sudo dpkg-reconfigure locales
 
 hr
-echo "Setting timezone to $timezone"
-hr
+echo "Setting timezone:"
 echo "$timezone" | sudo tee /etc/timezone
 silent sudo dpkg-reconfigure --frontend noninteractive tzdata
 

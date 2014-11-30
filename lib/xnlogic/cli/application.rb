@@ -10,7 +10,7 @@ module Xnlogic
       @thor = thor
 
       @name = app_name.chomp("/").tr('-', '_') # remove trailing slash if present
-      @base_name = options.fetch(:base, 'xnlogic')
+      @base_name = options.fetch('base', 'xnlogic')
       @base = Pathname.pwd.join(base_name)
       @app = @base.join(name)
     end
@@ -81,7 +81,7 @@ module Xnlogic
       Xnlogic.ui.info ""
       Xnlogic.ui.info "Then run the following:"
       Xnlogic.ui.info ""
-      Xnlogic.ui.info "cd {base_name}"
+      Xnlogic.ui.info "cd #{base_name}"
       Xnlogic.ui.info "vagrant up"
       Xnlogic.ui.info "vagrant ssh"
       Xnlogic.ui.info ""

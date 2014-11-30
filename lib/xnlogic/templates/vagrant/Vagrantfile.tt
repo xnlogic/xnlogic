@@ -55,7 +55,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   # Include config from config/settings.yml
   require 'yaml'
-  settings = YAML::load_file(vagrant_dir + "/config/settings.yml")
+  settings = YAML::load_file(vagrant_dir + "/config/vagrant.settings.yml")
 
   config.vm.provider "virtualbox" do |vb|
     # boot with headless mode
