@@ -13,8 +13,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   vagrant_dir = File.expand_path(File.dirname(__FILE__))
 
   # Every Vagrant virtual environment requires a box to build off of.
-  #config.vm.box = "hashicorp/precise64"
-  #config.vm.box = "ubuntu/trusty64"
   config.vm.box = "box-cutter/ubuntu1404"
 
   # Create a forwarded port mapping which allows access to a specific port

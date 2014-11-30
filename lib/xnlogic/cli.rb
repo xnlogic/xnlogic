@@ -28,7 +28,6 @@ module Xnlogic
     stop_on_unknown_option! :exec
 
     class_option "no-color", :type => :boolean, :banner => "Disable colorization in output"
-
     class_option "verbose",  :type => :boolean, :banner => "Enable verbose output mode", :aliases => "-V"
 
     def help(cli = nil)
@@ -36,13 +35,9 @@ module Xnlogic
       when nil       then command = "xnlogic"
       else                command = "xnlogic-#{cli}"
       end
-
-      manpages = %w(
-          xnlogic)
-
+      manpages = %w(xnlogic)
       if manpages.include?(command)
         root = File.expand_path("../man", __FILE__)
-
         if Xnlogic.which("man") && root !~ %r{^file:/.+!/META-INF/jruby.home/.+}
           Kernel.exec "man #{root}/#{command}"
         else
@@ -55,11 +50,12 @@ module Xnlogic
 
     def self.handle_no_command_error(command, has_namespace = $thor_runner)
       return super unless command_path = Xnlogic.which("xnlogic-#{command}")
-
       Kernel.exec(command_path, *ARGV[1..-1])
     end
 
-    desc "application NAME [OPTIONS]", "Creates a skeleton for creating an XN Logic application"
+    desc "application NAME [OPTIONS]", "Creates a skeleton of an XN Logic application"
+    option "base", type: :string, default: 'xnlogic', banner:
+      "The project is structured ./base_directory/application_directory. Name the base_directory"
     def application(name)
       require 'xnlogic/cli/application'
       Application.new(options, name, self).run

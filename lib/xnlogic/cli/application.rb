@@ -2,7 +2,7 @@ require 'pathname'
 
 module Xnlogic
   class CLI::Application
-    attr_reader :options, :app_name, :thor, :name, :target
+    attr_reader :options, :app_name, :thor, :name, :base, :app
 
     def initialize(options, app_name, thor)
       @options = options
@@ -10,7 +10,8 @@ module Xnlogic
       @thor = thor
 
       @name = app_name.chomp("/").tr('-', '_') # remove trailing slash if present
-      @target = Pathname.pwd.join(name)
+      @base = Pathname.pwd.join(options.fetch(:base, 'xnlogic'))
+      @app = @base.join(name)
     end
 
     def run
@@ -26,6 +27,16 @@ module Xnlogic
         :author          => git_user_name.empty? ? "TODO: Write your name" : git_user_name,
         :email           => git_user_email.empty? ? "TODO: Write your email address" : git_user_email,
       }
+
+      base_templates = {
+        "Vagrantfile.tt" => "Vagrantfile",
+        "config/vagrant.provision.tt" => "config/vagrant.provision",
+        "config/vagrant.settings.yml.tt" => "config/vagrant.settings.yml",
+      }
+
+      base_templates.each do |src, dst|
+        thor.template("vagrant/#{src}", base.join(dst), opts)
+      end
 
       templates = {
         "gitignore.tt" => ".gitignore",
@@ -50,20 +61,16 @@ module Xnlogic
 
         "spec/spec_helper.rb.tt" => "spec/spec_helper.rb",
         "spec/gemname/gemname_spec.rb.tt" => "spec/#{namespaced_path}/#{name}_spec.rb",
-
-        "Vagrantfile.tt" => "Vagrantfile",
-        "config/vagrant.provision.tt" => "config/vagrant.provision",
-        "config/vagrant.settings.yml.tt" => "config/vagrant.settings.yml",
       }
 
       templates.each do |src, dst|
-        thor.template("application/#{src}", target.join(dst), opts)
+        thor.template("application/#{src}", app.join(dst), opts)
       end
 
       Xnlogic.ui.info "Creating Vagrant config."
       Xnlogic.ui.info ""
-      Xnlogic.ui.info "Initializing git repo in #{target}"
-      Dir.chdir(target) { `git init`; `git add .` }
+      Xnlogic.ui.info "Initializing git repo in #{app}"
+      Dir.chdir(app) { `git init`; `git add .` }
 
       Xnlogic.ui.info ""
       Xnlogic.ui.info "Please ensure that the following dependencies are installed on your computer"
@@ -73,7 +80,7 @@ module Xnlogic
       Xnlogic.ui.info ""
       Xnlogic.ui.info "Then run the following:"
       Xnlogic.ui.info ""
-      Xnlogic.ui.info "cd #{name}"
+      Xnlogic.ui.info "cd #{base}"
       Xnlogic.ui.info "vagrant up"
       Xnlogic.ui.info "vagrant ssh"
       Xnlogic.ui.info ""

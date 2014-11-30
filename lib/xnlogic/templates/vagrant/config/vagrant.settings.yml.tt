@@ -4,4 +4,5 @@ XN_CLIENT: '<%= config[:name] %>'
 timezone: 'America/Toronto'
 jruby_version: '1.7.16'
 DATOMIC_VERSION: '0.9.4755'
-
+vm_memory: '2048'
+vm_cpus: '2'
