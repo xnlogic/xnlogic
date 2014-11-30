@@ -54,7 +54,7 @@ module Xnlogic
     end
 
     desc "application NAME [OPTIONS]", "Creates a skeleton of an XN Logic application"
-    method_option "base", type: :string, default: 'xnlogic', banner:
+    method_option "base", type: :string, banner:
       "The project is structured ./base_directory/application_directory. Name the base_directory"
     method_option "cpus", type: :numeric, default: 2, banner:
       "Number of Virtual CPUs the Development VM should use"

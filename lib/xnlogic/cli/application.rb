@@ -10,7 +10,7 @@ module Xnlogic
       @thor = thor
 
       @name = app_name.chomp("/").tr('-', '_') # remove trailing slash if present
-      @base_name = options.fetch('base', 'xnlogic')
+      @base_name = options.fetch('base', name)
       @base = Pathname.pwd.join(base_name)
       @app = @base.join(name)
     end
