@@ -53,25 +53,24 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     config.vbguest.no_remote = true
   end
 
+  # Include config from config/settings.yml
+  require 'yaml'
+  settings = YAML::load_file(vagrant_dir + "/config/settings.yml")
+
   config.vm.provider "virtualbox" do |vb|
-    # Don't boot with headless mode
+    # boot with headless mode
     vb.gui = false
-  
-    # Use VBoxManage to customize the VM. For example to change memory:
-    vb.customize ["modifyvm", :id, "--memory", "2048"]
+    vb.customize ["modifyvm", :id, "--memory", settings['vm_memory']]
+    vb.customize ["modifyvm", :id, "--cpus", settings['vm_cpus']]
   end
 
   config.vm.provider "vmware_fusion" do |vmwf|
     # boot with headless mode
     vmwf.gui = false                
-    vmwf.vmx["memsize"] = "2048"
-    vmwf.vmx["numvcpus"] = "2"
+    vmwf.vmx["memsize"] = settings['vm_memory']
+    vmwf.vmx["numvcpus"] = settings['vm_cpus']
   end
 
-
-  # Include config from config/vagrant.settings.yml
-  require 'yaml'
-  settings = YAML::load_file(vagrant_dir + "/config/vagrant.settings.yml")
   p1 = settings['jruby_version']
   p2 = settings['timezone']
   p3 = settings['XN_CLIENT']
