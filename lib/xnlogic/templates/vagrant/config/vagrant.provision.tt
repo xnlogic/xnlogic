@@ -120,7 +120,15 @@ rake --quiet new_tb_version bundle_fe_server fresh_fe_config fe_server_db_init
 
 hr
 echo "Starting Datomic"
+hr
+cd $HOME
+wget https://www.dropbox.com/s/07wwxn8mbujxugb/datomic-free-0.9.4699.zip?dl=1 --quiet -O datomic.zip
+unzip datomic.zip
+rm datomic.zip
+sudo mv datomic-free-0.9.4699 /usr/local/lib/datomic
 sudo cp $HOME/xn.dev/config/etc_init_datomic.conf /etc/init/datomic.conf
+sudo mkdir -p /etc/datomic
+sudo cp $HOME/xn.dev/config/transactor.properties /etc/datomic/transactor.properties
 sudo initctl reload-configuration
 sudo start datomic
 
