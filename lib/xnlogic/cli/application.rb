@@ -27,6 +27,8 @@ module Xnlogic
         :constant_name   => constant_name,
         :author          => git_user_name.empty? ? "TODO: Write your name" : git_user_name,
         :email           => git_user_email.empty? ? "TODO: Write your email address" : git_user_email,
+        :vm_cpus         => options['cpus'],
+        :vm_memory       => options['memory'],
       }
 
       base_templates = {

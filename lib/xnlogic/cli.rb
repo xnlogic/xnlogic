@@ -56,6 +56,10 @@ module Xnlogic
     desc "application NAME [OPTIONS]", "Creates a skeleton of an XN Logic application"
     method_option "base", type: :string, default: 'xnlogic', banner:
       "The project is structured ./base_directory/application_directory. Name the base_directory"
+    method_option "cpus", type: :numeric, default: 2, banner:
+      "Number of Virtual CPUs the Development VM should use"
+    method_option "memory", type: :numeric, default: 2048, banner:
+      "Amount of RAM to allow the Development VM to use (in MB)"
     def application(name)
       require 'xnlogic/cli/application'
       Application.new(options, name, self).run
