@@ -63,6 +63,14 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     vb.customize ["modifyvm", :id, "--memory", "2048"]
   end
 
+  config.vm.provider "vmware_fusion" do |vmwf|
+    # boot with headless mode
+    vmwf.gui = false                
+    vmwf.vmx["memsize"] = "2048"
+    vmwf.vmx["numvcpus"] = "2"
+  end
+
+
   # Include config from config/vagrant.settings.yml
   require 'yaml'
   settings = YAML::load_file(vagrant_dir + "/config/vagrant.settings.yml")
