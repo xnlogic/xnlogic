@@ -50,14 +50,34 @@ module Xnlogic
 
         "spec/spec_helper.rb.tt" => "spec/spec_helper.rb",
         "spec/gemname/gemname_spec.rb.tt" => "spec/#{namespaced_path}/#{name}_spec.rb",
+
+        "Vagrantfile.tt" => "Vagrantfile",
+        "config/vagrant.provision.tt" => "config/vagrant.provision",
+        "config/vagrant.settings.yml.tt" => "config/vagrant.settings.yml",
       }
 
       templates.each do |src, dst|
         thor.template("application/#{src}", target.join(dst), opts)
       end
 
+      Xnlogic.ui.info "Creating Vagrant config."
+      Xnlogic.ui.info ""
       Xnlogic.ui.info "Initializing git repo in #{target}"
       Dir.chdir(target) { `git init`; `git add .` }
+
+      Xnlogic.ui.info ""
+      Xnlogic.ui.info "Please ensure that the following dependencies are installed on your computer"
+      Xnlogic.ui.info "to continue."
+      Xnlogic.ui.info " - Vagrant:    https://www.vagrantup.com/"
+      Xnlogic.ui.info " - VirtualBox: https://www.virtualbox.org/wiki/Downloads"
+      Xnlogic.ui.info ""
+      Xnlogic.ui.info "Then run the following:"
+      Xnlogic.ui.info ""
+      Xnlogic.ui.info "cd #{name}"
+      Xnlogic.ui.info "vagrant up"
+      Xnlogic.ui.info "vagrant ssh"
+      Xnlogic.ui.info ""
+      Xnlogic.ui.info "Once logged in to the server, the project directory is ~/xn.dev"
     end
   end
 end

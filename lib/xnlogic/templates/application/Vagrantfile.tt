@@ -1,0 +1,78 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
+VAGRANTFILE_API_VERSION = "2"
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+  # All Vagrant configuration is done here. The most common configuration
+  # options are documented and commented below. For a complete reference,
+  # please see the online documentation at vagrantup.com.
+
+  # Variable for current folder
+  vagrant_dir = File.expand_path(File.dirname(__FILE__))
+
+  # Every Vagrant virtual environment requires a box to build off of.
+  #config.vm.box = "hashicorp/precise64"
+  config.vm.box = "ubuntu/trusty64"
+
+  # Create a forwarded port mapping which allows access to a specific port
+  # within the machine from a port on the host machine. In the example below,
+  # accessing "localhost:8080" will access port 80 on the guest machine.
+  config.vm.network "forwarded_port", guest: 8080, host: 8080
+  config.vm.network "forwarded_port", guest: 3030, host: 3030
+  config.vm.network "forwarded_port", guest: 3031, host: 3031
+
+  # Create a private network, which allows host-only access to the machine
+  # using a specific IP.
+  config.vm.network "private_network", ip: "192.168.168.168"
+
+  # If true, then any SSH connections made will enable agent forwarding.
+  # Default value: false
+  config.ssh.forward_agent = true
+
+  # Set up NFS mount.
+  nfs_setting = RUBY_PLATFORM =~ /darwin/ || RUBY_PLATFORM =~ /linux/ || Vagrant.has_plugin?("vagrant-winnfsd")  
+
+  # Setup auxiliary synced folder
+  config.vm.synced_folder vagrant_dir + "/xn_apps", "/opt/xn_apps", create: true, id: "xn-apps", :nfs => nfs_setting, :mount_options => ['nolock,vers=3,udp']
+  # config.vm.synced_folder "../data", "/vagrant_data"
+  
+  # Allow caching to be used (see the vagrant-cachier plugin)
+  if Vagrant.has_plugin?("vagrant-cachier")
+    config.cache.synced_folder_opts = { 
+        type: :nfs,
+        mount_options: ['rw', 'vers=3', 'tcp', 'nolock'] 
+    }
+    config.cache.scope = :box
+    config.cache.auto_detect = true
+  end
+
+  # Manage vbguest update
+  if Vagrant.has_plugin?("vagrant-vbguest")
+    config.vbguest.auto_update = false
+    config.vbguest.no_remote = true
+  end
+
+  config.vm.provider "virtualbox" do |vb|
+    # Don't boot with headless mode
+    vb.gui = false
+  
+    # Use VBoxManage to customize the VM. For example to change memory:
+    vb.customize ["modifyvm", :id, "--memory", "2048"]
+  end
+
+  # Include config from config/vagrant.settings.yml
+  require 'yaml'
+  settings = YAML::load_file(vagrant_dir + "/config/vagrant.settings.yml")
+  p1 = settings['jruby_version']
+  p2 = settings['timezone']
+  p3 = settings['XN_CLIENT']
+  p4 = settings['DATOMIC_VERSION']
+
+  config.vm.provision "shell" do |s|
+    s.path = "config/vagrant.provision"
+    s.args   = [p1,p2,p3,p4]
+    s.privileged = false
+  end
+end

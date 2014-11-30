@@ -1,0 +1,86 @@
+#! /bin/bash
+
+if [ -z "$1" ]; then echo "jruby_version not set" && exit 1; else echo "jruby_version is set to $1"; fi
+if [ -z "$2" ]; then echo "timezone not set" && exit 1; else echo "timezone is set to $2"; fi
+if [ -z "$3" ]; then echo "XN_CLIENT not set" && exit 1; else echo "XN_CLIENT is set to $3"; fi
+if [ -z "$4" ]; then echo "DATOMIC_VERSION not set" && exit 1; else echo "DATOMIC_VERSION is set to $4"; fi
+
+# variables
+jruby_version=$1
+timezone=$2
+
+# setup env
+export XN_CLIENT=$3
+export DATOMIC_VERSION=$4
+export DEBIAN_FRONTEND=noninteractive
+sudo locale-gen en_US.UTF-8
+export LANG=en_US.UTF-8
+export LC_ALL=en_US.UTF-8
+#export BIND_IP=`facter ipaddress_eth1`
+
+# time
+echo "$timezone" | sudo tee /etc/timezone
+sudo dpkg-reconfigure --frontend noninteractive tzdata
+
+# basics
+sudo apt-get -q update
+sudo apt-get install -qy --force-yes software-properties-common python-software-properties
+sudo apt-get install -qy git curl wget vim maven node nodejs npm unzip zsh htop
+
+# oh-my-zsh
+git clone git://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh
+cp ~/.oh-my-zsh/templates/zshrc.zsh-template ~/.zshrc
+sudo chsh -s /usr/bin/zsh vagrant
+
+# ruby
+echo progress-bar > ~/.curlrc
+echo gem: --no-document > ~/.gemrc
+gpg --keyserver hkp://keys.gnupg.net --recv-keys D39DC0E3
+curl -sSL https://get.rvm.io | bash -s stable
+source ~/.rvm/scripts/rvm
+rvm mount -r https://s3.amazonaws.com/jruby.org/downloads/${jruby_version}/jruby-bin-${jruby_version}.tar.gz --verify-downloads 1 > /dev/null
+rvm use jruby-${jruby_version} --default
+gem source -a https://rubygems.org
+gem source -r http://rubygems.org/
+
+# java
+sudo add-apt-repository ppa:webupd8team/java
+sudo apt-get update
+sudo apt-get install -yq oracle-java7-installer
+sudo apt-get install -yq oracle-java7-set-default
+
+# add bin to path
+echo 'export PATH="$HOME/bin:~/xn.dev/cli-utils/bin:$PATH"' >> ~/.zshrc
+export PATH="$HOME/bin:~/xn.dev/cli-utils/bin:$PATH"
+
+# lein
+cd $HOME
+mkdir bin
+cd bin
+wget https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein
+chmod a+x $HOME/bin/lein
+lein
+
+# build
+mkdir -p /opt/xn_apps
+sudo npm install -g jshint coffee-script jasmine-node issues # can be done via 'rake tools'
+gem install torquebox-server -v '3.1.1'
+
+# install gem dependencies
+wget https://www.dropbox.com/s/7ujc7jp508uxews/pacer-mcfly-0.7.2.pre-java.gem\?dl\=1 -O pacer-mcfly-0.7.2.pre-java.gem --quiet
+wget https://www.dropbox.com/s/jdo5yel0ya4cqv3/pacer-model-0.6.3.pre-java.gem?dl=1 -O pacer-model-0.6.3.pre-java.gem --quiet
+gem install xnlogic pacer-mcfly-0.7.2.pre-java.gem pacer-model-0.6.3.pre-java.gem
+rm pacer-mcfly-0.7.2.pre-java.gem pacer-model-0.6.3.pre-java.gem
+
+cd
+wget https://www.dropbox.com/s/1j4hyrzlfgra9gp/xn.dev.1.tbz -O $HOME/xn.dev.1.tbz --quiet
+tar -xjf xn.dev.1.tbz
+cd xn.dev
+source script/setup_stack
+(cd fe/xn.js && npm install)
+rake new_tb_version bundle_fe_server fresh_fe_config fe_server_db_init
+
+# datomic
+sudo cp ~/xn.dev/config/etc_init_datomic.conf /etc/init/datomic.conf
+sudo initctl reload-configuration
+sudo start datomic
