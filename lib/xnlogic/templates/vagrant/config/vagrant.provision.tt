@@ -117,8 +117,8 @@ tar -xjf xn.dev.1.tbz
 cd xn.dev
 source script/setup_stack
 cd fe/xn.js
-rm -r node_modules
 sudo npm install --loglevel silent
+cd -
 rake --quiet new_tb_version bundle_fe_server fresh_fe_config fe_server_db_init
 
 hr
