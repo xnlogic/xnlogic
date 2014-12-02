@@ -104,7 +104,7 @@ echo "Installing XN gems"
 hr
 wget https://www.dropbox.com/s/7ujc7jp508uxews/pacer-mcfly-0.7.2.pre-java.gem\?dl\=1 -O pacer-mcfly-0.7.2.pre-java.gem --quiet
 wget https://www.dropbox.com/s/jdo5yel0ya4cqv3/pacer-model-0.6.3.pre-java.gem?dl=1 -O pacer-model-0.6.3.pre-java.gem --quiet
-gem install --quiet xnlogic pacer-mcfly-0.7.2.pre-java.gem pacer-model-0.6.3.pre-java.gem
+gem install --quiet pacer-mcfly-0.7.2.pre-java.gem pacer-model-0.6.3.pre-java.gem
 rm pacer-mcfly-0.7.2.pre-java.gem pacer-model-0.6.3.pre-java.gem
 
 hr
