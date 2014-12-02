@@ -42,8 +42,9 @@ silent sudo dpkg-reconfigure --frontend noninteractive tzdata
 hr
 echo "Installing base packages"
 silent sudo apt-get update
-silent sudo apt-get install -y --force-yes software-properties-common python-software-properties
-silent sudo apt-get install -y git curl wget vim maven node nodejs npm unzip zsh htop
+sudo apt-get install -y --force-yes software-properties-common python-software-properties
+sudo apt-get install -y git curl wget vim maven nodejs npm unzip zsh htop
+sudo ln -s /usr/bin/nodejs /usr/bin/node
 
 hr
 echo "Configuring shell"
@@ -108,14 +109,16 @@ rm pacer-mcfly-0.7.2.pre-java.gem pacer-model-0.6.3.pre-java.gem
 
 hr
 echo "Configuring XN"
-mkdir -p /opt/xn_apps
+sudo mkdir -p /opt/xn_apps
+sudo chown vagrant /opt/xn_apps
 cd
 wget https://www.dropbox.com/s/1j4hyrzlfgra9gp/xn.dev.1.tbz -O $HOME/xn.dev.1.tbz --quiet
 tar -xjf xn.dev.1.tbz
 cd xn.dev
 source script/setup_stack
 cd fe/xn.js
-npm install --loglevel silent
+rm -r node_modules
+sudo npm install --loglevel silent
 rake --quiet new_tb_version bundle_fe_server fresh_fe_config fe_server_db_init
 
 hr

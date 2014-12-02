@@ -34,7 +34,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   nfs_setting = RUBY_PLATFORM =~ /darwin/ || RUBY_PLATFORM =~ /linux/ || Vagrant.has_plugin?("vagrant-winnfsd")  
 
   # Setup auxiliary synced folder
-  config.vm.synced_folder vagrant_dir + "/xn_apps", "/opt/xn_apps", create: true, id: "xn-apps", :nfs => nfs_setting, :mount_options => ['nolock,vers=3,udp']
+  # config.vm.synced_folder vagrant_dir + "/xn_apps", "/opt/xn_apps", create: true, id: "xn-apps", :nfs => nfs_setting, :mount_options => ['nolock,vers=3,udp']
   # config.vm.synced_folder "../data", "/vagrant_data"
   
   # Allow caching to be used (see the vagrant-cachier plugin)
