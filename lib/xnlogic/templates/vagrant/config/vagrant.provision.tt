@@ -78,8 +78,8 @@ sudo update-java-alternatives -s java-7-oracle
 
 hr
 echo "Updating PATH"
-echo 'export PATH="$HOME/bin:~/xn.dev/cli-utils/bin:$PATH"' >> ~/.zshrc
-export PATH="$HOME/bin:~/xn.dev/cli-utils/bin:$PATH"
+export       PATH="$HOME/bin:$HOME/xn.dev/cli-utils/bin:$PATH"
+echo 'export PATH="$HOME/bin:$HOME/xn.dev/cli-utils/bin:$PATH"' >> ~/.zshrc
 
 hr
 echo "Installing Lein"

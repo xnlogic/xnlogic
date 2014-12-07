@@ -1,10 +1,16 @@
 # -*- mode: ruby -*-
-# vi: set ft=ruby :
+# vim: set ft=ruby :
 
 # Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
 VAGRANTFILE_API_VERSION = "2"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+
+  # Include config from config/settings.yml
+  require 'yaml'
+  settings = YAML::load_file(vagrant_dir + "/config/vagrant.settings.yml")
+  app_name = settings['XN_CLIENT']
+
   # All Vagrant configuration is done here. The most common configuration
   # options are documented and commented below. For a complete reference,
   # please see the online documentation at vagrantup.com.
@@ -53,10 +59,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     config.vbguest.no_remote = true
   end
 
-  # Include config from config/settings.yml
-  require 'yaml'
-  settings = YAML::load_file(vagrant_dir + "/config/vagrant.settings.yml")
-
   config.vm.provider "virtualbox" do |vb|
     # boot with headless mode
     vb.gui = false
@@ -73,12 +75,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   p1 = settings['jruby_version']
   p2 = settings['timezone']
-  p3 = settings['XN_CLIENT']
   p4 = settings['DATOMIC_VERSION']
 
   config.vm.provision "shell" do |s|
     s.path = "config/vagrant.provision"
-    s.args   = [p1,p2,p3,p4]
+    s.args   = [p1,p2,app_name,p4]
     s.privileged = false
   end
 end
