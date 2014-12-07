@@ -33,6 +33,8 @@ module Xnlogic
         "Vagrantfile.tt" => "Vagrantfile",
         "config/vagrant.provision.tt" => "config/vagrant.provision",
         "config/vagrant.settings.yml.tt" => "config/vagrant.settings.yml",
+        "config/datomic.conf" => "config/datomic.conf",
+        "config/transactor.properties" => "config/transactor.properties",
       }
 
       base_templates.each do |src, dst|
