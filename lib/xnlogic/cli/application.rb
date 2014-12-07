@@ -2,7 +2,7 @@ require 'pathname'
 
 module Xnlogic
   class CLI::Application
-    attr_reader :options, :app_name, :thor, :base_name, :name, :base, :app
+    attr_reader :options, :app_name, :thor, :base_name, :name, :app
 
     def initialize(options, app_name, thor)
       @options = options
@@ -10,9 +10,7 @@ module Xnlogic
       @thor = thor
 
       @name = app_name.chomp("/").tr('-', '_') # remove trailing slash if present
-      @base_name = options.fetch('base', name)
-      @base = Pathname.pwd.join(base_name)
-      @app = @base.join(name)
+      @app = Pathname.pwd.join(name)
     end
 
     def run
@@ -38,7 +36,7 @@ module Xnlogic
       }
 
       base_templates.each do |src, dst|
-        thor.template("vagrant/#{src}", base.join(dst), opts)
+        thor.template("vagrant/#{src}", app.join(dst), opts)
       end
 
       templates = {
@@ -83,7 +81,7 @@ module Xnlogic
       Xnlogic.ui.info ""
       Xnlogic.ui.info "Then run the following:"
       Xnlogic.ui.info ""
-      Xnlogic.ui.info "cd #{base_name}"
+      Xnlogic.ui.info "cd #{name}"
       Xnlogic.ui.info "vagrant up"
       Xnlogic.ui.info "vagrant ssh"
       Xnlogic.ui.info ""

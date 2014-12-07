@@ -5,18 +5,15 @@
 VAGRANTFILE_API_VERSION = "2"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
-
-  # Include config from config/settings.yml
-  require 'yaml'
-  settings = YAML::load_file(vagrant_dir + "/config/vagrant.settings.yml")
-  app_name = settings['XN_CLIENT']
-
   # All Vagrant configuration is done here. The most common configuration
   # options are documented and commented below. For a complete reference,
   # please see the online documentation at vagrantup.com.
 
-  # Variable for current folder
-  vagrant_dir = File.expand_path(File.dirname(__FILE__))
+  # Include config from config/settings.yml
+  require 'yaml'
+  current_folder = File.expand_path(File.dirname(__FILE__))
+  settings = YAML::load_file(current_folder + "/config/vagrant.settings.yml")
+  app_name = settings['XN_CLIENT']
 
   # Every Vagrant virtual environment requires a box to build off of.
   config.vm.box = "box-cutter/ubuntu1404"
@@ -40,7 +37,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   nfs_setting = RUBY_PLATFORM =~ /darwin/ || RUBY_PLATFORM =~ /linux/ || Vagrant.has_plugin?("vagrant-winnfsd")  
 
   # Setup auxiliary synced folder
-  # config.vm.synced_folder vagrant_dir + "/xn_apps", "/opt/xn_apps", create: true, id: "xn-apps", :nfs => nfs_setting, :mount_options => ['nolock,vers=3,udp']
+  config.vm.synced_folder Dir.pwd, "/home/vagrant/" + app_name, create: true, id: app_name, :nfs => nfs_setting, :mount_options => ['nolock,vers=3,udp']
   # config.vm.synced_folder "../data", "/vagrant_data"
   
   # Allow caching to be used (see the vagrant-cachier plugin)
