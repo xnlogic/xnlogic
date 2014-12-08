@@ -112,8 +112,9 @@ echo "Configuring XN"
 sudo mkdir -p /opt/xn_apps
 sudo chown vagrant /opt/xn_apps
 cd
-wget https://www.dropbox.com/s/1j4hyrzlfgra9gp/xn.dev.1.tbz -O $HOME/xn.dev.1.tbz --quiet
-tar -xjf xn.dev.1.tbz
+wget https://www.dropbox.com/s/qs1n0c6tig2jfwo/xn.dev.2.tbz -O $HOME/xn.dev.tbz --quiet
+tar -xjf xn.dev.tbz
+rm xn.dev.tbz
 cd xn.dev
 source script/setup_stack
 cd fe/xn.js
