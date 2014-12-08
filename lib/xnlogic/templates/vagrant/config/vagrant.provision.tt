@@ -122,7 +122,7 @@ cd -
 rake --quiet new_tb_version bundle_fe_server fresh_fe_config fe_server_db_init
 
 hr
-echo "Starting Datomic"
+echo "Starting Datomic Service"
 hr
 cd $HOME
 wget https://www.dropbox.com/s/07wwxn8mbujxugb/datomic-free-0.9.4699.zip?dl=1 --quiet -O datomic.zip
@@ -137,7 +137,7 @@ sudo start datomic
 
 hr
 echo "Configuring <%= config[:name] %>"
-cd /vagrant/<%= config[:name] %>
+cd $HOME/<%= config[:name] %>
 bundle
 torquebox deploy
 hr
