@@ -138,7 +138,7 @@ wget https://www.dropbox.com/s/07wwxn8mbujxugb/datomic-free-0.9.4699.zip?dl=1 --
 unzip datomic.zip
 rm datomic.zip
 sudo mv datomic-free-0.9.4699 /usr/local/lib/datomic
-sudo ln -s /vagrant/config/datomic.conf /etc/init/datomic.conf
+sudo cp /vagrant/config/datomic.conf /etc/init/datomic.conf
 sudo mkdir -p /etc/datomic
 sudo ln -s /vagrant/config/transactor.properties /etc/datomic/transactor.properties
 sudo initctl reload-configuration

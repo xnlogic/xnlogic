@@ -47,7 +47,7 @@ module Xnlogic
         "Gemfile.tt" => "Gemfile",
         "Readme.md.tt" => "Readme.md",
         "config.ru.tt" => "config.ru",
-        "console.rb.tt" => "console.rb",
+        "dev/console.rb.tt" => "dev/console.rb",
         "torquebox.yml.tt" => "torquebox.yml",
         "torquebox_init.rb.tt" => "torquebox_init.rb",
         "lib/gemname.rb.tt" => "lib/#{namespaced_path}.rb",
