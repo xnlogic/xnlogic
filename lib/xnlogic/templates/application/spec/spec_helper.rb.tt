@@ -26,6 +26,7 @@ RSpec.configure do |c|
   Pacer.hide_route_elements = true
   Pacer.verbose = false
   JRuby.objectspace = true
+  # Recommended mock/stub library: https://github.com/rr/rr
   c.mock_with :rr
 
   SpecApp = <%= config[:constant_name] %>.app graph: Pacer.tg, client_name: 'specs'
