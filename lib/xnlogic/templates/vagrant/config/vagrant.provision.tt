@@ -61,7 +61,7 @@ curl -sSL https://get.rvm.io | silent bash -s stable --auto-dotfiles
 source $HOME/.rvm/scripts/rvm
 
 hr
-echo "Installing jRuby"
+echo "Installing JRuby"
 silent rvm mount -r https://s3.amazonaws.com/jruby.org/downloads/${jruby_version}/jruby-bin-${jruby_version}.tar.gz --verify-downloads 1
 rvm use jruby-${jruby_version} --default
 gem source -a https://rubygems.org
