@@ -6,11 +6,19 @@ if [ -z "$1" ]; then echo "jruby_version not set" && exit 1; else echo "jruby_ve
 if [ -z "$2" ]; then echo "timezone not set" && exit 1; fi
 if [ -z "$3" ]; then echo "XN_CLIENT not set" && exit 1; else echo "XN_CLIENT is set to $3"; fi
 if [ -z "$4" ]; then echo "DATOMIC_VERSION not set" && exit 1; fi
+if [ -z "$5" ]; then echo "pacer-model key not set" && exit 1; fi
+if [ -z "$6" ]; then echo "mcfly key not set" && exit 1; fi
+if [ -z "$7" ]; then echo "pacer-model version not set" && exit 1; fi
+if [ -z "$8" ]; then echo "mcfly version not set" && exit 1; fi
 
 # variables
 debug=
 jruby_version=$1
 timezone=$2
+pm_key=$5
+mcfly_key=$6
+pm_version=$7
+mcfly_version=$8
 
 silent() {
   if [[ $debug ]] ; then
@@ -102,10 +110,10 @@ gem install --quiet torquebox-server -v '3.1.1'
 hr
 echo "Installing XN gems"
 hr
-wget https://www.dropbox.com/s/7ujc7jp508uxews/pacer-mcfly-0.7.2.pre-java.gem\?dl\=1 -O pacer-mcfly-0.7.2.pre-java.gem --quiet
-wget https://www.dropbox.com/s/jdo5yel0ya4cqv3/pacer-model-0.6.3.pre-java.gem?dl=1 -O pacer-model-0.6.3.pre-java.gem --quiet
-gem install --quiet pacer-mcfly-0.7.2.pre-java.gem pacer-model-0.6.3.pre-java.gem
-rm pacer-mcfly-0.7.2.pre-java.gem pacer-model-0.6.3.pre-java.gem
+wget https://www.dropbox.com/s/$mcfly_key/pacer-mcfly-$mcfly_version-java.gem -O pacer-mcfly-$mcfly_version-java.gem --quiet
+wget https://www.dropbox.com/s/$pm_key/pacer-model-$pm_version-java.gem -O pacer-model-$pm_version-java.gem --quiet
+gem install --quiet pacer-mcfly-$mcfly_version-java.gem pacer-model-$pm_version-java.gem
+rm pacer-mcfly-$mcfly_version-java.gem pacer-model-$pm_version-java.gem
 
 hr
 echo "Configuring XN"
