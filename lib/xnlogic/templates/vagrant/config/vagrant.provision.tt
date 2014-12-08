@@ -145,6 +145,14 @@ sudo initctl reload-configuration
 sudo start datomic
 
 hr
+echo "Customizing .zshrc for <%= config[:name] %> development"
+echo "export XN_CLIENT=<%= config[:name] %>" >> ~/.zshrc
+echo "alias xn-server='(cd ~/xn.dev; ./script/start);'" >> ~/.zshrc
+echo 'alias xn-console="(cd ~/$XN_CLIENT; bundle exec jruby -J-Xmx1g -J-XX:MaxPermSize=200m -S irb -I $HOME/$XN_CLIENT/lib -r $HOME/$XN_CLIENT/console)"' >> ~/.zshrc
+echo '[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*' >> ~/.zshrc
+echo '(cd $HOME/xn.dev; source script/setup_stack)' >> ~/.zshrc
+
+hr
 echo "Configuring <%= config[:name] %>"
 cd $HOME/<%= config[:name] %>
 bundle
