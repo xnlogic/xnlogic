@@ -7,3 +7,4 @@ Jarfile.*.lock
 pkg/*
 bin/*
 tmp/
+.vagrant
