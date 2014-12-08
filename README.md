@@ -1,26 +1,24 @@
-# Xnlogic
+# xnlogic
 
-TODO: Write a gem description
+Bootstrap your xnlogic.com application with this easy to use executable gem.
+
 
 ## Installation
-
-Add this line to your application's Gemfile:
-
-```ruby
-gem 'xnlogic'
-```
-
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
 
     $ gem install xnlogic
 
 ## Usage
 
-TODO: Write usage instructions here
+    $ xnlogic application my_app
+    $ cd my_app
+    $ vagrant up
+    $ vagrant ssh
+
+From the Vagrant VM, you can then: 
+
+    $ xn-server
+    $ xn-console
+
 
 ## Contributing
 
@@ -29,3 +27,12 @@ TODO: Write usage instructions here
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create a new Pull Request
+
+
+## Releasing a new gem to rubygems:
+
+CI is not set up yet, so once you're happy with the release, simply:
+
+    $ rake local_release
+
+
