@@ -2,7 +2,7 @@ require 'pathname'
 
 module Xnlogic
   class CLI::Application
-    attr_reader :options, :app_name, :thor, :base_name, :name, :app
+    attr_reader :options, :app_name, :thor, :base_name, :name, :app, :root
 
     def initialize(options, app_name, thor)
       @options = options
@@ -10,7 +10,8 @@ module Xnlogic
       @thor = thor
 
       @name = app_name.chomp("/").tr('-', '_') # remove trailing slash if present
-      @app = Pathname.pwd.join(name)
+      @root = options.fetch('root', @name)
+      @app = Pathname.pwd.join(root)
     end
 
     def run
@@ -27,6 +28,7 @@ module Xnlogic
         :email           => git_user_email.empty? ? "TODO: Write your email address" : git_user_email,
         :vm_cpus         => options['cpus'],
         :vm_memory       => options['memory'],
+        :xn_key          => options['key'],
       }
 
       base_templates = {
@@ -83,7 +85,7 @@ module Xnlogic
       Xnlogic.ui.info ""
       Xnlogic.ui.info "Then run the following:"
       Xnlogic.ui.info ""
-      Xnlogic.ui.info "cd #{name}"
+      Xnlogic.ui.info "cd #{root}"
       Xnlogic.ui.info "vagrant up"
       Xnlogic.ui.info "vagrant ssh"
       Xnlogic.ui.info ""

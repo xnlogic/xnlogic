@@ -109,12 +109,11 @@ hr
 gem install --quiet torquebox-server -v '3.1.1'
 
 hr
-echo "Installing XN gems"
+echo "Configuring XN gems"
 hr
-wget https://www.dropbox.com/s/$mcfly_key/pacer-mcfly-$mcfly_version-java.gem -O pacer-mcfly-$mcfly_version-java.gem --quiet
-wget https://www.dropbox.com/s/$pm_key/pacer-model-$pm_version-java.gem -O pacer-model-$pm_version-java.gem --quiet
-gem install --quiet pacer-mcfly-$mcfly_version-java.gem pacer-model-$pm_version-java.gem
-rm pacer-mcfly-$mcfly_version-java.gem pacer-model-$pm_version-java.gem
+gem sources --add http://<%= config[:xn_key] || 'xn:key_required' %>@pacer-model.xnlogic.net
+gem sources --add http://<%= config[:xn_key] || 'xn:key_required' %>@pacer-mcfly.xnlogic.net
+gem install --quiet pacer-mcfly pacer-model
 
 hr
 echo "Configuring XN"
@@ -126,6 +125,7 @@ tar -xjf xn.dev.tbz
 rm xn.dev.tbz
 cd xn.dev
 source script/setup_stack
+echo jruby-${jruby_version} > .ruby-version
 cd fe/xn.js
 sudo npm install --loglevel silent
 cd -

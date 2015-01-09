@@ -54,12 +54,14 @@ module Xnlogic
     end
 
     desc "application NAME [OPTIONS]", "Creates a skeleton of an XN Logic application"
-    method_option "base", type: :string, banner:
-      "The project is structured ./base_directory/application_directory. Name the base_directory"
     method_option "cpus", type: :numeric, default: 2, banner:
       "Number of Virtual CPUs the Development VM should use"
     method_option "memory", type: :numeric, default: 2048, banner:
       "Amount of RAM to allow the Development VM to use (in MB)"
+    method_option "key", type: :string, banner:
+      "You must supply an XN key to be able to download the proprietary dependencies needed to boot your application"
+    method_option "root", type: :string, banner:
+      "Optionally specify a different root directory name"
     def application(name)
       require 'xnlogic/cli/application'
       Application.new(options, name, self).run
