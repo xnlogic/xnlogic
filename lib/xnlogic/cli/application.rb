@@ -34,7 +34,6 @@ module Xnlogic
       base_templates = {
         "Vagrantfile.tt" => "Vagrantfile",
         "config/vagrant.provision.tt" => "config/vagrant.provision",
-        "config/vagrant.settings.yml.tt" => "config/vagrant.settings.yml",
         "config/datomic.conf" => "config/datomic.conf",
         "config/transactor.properties" => "config/transactor.properties",
       }

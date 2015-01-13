@@ -12,8 +12,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # Include config from config/settings.yml
   require 'yaml'
   current_folder = File.expand_path(File.dirname(__FILE__))
-  settings = YAML::load_file(current_folder + "/config/vagrant.settings.yml")
-  app_name = settings['XN_CLIENT']
+  app_name = '<%= config[:name] %>'
 
   # Every Vagrant virtual environment requires a box to build off of.
   config.vm.box = "box-cutter/ubuntu1404"
@@ -70,18 +69,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     vmwf.vmx["numvcpus"] = settings['vm_cpus']
   end
 
-  p1 = settings['jruby_version']
-  p2 = settings['timezone']
-  p4 = settings['DATOMIC_VERSION']
-  p5 = settings['pm_key']
-  p6 = settings['mcfly_key']
-  p7 = settings['pm_version']
-  p8 = settings['mcfly_version']
-
-
   config.vm.provision "shell" do |s|
     s.path = "config/vagrant.provision"
-    s.args   = [p1,p2,app_name,p4,p5,p6,p7,p8]
     s.privileged = false
   end
 end
