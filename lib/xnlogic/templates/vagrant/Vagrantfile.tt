@@ -58,15 +58,31 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.provider "virtualbox" do |vb|
     # boot with headless mode
     vb.gui = false
-    vb.customize ["modifyvm", :id, "--memory", settings['vm_memory']]
-    vb.customize ["modifyvm", :id, "--cpus", settings['vm_cpus']]
+    <% if config[:vm_memory] %>
+      vb.customize ["modifyvm", :id, "--memory", '<%= config[:vm_memory] %>MB']
+    <% else %>
+      #vb.customize ["modifyvm", :id, "--memory", '2048MB']
+    <% end %>
+    <% if config[:vm_cpus] %>
+      vb.customize ["modifyvm", :id, "--cpus", <%= config[:vm_cpus] %>]
+    <% else %>
+      #vb.customize ["modifyvm", :id, "--cpus", 2]
+    <% end %>
   end
 
   config.vm.provider "vmware_fusion" do |vmwf|
     # boot with headless mode
     vmwf.gui = false                
-    vmwf.vmx["memsize"] = settings['vm_memory']
-    vmwf.vmx["numvcpus"] = settings['vm_cpus']
+    <% if config[:vm_memory] %>
+    vmwf.vmx["memsize"] = '<%= config[:vm_memory] %>MB'
+    <% else %>
+    #vmwf.vmx["memsize"] = '2048MB'
+    <% end %>
+    <% if config[:vm_cpus] %>
+    vmwf.vmx["numvcpus"] = <%= config[:vm_cpus] %>
+    <% else %>
+    #vmwf.vmx["numvcpus"] = 2
+    <% end %>
   end
 
   config.vm.provision "shell" do |s|

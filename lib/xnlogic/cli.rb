@@ -62,6 +62,10 @@ module Xnlogic
       "You must supply an XN key to be able to download the proprietary dependencies needed to boot your application"
     method_option "root", type: :string, banner:
       "Optionally specify a different root directory name"
+    method_option "memory", type: :number, banner:
+      "Optionally specify amount of memory for the VM to use in MB"
+    method_option "cpus", type: :number, banner:
+      "Optionally specify how many CPUs for the VM to use"
     def application(name)
       require 'xnlogic/cli/application'
       Application.new(options, name, self).run
