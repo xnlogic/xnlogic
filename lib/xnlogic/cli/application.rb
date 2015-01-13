@@ -46,6 +46,7 @@ module Xnlogic
       templates = {
         "gitignore.tt" => ".gitignore",
         ".rspec.tt" => ".rspec",
+        "gemspec.tt" => "#{namespaced_path}.gemspec",
         "Gemfile.tt" => "Gemfile",
         "Readme.md.tt" => "Readme.md",
         "config.ru.tt" => "config.ru",
