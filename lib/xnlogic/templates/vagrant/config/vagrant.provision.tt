@@ -111,9 +111,7 @@ gem install --quiet torquebox-server -v '3.1.1'
 hr
 echo "Configuring XN gems"
 hr
-gem sources --add http://<%= config[:xn_key] || 'xn:key_required' %>@pacer-model.xnlogic.net
-gem sources --add http://<%= config[:xn_key] || 'xn:key_required' %>@pacer-mcfly.xnlogic.net
-gem install --quiet pacer-mcfly pacer-model
+gem sources --add https://<%= config[:xn_key] || 'xn:key_required' %>@gems.xnlogic.com/
 
 hr
 echo "Configuring XN"

@@ -1,6 +1,4 @@
-source "http://rubygems.org"
-source "http://<%= config[:xn_key] || 'xn:key_required' %>@pacer-model.xnlogic.net
-source "http://<%= config[:xn_key] || 'xn:key_required' %>@pacer-mcfly.xnlogic.net
+source "https://<%= config[:xn_key] || 'xn:key_required' %>@gems.xnlogic.com"
 
 gem 'torquebox',      '3.1.1'
 gem 'rack',           '1.5.2'

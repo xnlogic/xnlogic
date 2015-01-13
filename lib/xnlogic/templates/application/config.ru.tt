@@ -1,5 +1,4 @@
 begin
-  require 'pacer-model-compiled'
   require 'pacer-model'
   require '<%= config[:namespaced_path] %>'
   logger = TorqueBox::Logger.new("XN")
