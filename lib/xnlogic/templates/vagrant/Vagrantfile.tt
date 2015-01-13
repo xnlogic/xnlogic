@@ -36,8 +36,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   nfs_setting = RUBY_PLATFORM =~ /darwin/ || RUBY_PLATFORM =~ /linux/ || Vagrant.has_plugin?("vagrant-winnfsd")  
 
   # Setup auxiliary synced folder
-  config.vm.synced_folder Dir.pwd, "/home/vagrant/" + app_name, create: true, id: app_name, :nfs => nfs_setting, :mount_options => ['nolock,vers=3,udp']
-  # config.vm.synced_folder "../data", "/vagrant_data"
+  if nfs_setting
+    config.vm.synced_folder Dir.pwd, "/home/vagrant/" + app_name, create: true, id: app_name, :nfs => true, :mount_options => ['nolock,vers=3,udp']
+  else
+    config.vm.synced_folder Dir.pwd, "/home/vagrant/" + app_name, create: true, id: app_name
+  end
   
   # Allow caching to be used (see the vagrant-cachier plugin)
   if Vagrant.has_plugin?("vagrant-cachier")
@@ -59,9 +62,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     # boot with headless mode
     vb.gui = false
     <% if config[:vm_memory] -%>
-    vb.customize ["modifyvm", :id, "--memory", '<%= config[:vm_memory] %>MB']
+    vb.customize ["modifyvm", :id, "--memory", '<%= config[:vm_memory] %>']
     <% else -%>
-    #vb.customize ["modifyvm", :id, "--memory", '2048MB']
+    #vb.customize ["modifyvm", :id, "--memory", '2048']
     <% end -%>
     <% if config[:vm_cpus] -%>
     vb.customize ["modifyvm", :id, "--cpus", <%= config[:vm_cpus] %>]
