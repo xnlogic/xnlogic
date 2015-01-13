@@ -54,18 +54,14 @@ module Xnlogic
     end
 
     desc "application NAME [OPTIONS]", "Creates a skeleton of an XN Logic application"
-    method_option "cpus", type: :numeric, default: 2, banner:
-      "Number of Virtual CPUs the Development VM should use"
-    method_option "memory", type: :numeric, default: 2048, banner:
-      "Amount of RAM to allow the Development VM to use (in MB)"
     method_option "key", type: :string, banner:
       "You must supply an XN key to be able to download the proprietary dependencies needed to boot your application"
     method_option "root", type: :string, banner:
       "Optionally specify a different root directory name"
-    method_option "memory", type: :number, banner:
-      "Optionally specify amount of memory for the VM to use in MB"
-    method_option "cpus", type: :number, banner:
-      "Optionally specify how many CPUs for the VM to use"
+    method_option "cpus", type: :numeric, default: 2, banner:
+      "Number of Virtual CPUs the Development VM should use"
+    method_option "memory", type: :numeric, default: 2048, banner:
+      "Amount of RAM to allow the Development VM to use (in MB)"
     def application(name)
       require 'xnlogic/cli/application'
       Application.new(options, name, self).run
