@@ -15,7 +15,7 @@ module Xnlogic
       @name = app_name.chomp("/").tr('-', '_') # remove trailing slash if present
       @root = options.fetch('root', @name)
       @app = Pathname.pwd.join(root)
-      options[:name] = @name
+      options['name'] = @name
       self
     end
 
