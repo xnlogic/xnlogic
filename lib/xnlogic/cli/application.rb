@@ -96,7 +96,8 @@ module Xnlogic
     end
 
     def install_vagrant_note
-      if `which vagrant` == ''
+      ver = `vagrant --version` rescue ''
+      if ver == ''
         Xnlogic.ui.info ""
         Xnlogic.ui.info "Please ensure that the following dependencies are installed on your computer"
         Xnlogic.ui.info "to continue."
