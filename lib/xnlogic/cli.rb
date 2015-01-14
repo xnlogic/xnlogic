@@ -90,6 +90,13 @@ module Xnlogic
       Application.new(options, self).in_existing_project.vm_config
     end
 
+    desc "deployment [OPTIONS]", "Adds Vagrant configuration to the current project"
+    vm_config_options
+    method_option "name", type: :string, banner:
+    def deployment
+      Application.new(options, self).in_existing_project.deployment
+    end
+
 
     def self.source_root
       File.expand_path(File.join(File.dirname(__FILE__), 'templates'))

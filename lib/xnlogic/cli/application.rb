@@ -72,6 +72,14 @@ module Xnlogic
       Xnlogic.ui.info "Once that is done, run 'vagrant ssh' to log in to the VM."
     end
 
+    def deployment
+      generate_deployment
+      write_options
+      Xnlogic.ui.info ""
+      Xnlogic.ui.info "Deployment files generated. You must deploy from within your app by using the xn-deploy command."
+      Xnlogic.ui.info ""
+    end
+
     def install_vagrant_note
       if `which vagrant` == ''
         Xnlogic.ui.info ""
@@ -152,6 +160,20 @@ module Xnlogic
         thor.template("application/#{src}", app.join(dst), opts)
       end
     end
+
+    def generate_deployment
+      opts = template_options
+      base_templates = {
+      }
+
+      Xnlogic.ui.info ""
+      Xnlogic.ui.info "Creating Vagrant configuration"
+      Xnlogic.ui.info ""
+      base_templates.each do |src, dst|
+        thor.template("deployment/#{src}", app.join('deployment').join(dst), opts)
+      end
+    end
+
   end
 end
 
