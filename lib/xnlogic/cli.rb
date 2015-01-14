@@ -2,6 +2,7 @@ require 'thor'
 
 module Xnlogic
   class CLI < Thor
+    require 'xnlogic/cli/application'
     include Thor::Actions
 
     def self.start(*)
@@ -53,19 +54,42 @@ module Xnlogic
       Kernel.exec(command_path, *ARGV[1..-1])
     end
 
-    desc "application NAME [OPTIONS]", "Creates a skeleton of an XN Logic application"
-    method_option "key", type: :string, banner:
-      "You must supply an XN key to be able to download the proprietary dependencies needed to boot your application"
-    method_option "root", type: :string, banner:
-      "Optionally specify a different root directory name"
-    method_option "cpus", type: :numeric, banner:
-      "Number of Virtual CPUs the Development VM should use"
-    method_option "memory", type: :numeric, banner:
-      "Amount of RAM to allow the Development VM to use (in MB)"
-    def application(name)
-      require 'xnlogic/cli/application'
-      Application.new(options, name, self).run
+
+    def self.vm_config_options
+      method_option "key", type: :string, banner:
+        "You must supply an XN key to be able to download the proprietary dependencies needed to boot your application"
+      method_option "cpus", type: :numeric, banner:
+        "Number of Virtual CPUs the Development VM should use"
+      method_option "memory", type: :numeric, banner:
+        "Amount of RAM to allow the Development VM to use (in MB)"
+      method_option "root", type: :string, banner:
+        "Optionally specify a different root directory name"
     end
+
+    desc "application NAME [OPTIONS]", "Creates a skeleton of an XN Logic application"
+    vm_config_options
+    method_option "vm_config", type: :boolean, default: true, banner:
+      "Generate VM configuration files"
+    method_option "same", type: :boolean, default: false, banner:
+      "Use previous config"
+    def application(name = nil)
+      app = Application.new(options, self)
+      if options['same'] or name.nil?
+        app.in_existing_project
+      else
+        app.set_name(name)
+      end
+      app.application
+    end
+
+    desc "vm_config [OPTIONS]", "Adds Vagrant configuration to the current project"
+    vm_config_options
+    method_option "name", type: :string, banner:
+      "Optionally specify a different project name"
+    def vm_config
+      Application.new(options, self).in_existing_project.vm_config
+    end
+
 
     def self.source_root
       File.expand_path(File.join(File.dirname(__FILE__), 'templates'))
