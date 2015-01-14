@@ -98,6 +98,18 @@ module Xnlogic
     end
 
 
+    desc "gem_sources [OPTIONS]", "Show the gem source URLs as configured in the current application"
+    method_option "key", type: :string, banner:
+      "You must supply an XN key to be able to download the proprietary dependencies needed to boot your application"
+    method_option "format", type: :string, banner:
+      "Optionally specify either bundler or rubygems"
+    def gem_sources
+      app = Application.new(options, self).in_existing_project
+      app.show_source "https://rubygems.org/"
+      app.show_source "https://#{app.options['key']}@gems.xnlogic.com/"
+    end
+
+
     def self.source_root
       File.expand_path(File.join(File.dirname(__FILE__), 'templates'))
     end

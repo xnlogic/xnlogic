@@ -46,6 +46,17 @@ module Xnlogic
       end
     end
 
+    def show_source(source)
+      case options['format']
+      when 'bundler'
+        Xnlogic.ui.info "source \"#{source}\""
+      when 'rubygems'
+        Xnlogic.ui.info "gem sources -a #{source}"
+      else
+        Xnlogic.ui.info source
+      end
+    end
+
     def application
       generate_vm_config unless options['vm_config']
       generate_application

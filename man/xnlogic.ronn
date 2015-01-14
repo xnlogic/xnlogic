@@ -22,7 +22,7 @@ started, or https://xnlogic.zendesk.com/hc/en-us for support.
 
 ## COMMANDS
 
-We divide `xnlogic` subcommands into the initial command and update commands.
+We divide `xnlogic` subcommands into the initial command, update commands, and utilities.
 
 ## INITIAL COMMAND
 
@@ -37,6 +37,11 @@ We divide `xnlogic` subcommands into the initial command and update commands.
 
 * `xnlogic deployment(1)`:
   Generates deployment files in an existing application.
+
+## UTILITY COMMANDS
+
+* `xnlogic gem_sources(1)`:
+  Displays the gem sources needed by this application
 
 * `xnlogic help(1)`:
   Displays detailed help for each subcommand
