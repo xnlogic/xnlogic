@@ -29,6 +29,9 @@ export LC_ALL=en_US.UTF-8
 sudo locale-gen en_US.UTF-8
 #sudo dpkg-reconfigure locales
 
+# make jruby processes boot faster
+export JRUBY_OPTS=--dev
+
 hr
 echo "Setting timezone:"
 echo "$timezone" | sudo tee /etc/timezone
@@ -108,7 +111,8 @@ echo "Configuring XN"
 sudo mkdir -p /opt/xn_apps
 sudo chown vagrant /opt/xn_apps
 cd
-wget https://www.dropbox.com/s/qs1n0c6tig2jfwo/xn.dev.2.tbz -O $HOME/xn.dev.tbz --quiet
+
+wget https://www.dropbox.com/s/0aqqn94g35ruh9k/xn.dev.3.tbz -O $HOME/xn.dev.tbz --quiet
 tar -xjf xn.dev.tbz
 rm xn.dev.tbz
 cd xn.dev
