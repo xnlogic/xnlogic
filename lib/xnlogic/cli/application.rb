@@ -29,7 +29,10 @@ module Xnlogic
       if options_file.exist?
         previous_options = YAML.load_file(options_file.to_s)
         @options = previous_options.merge options
-        @name ||= options[:name]
+        @name ||= options['name']
+        self
+      elsif options['name']
+        @name ||= options['name']
         self
       else
         Xnlogic.ui.info "Not in an existing project. Please run the 'application' command first."
@@ -44,7 +47,7 @@ module Xnlogic
     end
 
     def application
-      generate_vm_config unless options[:vm_config]
+      generate_vm_config unless options['vm_config']
       generate_application
       write_options
       Xnlogic.ui.info "Initializing git repo in #{app}"
