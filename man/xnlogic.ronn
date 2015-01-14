@@ -22,17 +22,21 @@ started, or https://xnlogic.zendesk.com/hc/en-us for support.
 
 ## COMMANDS
 
-We divide `xnlogic` subcommands into primary commands and utilities.
+We divide `xnlogic` subcommands into the initial command and update commands.
 
-## PRIMARY COMMANDS
+## INITIAL COMMAND
 
-* ...
+* `xnlogic application(1)`:
+  Create a simple application, suitable for development with the XN Framework.
+
+## APPLICATION UPDATES
+
+* `xnlogic vm_config(1)`:
+  Updates an existing application with the current Vagrant VM configuration, or
+  can also be used to adjust settings.
+
+* `xnlogic deployment(1)`:
+  Generates deployment files in an existing application.
 
 * `xnlogic help(1)`:
   Displays detailed help for each subcommand
-
-## UTILITIES
-
-* `xnlogic application(1)`:
-  Create a simple application, suitable for development with xnlogic
-
