@@ -41,6 +41,7 @@ module Xnlogic
     end
 
     def write_options
+      Dir.mkdir(app.join('config')) unless app.join('config').exist?
       File.open(options_file.to_s, 'w') do |f|
         f.puts YAML.dump options
       end
@@ -58,7 +59,7 @@ module Xnlogic
     end
 
     def application
-      generate_vm_config unless options['vm_config']
+      generate_vm_config if options['vm_config']
       generate_application
       write_options
       Xnlogic.ui.info "Initializing git repo in #{app}"
