@@ -5,6 +5,10 @@ module Xnlogic
     attr_reader :app_name, :base_name, :name, :root
 
     def set_name(app_name)
+      if File.exists?(options_filename)
+        Xnlogic.ui.info "Can not create an application within an application."
+        exit 1
+      end
       @name = app_name.chomp("/").tr('-', '_') # remove trailing slash if present
       @root = options.fetch('root', @name)
       @app = Pathname.pwd.join(root)
@@ -12,8 +16,12 @@ module Xnlogic
       self
     end
 
+    def options_filename
+      'config/app_options.yaml'
+    end
+
     def options_file
-      app + 'config/app_options.yaml'
+      app + options_filename
     end
 
     def in_existing_project

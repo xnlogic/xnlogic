@@ -60,14 +60,18 @@ module Xnlogic
       method_option "key", type: :string, banner:
         "You must supply an XN key to be able to download the proprietary dependencies needed to boot your application"
       method_option "cpus", type: :numeric, banner:
-        "Number of Virtual CPUs the Development VM should use"
+        "Number of Virtual CPUs the Development VM should use (default 2)"
       method_option "memory", type: :numeric, banner:
-        "Amount of RAM to allow the Development VM to use (in MB)"
+        "Amount of RAM to allow the Development VM to use (default 2048, in MB)"
       method_option "root", type: :string, banner:
         "Optionally specify a different root directory name"
     end
 
-    desc "application NAME [OPTIONS]", "Creates a skeleton of an XN Logic application"
+    desc "application [NAME] [OPTIONS]", <<EOD
+Creates a skeleton of an XN Logic application.
+
+If rerunning within an existing project, do not specify a name."
+EOD
     vm_config_options
     method_option "vm_config", type: :boolean, default: true, banner:
       "Generate VM configuration files"
