@@ -3,6 +3,7 @@ require 'thor'
 module Xnlogic
   class CLI < Thor
     require 'xnlogic/cli/application'
+    require 'xnlogic/cli/deploy'
     include Thor::Actions
 
     def self.start(*)
@@ -71,7 +72,7 @@ module Xnlogic
     method_option "vm_config", type: :boolean, default: true, banner:
       "Generate VM configuration files"
     method_option "same", type: :boolean, default: false, banner:
-      "Use previous config"
+      "Use previous config (implies --root .)"
     def application(name = nil)
       app = Application.new(options, self)
       if options['same'] or name.nil?
@@ -107,6 +108,20 @@ module Xnlogic
       app = Application.new(options, self).in_existing_project
       app.show_source "https://rubygems.org/"
       app.show_source "https://#{app.options['key']}@gems.xnlogic.com/"
+    end
+
+
+    desc "server_profile HOSTNAME [OPTIONS]",
+      "Generate a new server profile"
+    method_option "ssh_user", type: :string, default: 'deploy', banner:
+      "Use a different user account on deploy server"
+    method_option "ssh_key", type: :string, default: "#{ENV['HOME']}/.ssh/id_rsa",
+      banner: "Use a specific ssh key when connecting to the deploy server"
+    method_option "api_hostname", type: :string, banner:
+      "Optional distinct API Hostname"
+    def server_profile(hostname)
+      app = Deploy.new(options, self)
+      app.server_profile(hostname)
     end
 
 

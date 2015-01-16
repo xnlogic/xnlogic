@@ -1,15 +1,8 @@
-require 'pathname'
-require 'yaml'
+require 'xnlogic/cli/core'
 
 module Xnlogic
-  class CLI::Application
-    attr_reader :options, :app_name, :thor, :base_name, :name, :app, :root
-
-    def initialize(options, thor)
-      @options = {}.merge options
-      @app_name = app_name
-      @thor = thor
-    end
+  class CLI::Application < CLI::Core
+    attr_reader :app_name, :base_name, :name, :root
 
     def set_name(app_name)
       @name = app_name.chomp("/").tr('-', '_') # remove trailing slash if present
@@ -26,25 +19,9 @@ module Xnlogic
     def in_existing_project
       @root = options.fetch('root', '.')
       @app = Pathname.pwd.join(root)
-      if options_file.exist?
-        previous_options = YAML.load_file(options_file.to_s)
-        @options = previous_options.merge options
-        @name ||= options['name']
-        self
-      elsif options['name']
-        @name ||= options['name']
-        self
-      else
-        Xnlogic.ui.info "Not in an existing project. Please run the 'application' command first."
-        exit 1
-      end
-    end
-
-    def write_options
-      Dir.mkdir(app.join('config')) unless app.join('config').exist?
-      File.open(options_file.to_s, 'w') do |f|
-        f.puts YAML.dump options
-      end
+      super()
+      @name ||= options['name']
+      self
     end
 
     def show_source(source)
@@ -85,14 +62,6 @@ module Xnlogic
       Xnlogic.ui.info "otherwise, run 'vagrant up'"
       Xnlogic.ui.info ""
       Xnlogic.ui.info "Once that is done, run 'vagrant ssh' to log in to the VM."
-    end
-
-    def deployment
-      generate_deployment
-      write_options
-      Xnlogic.ui.info ""
-      Xnlogic.ui.info "Deployment files generated. You must deploy from within your app by using the xn-deploy command."
-      Xnlogic.ui.info ""
     end
 
     def install_vagrant_note
@@ -148,9 +117,11 @@ module Xnlogic
         ".rspec.tt" => ".rspec",
         "gemspec.tt" => "#{namespaced_path}.gemspec",
         "Gemfile.tt" => "Gemfile",
+        "Rakefile.tt" => "Rakefile",
         "Readme.md.tt" => "Readme.md",
         "config.ru.tt" => "config.ru",
         "dev/console.rb.tt" => "dev/console.rb",
+        "tasks/deploy.rb.tt" => "tasks/deploy.rb",
         "torquebox.yml.tt" => "torquebox.yml",
         "torquebox_init.rb.tt" => "torquebox_init.rb",
         "lib/gemname.rb.tt" => "lib/#{namespaced_path}.rb",
@@ -176,20 +147,6 @@ module Xnlogic
         thor.template("application/#{src}", app.join(dst), opts)
       end
     end
-
-    def generate_deployment
-      opts = template_options
-      base_templates = {
-      }
-
-      Xnlogic.ui.info ""
-      Xnlogic.ui.info "Creating Vagrant configuration"
-      Xnlogic.ui.info ""
-      base_templates.each do |src, dst|
-        thor.template("deployment/#{src}", app.join('deployment').join(dst), opts)
-      end
-    end
-
   end
 end
 

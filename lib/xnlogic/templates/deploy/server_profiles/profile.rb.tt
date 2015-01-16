@@ -1,0 +1,10 @@
+require "xnlogic/server_profile"
+
+server_profile do
+  torquebox_home '/opt/torquebox/current'
+  hostname '<%= config[:hostname] %>'
+  api_hostname '<%= config[:api_hostname] %>'
+  port '22'
+  user '<%= config[:ssh_user] %>'
+  key '<%= config[:ssh_key] %>'
+end

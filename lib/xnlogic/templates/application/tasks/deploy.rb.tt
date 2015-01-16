@@ -1,0 +1,16 @@
+require 'xnlogic/deploy'
+
+desc "Deploys the app - Call with CONFIG_FILE=server_profiles/your_server.rb"
+task :deploy do
+  puts <<EOF
+Have you tested locally that your application is in a working state?
+
+ Press ENTER to continue
+EOF
+  STDIN.gets
+
+  Xn::DeployUtils.deploy package_gems: true
+end
+
+task :undeploy => 'torquebox:remote:undeploy'
+

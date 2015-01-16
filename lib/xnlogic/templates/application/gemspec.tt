@@ -26,6 +26,8 @@ Gem::Specification.new do |s|
 
   s.add_dependency 'torquebox', '3.1.1'
   s.add_dependency 'torquebox-messaging', '3.1.1'
+  s.add_development_dependency 'torquebox-remote-deployer', '0.1.1'
+  s.add_development_dependency 'xnlogic'
 
   s.add_development_dependency 'rspec-core', '~>2.13.0'
   s.add_development_dependency 'rspec-expectations'
