@@ -5,20 +5,16 @@ xnlogic(1) -- XN Logic Command-line Tools
 
 `xnlogic` COMMAND [--no-color] [--verbose] [ARGS]
 
+Example:
+
+  xnlogic application my_app --key my_xn_user:password
+
 ## DESCRIPTION
 
 XN Logic is a graph database-backed application framework.
 
 See [the XN Logic website](https://xnlogic.com) for information on getting
 started, or https://xnlogic.zendesk.com/hc/en-us for support.
-
-## OPTIONS
-
-* `--no-color`:
-  Prints all output without color
-
-* `--verbose`:
-  Prints out additional logging information
 
 ## COMMANDS
 
@@ -45,3 +41,11 @@ We divide `xnlogic` subcommands into the initial command, update commands, and u
 
 * `xnlogic help(1)`:
   Displays detailed help for each subcommand
+
+## OPTIONS
+
+* `--no-color`:
+  Prints all output without color
+
+* `--verbose`:
+  Prints out additional logging information
