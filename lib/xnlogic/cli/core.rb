@@ -11,10 +11,6 @@ module Xnlogic
       @app = Pathname.pwd
     end
 
-    def options_file
-      app + 'config/deploy_options.yaml'
-    end
-
     def in_existing_project
       if options_file.exist?
         previous_options = YAML.load_file(options_file.to_s)
