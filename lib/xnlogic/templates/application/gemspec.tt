@@ -21,6 +21,9 @@ Gem::Specification.new do |s|
   s.add_dependency 'pacer-model'
   s.add_dependency 'pacer-neo4j'
   s.add_dependency 'pacer-mcfly'
+  # Prevent accidental public pushes (only enforced in Rubygems >= 2.4)
+  s.required_rubygems_version = '>= 2.2.0'
+  s.metadata['allowed_push_host'] = 'https://your.server.here'
 
   s.add_dependency 'jruby-openssl', '0.9.6'
 
