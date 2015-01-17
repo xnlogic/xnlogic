@@ -77,9 +77,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     # boot with headless mode
     vmwf.gui = false                
 <% if config[:vm_memory] -%>
-    vmwf.vmx["memsize"] = '<%= config[:vm_memory] %>MB'
+    vmwf.vmx["memsize"] = '<%= config[:vm_memory] %>'
 <% else -%>
-    vmwf.vmx["memsize"] = '2048MB'
+    vmwf.vmx["memsize"] = '2048'
 <% end -%>
 <% if config[:vm_cpus] -%>
     vmwf.vmx["numvcpus"] = <%= config[:vm_cpus] %>
