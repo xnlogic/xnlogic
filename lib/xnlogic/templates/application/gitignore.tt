@@ -12,3 +12,4 @@ tmp/
 .*.un~
 .DS_Store
 Gemfile-custom
+tags

@@ -79,9 +79,6 @@ hr
 echo "Updating PATH"
 export       PATH="$HOME/bin:$HOME/xn.dev/cli-utils/bin:$PATH"
 echo 'export PATH="$HOME/bin:$HOME/xn.dev/cli-utils/bin:$PATH"' >> ~/.zshrc
-echo "alias gs='git status'" >> ~/.zshrc
-echo "alias gd='git diff -w'" >> ~/.zshrc
-echo "alias gdc='git diff -w --cached'" >> ~/.zshrc
 
 hr
 echo "Installing Lein"
@@ -154,6 +151,20 @@ echo "alias xn-server='(cd ~/xn.dev && ./script/start);'" >> ~/.zshrc
 echo 'alias xn-console="(cd ~/$XN_CLIENT && bundle exec jruby -J-Xmx1g -J-XX:MaxPermSize=200m -S irb -I lib -r dev/console)"' >> ~/.zshrc
 echo '[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*' >> ~/.zshrc
 echo 'JRUBY_OPTS=--dev source $HOME/xn.dev/script/setup_stack' >> ~/.zshrc
+echo "alias gs='git status'" >> ~/.zshrc
+echo "alias gd='git diff -w'" >> ~/.zshrc
+echo "alias gdc='git diff -w --cached'" >> ~/.zshrc
+git config --global --add alias.co "checkout"
+git config --global --add alias.ci "commit"
+git config --global --add alias.br "branch"
+git config --global --add alias.ignore "update-index --assume-unchanged"
+git config --global --add alias.unignore "update-index --no-assume-unchanged"
+git config --global --add alias.cp "cherry-pick"
+git config --global --add alias.unadd "reset HEAD"
+git config --global --add alias.lg "log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
+git config --global --add alias.lga "log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --all"
+git config --global --add alias.branches "submodule foreach 'git branch | grep \*'"
+
 
 
 hr
