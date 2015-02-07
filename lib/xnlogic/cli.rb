@@ -128,6 +128,11 @@ EOD
       app.server_profile(hostname)
     end
 
+    desc "version", "Print the version of this command-line tool."
+    def version
+      puts(Xnlogic::VERSION)
+    end
+
 
     def self.source_root
       File.expand_path(File.join(File.dirname(__FILE__), 'templates'))
