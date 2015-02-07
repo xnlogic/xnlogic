@@ -43,7 +43,15 @@ module Xnlogic
       end
     end
 
+    def require_key
+      unless options['key']
+        Xnlogic.ui.info 'You must specify a --key option to generate an application.'
+        exit 1
+      end
+    end
+
     def application
+      require_key
       generate_vm_config if options['vm_config']
       generate_application
       write_options
