@@ -25,6 +25,7 @@ We divide `xnlogic` subcommands into the initial command, update commands, and u
 * `xnlogic application(1)`:
   Create a simple application, suitable for development with the XN Framework.
 
+
 ## APPLICATION UPDATES
 
 * `xnlogic vm_config(1)`:
@@ -41,6 +42,9 @@ We divide `xnlogic` subcommands into the initial command, update commands, and u
 
 * `xnlogic help(1)`:
   Displays detailed help for each subcommand
+
+* `xnlogic version`:
+  Print the version of the xnlogic command-line tools.
 
 ## OPTIONS
 
