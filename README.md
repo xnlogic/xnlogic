@@ -19,6 +19,11 @@ From the Vagrant VM, you can then:
     $ xn-server
     $ xn-console
 
+## Development
+
+To execute from your checked out development version, run it as follows:
+
+    ruby -I ~/dev/xnlogic/lib ~/dev/xnlogic/bin/xnlogic vm_config
 
 ## Contributing
 
