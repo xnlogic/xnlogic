@@ -9,7 +9,7 @@ Bootstrap your xnlogic.com application with this easy to use executable gem.
 
 ## Usage
 
-    $ xnlogic application my_app
+    $ xnlogic application my_app --key xnuser:xnpassword
     $ cd my_app
     $ vagrant up
     $ vagrant ssh
