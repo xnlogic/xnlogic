@@ -112,6 +112,7 @@ module Xnlogic
       opts = template_options
       base_templates = {
         "Vagrantfile.tt" => "Vagrantfile",
+        "Gemfile.tt" => "Gemfile",
         "config/vagrant.provision.tt" => "config/vagrant.provision",
         "config/datomic.conf" => "config/datomic.conf",
         "config/transactor.properties" => "config/transactor.properties",
@@ -132,7 +133,6 @@ module Xnlogic
         "gitignore.tt" => ".gitignore",
         ".rspec.tt" => ".rspec",
         "gemspec.tt" => "#{namespaced_path}.gemspec",
-        "Gemfile.tt" => "Gemfile",
         "Rakefile.tt" => "Rakefile",
         "Readme.md.tt" => "Readme.md",
         "config.ru.tt" => "config.ru",
