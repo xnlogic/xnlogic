@@ -41,9 +41,7 @@ hr
 silent gem sources --add https://<%= config[:xn_key] %>@gems.xnlogic.com/
 <% else -%>
 echo "No key found. You must set the key by running:"
-echo "  xnlogic vm_config --key <your key>"
-echo "then continue with:"
-echo "  vagrant provision"
+echo "  xnlogic vm_config --key <your key> --provision"
 exit 1
 <% end -%>
 

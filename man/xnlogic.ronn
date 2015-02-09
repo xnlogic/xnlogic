@@ -7,7 +7,9 @@ xnlogic(1) -- XN Logic Command-line Tools
 
 Example:
 
-  xnlogic application my_app --key my_xn_user:password
+  xnlogic application my_app --key my_xn_user:password --up
+
+  xnlogic help application
 
 ## DESCRIPTION
 
@@ -32,10 +34,19 @@ We divide `xnlogic` subcommands into the initial command, update commands, and u
   Updates an existing application with the current Vagrant VM configuration, or
   can also be used to adjust settings.
 
-* `xnlogic deployment(1)`:
-  Generates deployment files in an existing application.
+* `xnlogic server_profile(1)`:
+  Generates a server profile that can be used to configure a production deployment.
 
 ## UTILITY COMMANDS
+
+* `xnlogic up(1)`:
+  Starts the development VM. On the first run (only) it will also provision it.
+
+* `xnlogic ssh(1)`:
+  Interactively log into the development VM.
+
+* `xnlogic provision(1)`:
+  Update a running VM's configuration to match the config/vagrant.provision script.
 
 * `xnlogic gem_sources(1)`:
   Displays the gem sources needed by this application
@@ -43,7 +54,7 @@ We divide `xnlogic` subcommands into the initial command, update commands, and u
 * `xnlogic help(1)`:
   Displays detailed help for each subcommand
 
-* `xnlogic version`:
+* `xnlogic version(1)`:
   Print the version of the xnlogic command-line tools.
 
 ## OPTIONS
