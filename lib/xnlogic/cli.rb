@@ -65,6 +65,10 @@ module Xnlogic
         "Amount of RAM to allow the Development VM to use (default 2048, in MB)"
       method_option "root", type: :string, banner:
         "Optionally specify a different root directory name"
+      method_option "provision", type: :boolean, banner:
+        "Update the VM with the new provisioning settings"
+      method_option "up", type: :boolean, banner:
+        "Start the the VM (will provision automatically only on the first run)"
     end
 
     desc "application [NAME] [OPTIONS]", <<EOD
@@ -95,14 +99,6 @@ EOD
       Application.new(options, self).in_existing_project.vm_config
     end
 
-    desc "deployment [OPTIONS]", "Adds Vagrant configuration to the current project"
-    vm_config_options
-    method_option "name", type: :string, banner:
-    def deployment
-      Application.new(options, self).in_existing_project.deployment
-    end
-
-
     desc "gem_sources [OPTIONS]", "Show the gem source URLs as configured in the current application"
     method_option "key", type: :string, banner:
       "You must supply an XN key to be able to download the proprietary dependencies needed to boot your application"
@@ -114,6 +110,20 @@ EOD
       app.show_source "https://#{app.options['key']}@gems.xnlogic.com/"
     end
 
+    desc "up", "Start the VM (and provision only on the first run)"
+    def up
+      system 'vagrant up'
+    end
+
+    desc "provision", "Update the VM with the current provisioning settings"
+    def provision
+      system 'vagrant provision'
+    end
+
+    desc "ssh", "ssh into the VM"
+    def ssh
+      exec 'vagrant ssh'
+    end
 
     desc "server_profile HOSTNAME [OPTIONS]",
       "Generate a new server profile"

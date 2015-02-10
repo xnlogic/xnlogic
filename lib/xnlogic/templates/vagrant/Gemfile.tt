@@ -1,0 +1,13 @@
+<% if config[:xn_key] -%>
+source "https://<%= config[:xn_key] %>@gems.xnlogic.com"
+<% else -%>
+puts "No key found. You must set the key by running:"
+puts "  xnlogic vm_config --key <your key>"
+puts "then try again."
+exit 1
+<% end -%>
+source "https://rubygems.org/"
+
+gemspec
+
+eval File.read('Gemfile-custom') if File.exist?('Gemfile-custom')

@@ -1,6 +1,0 @@
-source "https://<%= config[:xn_key] || 'xn:key_required' %>@gems.xnlogic.com"
-source "https://rubygems.org/"
-
-gemspec
-
-eval File.read('Gemfile-custom') if File.exist?('Gemfile-custom')

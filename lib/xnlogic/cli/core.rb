@@ -3,9 +3,10 @@ require 'yaml'
 
 module Xnlogic
   class CLI::Core
-    attr_reader :options, :thor, :app
+    attr_reader :options, :thor, :app, :ignore_options
 
     def initialize(options, thor)
+      @ignore_options ||= []
       @options = {}.merge options
       @thor = thor
       @app = Pathname.pwd
@@ -24,8 +25,12 @@ module Xnlogic
 
     def write_options
       Dir.mkdir(app.join('config')) unless app.join('config').exist?
+      opts = options.clone
+      ignore_options.each do |x|
+        opts.delete x
+      end
       File.open(options_file.to_s, 'w') do |f|
-        f.puts YAML.dump options
+        f.puts YAML.dump opts
       end
     end
   end

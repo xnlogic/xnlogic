@@ -4,6 +4,11 @@ module Xnlogic
   class CLI::Application < CLI::Core
     attr_reader :app_name, :base_name, :name, :root
 
+    def initialize(options, thor)
+      super
+      @ignore_options = ['up', 'provision']
+    end
+
     def set_name(app_name)
       if File.exists?(options_filename)
         Xnlogic.ui.info "Can not create an application within an application."
@@ -56,15 +61,27 @@ module Xnlogic
       generate_application
       write_options
       Xnlogic.ui.info "Initializing git repo in #{app}"
-      Dir.chdir(app) { `git init`; `git add .` }
+      Dir.chdir(app) { system 'git init' and system 'git add .' }
 
       install_vagrant_note
-      Xnlogic.ui.info ""
-      Xnlogic.ui.info "To start your VM, run the following:"
+      if options['up']
+        Dir.chdir(app) { system 'vagrant up' }
+      else
+        Xnlogic.ui.info ""
+        Xnlogic.ui.info "To start your VM, run the following:"
+        Xnlogic.ui.info ""
+        Xnlogic.ui.info "cd #{root}"
+        Xnlogic.ui.info "xnlogic up"
+      end
+
+      if options['provision']
+        Dir.chdir(app) { system 'vagrant provision' }
+      end
+
+      Xnlogic.ui.info "To begin working with your VM, ssh into it with the following command:"
       Xnlogic.ui.info ""
       Xnlogic.ui.info "cd #{root}"
-      Xnlogic.ui.info "vagrant up"
-      Xnlogic.ui.info "vagrant ssh"
+      Xnlogic.ui.info "xnlogic ssh"
       Xnlogic.ui.info ""
       Xnlogic.ui.info "Once logged in to the server, try the xn-console and xn-server commands"
     end
@@ -73,11 +90,17 @@ module Xnlogic
       generate_vm_config
       write_options
       install_vagrant_note
-      Xnlogic.ui.info ""
-      Xnlogic.ui.info "If you have an existing VM that you are updating, run 'vagrant provision',"
-      Xnlogic.ui.info "otherwise, run 'vagrant up'"
-      Xnlogic.ui.info ""
-      Xnlogic.ui.info "Once that is done, run 'vagrant ssh' to log in to the VM."
+
+      if options['provision'] or options['up']
+        Dir.chdir(app) { system 'vagrant up' } if options['up']
+        Dir.chdir(app) { system 'vagrant provision' } if options['provision']
+      else
+        Xnlogic.ui.info ""
+        Xnlogic.ui.info "If you have an existing VM that you are updating, run 'xnlogic provision',"
+        Xnlogic.ui.info "otherwise, run 'xnlogic up'"
+        Xnlogic.ui.info ""
+      end
+      Xnlogic.ui.info "Once that is done, run 'xnlogic ssh' to log in to the VM."
     end
 
     def install_vagrant_note
@@ -112,6 +135,7 @@ module Xnlogic
       opts = template_options
       base_templates = {
         "Vagrantfile.tt" => "Vagrantfile",
+        "Gemfile.tt" => "Gemfile",
         "config/vagrant.provision.tt" => "config/vagrant.provision",
         "config/datomic.conf" => "config/datomic.conf",
         "config/transactor.properties" => "config/transactor.properties",
@@ -132,7 +156,6 @@ module Xnlogic
         "gitignore.tt" => ".gitignore",
         ".rspec.tt" => ".rspec",
         "gemspec.tt" => "#{namespaced_path}.gemspec",
-        "Gemfile.tt" => "Gemfile",
         "Rakefile.tt" => "Rakefile",
         "Readme.md.tt" => "Readme.md",
         "config.ru.tt" => "config.ru",

@@ -1,18 +1,19 @@
 # xnlogic
 
-Bootstrap your xnlogic.com application with this easy to use executable gem.
+Bootstrap your [xnlogic.com](http://xnlogic.com) application with this easy to use executable gem.
 
+![gem install xnlogic](https://raw.githubusercontent.com/wiki/xnlogic/xn-gem-template/gif/readme_header.gif)
 
 ## Installation
 
     $ gem install xnlogic
 
+ 
 ## Usage
-
-    $ xnlogic application my_app
+ 
+    $ xnlogic application my_app --key xnuser:xnpassword --up
     $ cd my_app
-    $ vagrant up
-    $ vagrant ssh
+    $ xnlogic ssh
 
 From the Vagrant VM, you can then: 
 
@@ -22,14 +23,19 @@ From the Vagrant VM, you can then:
 
 ## Contributing
 
-1. Fork it ( https://github.com/[my-github-username]/xnlogic/fork )
+1. Fork it ( https://github.com/xnlogic/xnlogic/fork )
 2. Create your feature branch (`git checkout -b my-new-feature`)
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create a new Pull Request
 
+#### Using the CLI in development
 
-## Releasing a new gem to rubygems:
+To execute from your checked out development version, run it as follows:
+
+    ruby -I ~/dev/xnlogic/lib ~/dev/xnlogic/bin/xnlogic vm_config
+
+#### Releasing a new gem to rubygems:
 
 CI is not set up yet, so once you're happy with the release, simply:
 

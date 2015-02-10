@@ -36,7 +36,14 @@ silent sudo dpkg-reconfigure --frontend noninteractive tzdata
 hr
 echo "Configuring XN gems"
 hr
-gem sources --add https://<%= config[:xn_key] || 'xn:key_required' %>@gems.xnlogic.com/
+
+<% if config[:xn_key] -%>
+silent gem sources --add https://<%= config[:xn_key] %>@gems.xnlogic.com/
+<% else -%>
+echo "No key found. You must set the key by running:"
+echo "  xnlogic vm_config --key <your key> --provision"
+exit 1
+<% end -%>
 
 hr
 echo "Configuring XN"
