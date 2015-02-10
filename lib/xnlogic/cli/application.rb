@@ -80,6 +80,7 @@ module Xnlogic
 
       Xnlogic.ui.info "To begin working with your VM, ssh into it with the following command:"
       Xnlogic.ui.info ""
+      Xnlogic.ui.info "cd #{root}"
       Xnlogic.ui.info "xnlogic ssh"
       Xnlogic.ui.info ""
       Xnlogic.ui.info "Once logged in to the server, try the xn-console and xn-server commands"
