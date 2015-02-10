@@ -1,4 +1,4 @@
-# xnlogic
+# [xnlogic](http://xnlogic.com)
 
 Bootstrap your xnlogic.com application with this easy to use executable gem.
 
