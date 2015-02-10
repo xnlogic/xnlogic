@@ -11,10 +11,9 @@ Bootstrap your [xnlogic.com](http://xnlogic.com) application with this easy to u
  
 ## Usage
  
-    $ xnlogic application my_app --key xnuser:xnpassword
+    $ xnlogic application my_app --key xnuser:xnpassword --up
     $ cd my_app
-    $ vagrant up
-    $ vagrant ssh
+    $ xnlogic ssh
 
 From the Vagrant VM, you can then: 
 
