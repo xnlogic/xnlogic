@@ -127,10 +127,8 @@ EOD
 
     desc "key XN_KEY", "Set the key (i.e. xn_user:xn_password) for this application."
     def key(xn_key)
-      app = Application.new({ 'key' => xn_key }, self)
-      app.in_existing_project
-      app.write_options
-      puts("Updated key.")
+      app = Application.new(options, self)
+      app.update_key(xn_key)
     end
 
     desc "server_profile HOSTNAME [OPTIONS]",

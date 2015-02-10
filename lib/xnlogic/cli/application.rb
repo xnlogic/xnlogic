@@ -114,6 +114,26 @@ module Xnlogic
       end
     end
 
+
+    def update_key(xn_key)
+      # Set the option
+      options['key'] = xn_key
+
+      # Check that we are in an existing project folder
+      in_existing_project
+
+      # Gemerate the necessary templates
+      templates = {
+        "Gemfile.tt" => "Gemfile",
+        "config/vagrant.provision.tt" => "config/vagrant.provision",
+      }
+      _generate_templates(templates, 'vagrant', template_options, 'Updating configuration')
+
+      # Write the options YAML file
+      write_options
+    end
+
+
     def template_options
       namespaced_path = name
       constant_name = namespaced_path.split('_').map{|p| p[0..0].upcase + p[1..-1] }.join
@@ -131,8 +151,21 @@ module Xnlogic
       }
     end
 
+
+    def _generate_templates(template_src_to_dst, template_folder, opts, ui_message=nil)
+      if(not ui_message.nil?)
+        Xnlogic.ui.info ""
+        Xnlogic.ui.info ui_message
+        Xnlogic.ui.info ""
+      end
+      
+      template_src_to_dst.each do |src, dst|
+        thor.template("#{template_folder}/#{src}", app.join(dst), opts)
+      end
+    end
+
+
     def generate_vm_config
-      opts = template_options
       base_templates = {
         "Vagrantfile.tt" => "Vagrantfile",
         "Gemfile.tt" => "Gemfile",
@@ -141,13 +174,9 @@ module Xnlogic
         "config/transactor.properties" => "config/transactor.properties",
       }
 
-      Xnlogic.ui.info ""
-      Xnlogic.ui.info "Creating Vagrant configuration"
-      Xnlogic.ui.info ""
-      base_templates.each do |src, dst|
-        thor.template("vagrant/#{src}", app.join(dst), opts)
-      end
+      _generate_templates(base_templates, 'vagrant', template_options, 'Creating Vagrant configuration')
     end
+
 
     def generate_application
       opts = template_options
@@ -179,13 +208,10 @@ module Xnlogic
         "spec/gemname/gemname_spec.rb.tt" => "spec/#{namespaced_path}/#{name}_spec.rb",
       }
 
-      Xnlogic.ui.info ""
-      Xnlogic.ui.info "Creating application templates"
-      Xnlogic.ui.info ""
-      templates.each do |src, dst|
-        thor.template("application/#{src}", app.join(dst), opts)
-      end
+      _generate_templates(templates, 'application', opts, 'Creating application templates')
     end
+
+
   end
 end
 
