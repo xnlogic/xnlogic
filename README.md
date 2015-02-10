@@ -2,14 +2,19 @@
 
 Bootstrap your xnlogic.com application with this easy to use executable gem.
 
+![gem install xnlogic](https://raw.githubusercontent.com/wiki/xnlogic/xn-gem-template/gif/readme_header.gif)
 
-![gem install xnlogic](https://raw.githubusercontent.com/wiki/xnlogic/xn-gem-template/gif/gem_install.gif)
+## Installation
 
+    $ gem install xnlogic
+
+ 
 ## Usage
-
-![xnlogic application my_app --key xn_user:xn_password](https://raw.githubusercontent.com/wiki/xnlogic/xn-gem-template/gif/application.gif)
-![vagrant up](https://raw.githubusercontent.com/wiki/xnlogic/xn-gem-template/gif/vagrant_up.gif)
-![vagrant ssh](https://raw.githubusercontent.com/wiki/xnlogic/xn-gem-template/gif/vagrant_ssh.gif)
+ 
+    $ xnlogic application my_app --key xnuser:xnpassword
+    $ cd my_app
+    $ vagrant up
+    $ vagrant ssh
 
 From the Vagrant VM, you can then: 
 
