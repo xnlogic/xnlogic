@@ -21,22 +21,22 @@ From the Vagrant VM, you can then:
     $ xn-server
     $ xn-console
 
-## Development
-
-To execute from your checked out development version, run it as follows:
-
-    ruby -I ~/dev/xnlogic/lib ~/dev/xnlogic/bin/xnlogic vm_config
 
 ## Contributing
 
-1. Fork it ( https://github.com/[my-github-username]/xnlogic/fork )
+1. Fork it ( https://github.com/xnlogic/xnlogic/fork )
 2. Create your feature branch (`git checkout -b my-new-feature`)
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create a new Pull Request
 
+#### Using the CLI in development
 
-## Releasing a new gem to rubygems:
+To execute from your checked out development version, run it as follows:
+
+    ruby -I ~/dev/xnlogic/lib ~/dev/xnlogic/bin/xnlogic vm_config
+
+#### Releasing a new gem to rubygems:
 
 CI is not set up yet, so once you're happy with the release, simply:
 
