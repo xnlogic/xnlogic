@@ -1,6 +1,6 @@
-# [xnlogic](http://xnlogic.com)
+# xnlogic
 
-Bootstrap your xnlogic.com application with this easy to use executable gem.
+Bootstrap your [xnlogic.com](http://xnlogic.com) application with this easy to use executable gem.
 
 ![gem install xnlogic](https://raw.githubusercontent.com/wiki/xnlogic/xn-gem-template/gif/readme_header.gif)
 
