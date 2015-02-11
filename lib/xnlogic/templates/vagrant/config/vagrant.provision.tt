@@ -58,15 +58,13 @@ cd xn.dev
 source script/setup_stack
 echo jruby-${jruby_version} > .ruby-version
 cd fe/xn.js
-sudo npm install --loglevel silent
+npm install --loglevel silent
 cd -
 rake --quiet new_tb_version bundle_fe_server fresh_fe_config fe_server_db_init
 
 if [ -d $HOME/$XN_CLIENT/assets ]; then
   hr
   echo "Configuring Assets"
-  silent sudo chown -R vagrant:vagrant $HOME
-  chown -R vagrant:vagrant $HOME
   cd $HOME/$XN_CLIENT/assets
   bundle install
   npm install
