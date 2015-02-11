@@ -20,27 +20,26 @@ From the Vagrant VM, you can then:
     $ xn-server
     $ xn-console
 
-----
 
-## Command-Line Tool Reference
+## Reference
 
-The xnlogic command-line tool (installed via `gem install xnlogic`) is used with the following syntax:
+The general syntax of the command-line tool is
 
-    $ xnlogic COMMAND [OPTIONS]
+    $ xnlogic COMMAND [ARGS] [OPTIONS]
     
-The following commands are available:
+And the following commands are available:
 
 | Command | Description |
 | ------- | ----------- |
 | `application` | Create/update an application. |
-| `vm_config`   | Update the configuration and settings of an application. |
-| `server_profiles` | Generates a server profile that can be used to configure a production deployment. |
 | `up` | Start a development VM |
 | `ssh` | Log in to a running development VM |
-| `provision` | Update configuration of a running VM |
+| `vm_config`   | Update the configuration and settings of an application. |
+| `provision`   | Apply configuration updates to a running VM |
+| `server_profiles` | Generates a server profile that can be used to configure a production deployment. |
 | `gem_sources` | List gem sources required by this application |
-| `help` | Display a help page |
 | `version` | Print the version of the command-line tool |
+| `help` | Display a help page |
 
 You can get more information on each command using
 
