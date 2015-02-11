@@ -9,4 +9,3 @@ rescue LoadError => e
   puts e
   puts e.backtrace.join("\n")
 end
-
