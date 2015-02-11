@@ -96,12 +96,20 @@ git config --global --add alias.lg "log --color --graph --pretty=format:'%Cred%h
 git config --global --add alias.lga "log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --all"
 git config --global --add alias.branches "submodule foreach 'git branch | grep \*'"
 
-
-
 hr
 echo "Configuring $XN_CLIENT"
 cd $HOME/$XN_CLIENT
 bundle
 torquebox deploy
+
+PROVISION_APPS=$HOME/$XN_CLIENT/apps/apps.provision.sh
+if [ -x $PROVISION_APPS ]; then
+  hr
+  echo "Provisioning Custom Apps"
+  cd $HOME/$XN_CLIENT/apps
+  $PROVISION_APPS
+  cd -
+fi
+
 hr
 echo "Done!"
