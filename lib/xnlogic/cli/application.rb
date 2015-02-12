@@ -160,7 +160,7 @@ module Xnlogic
         Xnlogic.ui.info ui_message
         Xnlogic.ui.info ""
       end
-      
+
       template_src_to_dst.each do |src, dst|
         thor.template("#{template_folder}/#{src}", app.join(dst), opts)
       end
@@ -173,6 +173,7 @@ module Xnlogic
         "Gemfile.tt" => "Gemfile",
         "config/vagrant.provision.tt" => "config/vagrant.provision",
         "config/datomic.conf" => "config/datomic.conf",
+        "config/start.sh" => "config/start.sh",
         "config/transactor.properties" => "config/transactor.properties",
       }
 

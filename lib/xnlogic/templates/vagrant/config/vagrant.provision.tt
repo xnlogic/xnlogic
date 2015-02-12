@@ -78,7 +78,8 @@ sudo start datomic
 hr
 echo "Customizing .zshrc for $XN_CLIENT development"
 echo "export XN_CLIENT=$XN_CLIENT" >> ~/.zshrc
-echo "alias xn-server='(cd ~/xn.dev && ./script/start);'" >> ~/.zshrc
+chmod +x $XN_CLIENT/config/start.sh
+echo "alias xn-server=$XN_CLIENT/config/start.sh" >> ~/.zshrc
 echo 'alias xn-console="(cd ~/$XN_CLIENT && bundle exec jruby -J-Xmx1g -J-XX:MaxPermSize=200m -S irb -I lib -r dev/console)"' >> ~/.zshrc
 echo '[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*' >> ~/.zshrc
 echo 'JRUBY_OPTS=--dev source $HOME/xn.dev/script/setup_stack' >> ~/.zshrc
