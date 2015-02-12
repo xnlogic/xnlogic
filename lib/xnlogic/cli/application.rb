@@ -59,6 +59,7 @@ module Xnlogic
       require_key
       generate_vm_config if options['vm_config']
       generate_application
+      options['application_version'] = Xnlogic::VERSION
       write_options
       Xnlogic.ui.info "Initializing git repo in #{app}"
       Dir.chdir(app) { system 'git init' and system 'git add .' }
@@ -88,6 +89,7 @@ module Xnlogic
 
     def vm_config
       generate_vm_config
+      options['vm_config_version'] = Xnlogic::VERSION
       write_options
       install_vagrant_note
 
