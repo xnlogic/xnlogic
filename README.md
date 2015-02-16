@@ -21,13 +21,36 @@ From the Vagrant VM, you can then:
     $ xn-console
 
 
+## Reference
+
+The general syntax of the command-line tool is
+
+    $ xnlogic COMMAND [ARGS] [OPTIONS]
+    
+And the following commands are available:
+
+| Command | Description |
+| ------- | ----------- |
+| `application` | Create/update an application. |
+| `up` | Start a development VM |
+| `ssh` | Log in to a running development VM |
+| `vm_config`   | Update the configuration and settings of an application. |
+| `provision`   | Apply configuration updates to a running VM |
+| `server_profiles` | Generates a server profile that can be used to configure a production deployment. |
+| `gem_sources` | List gem sources required by this application |
+| `version` | Print the version of the command-line tool |
+| `help` | Display a help page |
+
+You can get more information on each command using
+
+    $ xnlogic help COMMAND
+
+
+
 ## Contributing
 
-1. Fork it ( https://github.com/xnlogic/xnlogic/fork )
-2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Add some feature'`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Create a new Pull Request
+Pull-requests are welcome.
+If you submit a pull-request, please create a feature branch for your changes.
 
 #### Using the CLI in development
 
