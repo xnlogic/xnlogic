@@ -64,3 +64,5 @@ export RELOAD=true
 echo "starting torquebox"
 lsof -i :8080 -sTCP:listen | grep . || torquebox run &> /dev/null  &
 echo "Hit Ctrl+C to terminate"
+# Using cat to keep processes live
+cat
