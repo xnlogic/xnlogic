@@ -59,6 +59,7 @@ module Xnlogic
       require_key
       generate_vm_config if options['vm_config']
       generate_application
+      options['application_version'] = Xnlogic::VERSION
       write_options
       Xnlogic.ui.info "Initializing git repo in #{app}"
       Dir.chdir(app) { system 'git init' and system 'git add .' }
@@ -88,6 +89,7 @@ module Xnlogic
 
     def vm_config
       generate_vm_config
+      options['vm_config_version'] = Xnlogic::VERSION
       write_options
       install_vagrant_note
 
@@ -158,7 +160,7 @@ module Xnlogic
         Xnlogic.ui.info ui_message
         Xnlogic.ui.info ""
       end
-      
+
       template_src_to_dst.each do |src, dst|
         thor.template("#{template_folder}/#{src}", app.join(dst), opts)
       end
@@ -171,6 +173,7 @@ module Xnlogic
         "Gemfile.tt" => "Gemfile",
         "config/vagrant.provision.tt" => "config/vagrant.provision",
         "config/datomic.conf" => "config/datomic.conf",
+        "config/start.sh" => "config/start.sh",
         "config/transactor.properties" => "config/transactor.properties",
       }
 

@@ -1,7 +1,10 @@
 # xnlogic gem does not require these dependencies itself, they are used by the
 # generated app which does require them.
-require 'torquebox-rake-support'
-require 'torquebox-remote-deployer'
+begin
+  # optional dependencies
+  require 'torquebox-rake-support'
+  require 'torquebox-remote-deployer'
+rescue LoadError; nil; end
 
 # Monkey patches deploy utils to modify the environment to allow bundler to run successfully.
 module TorqueBox
@@ -11,6 +14,10 @@ module TorqueBox
 
       # RUBYOPT has to be unset from the environment so bundler doesn't lose its shit
       env_vars = { 'RUBYOPT' => nil }
+
+
+
+
 
       system(env_vars, "#{cmd} 2>&1")
     end

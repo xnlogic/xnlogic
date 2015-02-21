@@ -24,6 +24,7 @@ module Xnlogic
     end
 
     def write_options
+      options['last_run_version'] = Xnlogic::VERSION
       Dir.mkdir(app.join('config')) unless app.join('config').exist?
       opts = options.clone
       ignore_options.each do |x|

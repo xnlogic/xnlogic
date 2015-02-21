@@ -58,15 +58,13 @@ cd xn.dev
 source script/setup_stack
 echo jruby-${jruby_version} > .ruby-version
 cd fe/xn.js
-sudo npm install --loglevel silent
+npm install --loglevel silent
 cd -
 rake --quiet new_tb_version bundle_fe_server fresh_fe_config fe_server_db_init
 
 if [ -d $HOME/$XN_CLIENT/assets ]; then
   hr
   echo "Configuring Assets"
-  silent sudo chown -R vagrant:vagrant $HOME
-  chown -R vagrant:vagrant $HOME
   cd $HOME/$XN_CLIENT/assets
   bundle install
   npm install
@@ -80,7 +78,8 @@ sudo start datomic
 hr
 echo "Customizing .zshrc for $XN_CLIENT development"
 echo "export XN_CLIENT=$XN_CLIENT" >> ~/.zshrc
-echo "alias xn-server='(cd ~/xn.dev && ./script/start);'" >> ~/.zshrc
+chmod +x $XN_CLIENT/config/start.sh
+echo "alias xn-server=$XN_CLIENT/config/start.sh" >> ~/.zshrc
 echo 'alias xn-console="(cd ~/$XN_CLIENT && bundle exec jruby -J-Xmx1g -J-XX:MaxPermSize=200m -S irb -I lib -r dev/console)"' >> ~/.zshrc
 echo '[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*' >> ~/.zshrc
 echo 'JRUBY_OPTS=--dev source $HOME/xn.dev/script/setup_stack' >> ~/.zshrc
@@ -98,12 +97,20 @@ git config --global --add alias.lg "log --color --graph --pretty=format:'%Cred%h
 git config --global --add alias.lga "log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --all"
 git config --global --add alias.branches "submodule foreach 'git branch | grep \*'"
 
-
-
 hr
 echo "Configuring $XN_CLIENT"
 cd $HOME/$XN_CLIENT
 bundle
 torquebox deploy
+
+PROVISION_APPS=$HOME/$XN_CLIENT/apps/apps.provision.sh
+if [ -x $PROVISION_APPS ]; then
+  hr
+  echo "Provisioning Custom Apps"
+  cd $HOME/$XN_CLIENT/apps
+  $PROVISION_APPS
+  cd -
+fi
+
 hr
 echo "Done!"
