@@ -4,7 +4,18 @@ This gem provides the domain model and business logic for ...
 
 # Getting a New Environment Set Up
 
-TODO: Add vagrant setup instructions.
+Assuming you have Vagrant installed and one of either VMWare Workstaton/Fusion or VirtualBox, starting up your development VM is as easy as
+
+```
+  xnlogic up
+```
+
+Then you can login with
+```
+  xnlogic ssh
+```
+
+For more details, see ["Setting Up"](http://xnlogic.github.io/getting_started/tutorial/2014/01/01/tutorial1-1.html "xnlogic's Getting Started") in our [Getting Started](http://xnlogic.github.io/getting_started) guide.
 
 # Starting up the Development Console
 
