@@ -119,3 +119,12 @@ fi
 
 hr
 echo "Done!"
+echo "--------------------------------------------------------"
+echo ""
+IP1=`ip addr show eth1 | grep -Po 'inet \K[\d.]+'`
+echo "Use 'xnlogic ssh' to login to development VM, and 'xn-server' to boot the HTTP server."
+echo ""
+if [ -z "$IP1" ]; then true; else echo "Then, point your browser or curl to http://$IP1:8080/"; fi;
+echo ""
+echo ""
+echo "--------------------------------------------------------"
