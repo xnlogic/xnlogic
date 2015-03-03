@@ -89,6 +89,8 @@ echo "alias gs='git status'" >> ~/.zshrc
 echo "alias gd='git diff -w'" >> ~/.zshrc
 echo "alias gdc='git diff -w --cached'" >> ~/.zshrc
 
+sudo apt-get install -y dos2unix
+dos2unix $SERVER_START_SCRIPT
 chmod +x $SERVER_START_SCRIPT
 
 git config --global --add alias.co "checkout"
