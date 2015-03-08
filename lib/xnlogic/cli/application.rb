@@ -176,6 +176,7 @@ module Xnlogic
         "config/datomic.conf" => "config/datomic.conf",
         "config/start.sh" => "config/start.sh",
         "config/transactor.properties" => "config/transactor.properties",
+        "config/xnlogic.conf.tt" => "config/xnlogic.conf",
       }
 
       _generate_templates(base_templates, 'vagrant', template_options, 'Creating Vagrant configuration')
