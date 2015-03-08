@@ -124,7 +124,7 @@ echo "Configuring nginx"
 sudo apt-get install -y nginx
 sudo rm -rf /etc/nginx/sites-enabled/default
 sudo cp $HOME/$XN_CLIENT/config/xnlogic.conf /etc/nginx/sites-enabled/xnlogic.conf
-sudo restart nginx
+sudo service nginx restart 
 
 hr
 echo "Done!"
