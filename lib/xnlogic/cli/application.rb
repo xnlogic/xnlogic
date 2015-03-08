@@ -208,6 +208,9 @@ module Xnlogic
         "lib/gemname/permissions.rb.tt" => "lib/#{namespaced_path}/permissions.rb",
         "lib/gemname/type.rb.tt" => "lib/#{namespaced_path}/type.rb",
         "lib/fixtures/sample_fixtures.rb.tt" => "lib/fixtures/sample_fixtures.rb",
+        "assets/index.html.tt" => "assets/index.html",
+        "assets/images/xnlogic-logo-site.png" => "assets/images/xnlogic-logo-site.png",
+        "assets/images/xnlogic-logo-site-x2.png" => "assets/images/xnlogic-logo-site-x2.png",
 
         "spec/spec_helper.rb.tt" => "spec/spec_helper.rb",
         "spec/gemname/gemname_spec.rb.tt" => "spec/#{namespaced_path}/#{name}_spec.rb",

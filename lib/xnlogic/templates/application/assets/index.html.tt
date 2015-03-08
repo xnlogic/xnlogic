@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Welcome to <%= config[:name] %> on xnlogic!</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+</style>
+</head>
+<body>
+  <img src="images/xnlogic-logo-site.png" />
+<h1>Welcome to <%= config[:name] %> on xnlogic!</h1>
+<p>If you see this page, the xnlogic web server is successfully installed and
+working. Further configuration is required.</p>
+
+<p>For online documentation and support please refer to
+<a href="http://xnlogic.github.io/getting_started">xnlogic Getting Started</a>.<br/>
+Commercial support is available at
+<a href="http://xnlogic.com/">xnlogic.com</a>.</p>
+
+<p><em>Thank you for using xnlogic.</em></p>
+</body>
+</html>
+
