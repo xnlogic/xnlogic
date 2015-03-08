@@ -122,8 +122,8 @@ fi
 hr
 echo "Configuring nginx"
 sudo apt-get install -y nginx
-sudo rm -rf /etc/nginx/conf.d/default.conf
-sudo cp $HOME/$XN_CLIENT/config/xnlogic.conf /etc/nginx/conf.d/xnlogic.conf
+sudo rm -rf /etc/nginx/sites-enabled/default
+sudo cp $HOME/$XN_CLIENT/config/xnlogic.conf /etc/nginx/sites-enabled/xnlogic.conf
 sudo restart nginx
 
 hr
