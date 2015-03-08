@@ -1,0 +1,40 @@
+server {
+  listen         80 default_server;
+
+  client_max_body_size    10m;
+  client_body_buffer_size 128k;
+  proxy_connect_timeout   90;
+  proxy_send_timeout      90;
+  proxy_read_timeout      90;
+  proxy_buffers           32 4k;
+  proxy_http_version      1.0;
+
+  proxy_set_header        Host $host;
+  proxy_set_header        X-Real-IP $remote_addr;
+  proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
+
+  access_log            /var/log/nginx/http_app.xnlogic.com.access.log;
+  error_log             /var/log/nginx/http_app.xnlogic.com.error.log;
+
+  location / {
+    proxy_pass          http://localhost:8080;
+    proxy_read_timeout  90;
+
+  }
+
+  location ~ ^/assets/ {
+	root /vagrant/<%= config[:name] %>/assets/;
+    gzip_http_version 1.0; # Required for CloudFront
+    gzip_proxied any; # Required for CloudFront
+    gzip_static on; # to serve pre-gzipped version
+    expires 365d;
+    add_header Cache-Control public;
+    add_header ETag "";
+
+    # CORS headers
+    add_header 'Access-Control-Allow-Origin' '*.xnlogic.com';
+    add_header 'Access-Control-Allow-Credentials' 'true';
+    add_header 'Access-Control-Allow-Methods' 'GET';
+    add_header 'Access-Control-Allow-Headers' 'DNT,X-Mx-ReqToken,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type';
+  }
+}

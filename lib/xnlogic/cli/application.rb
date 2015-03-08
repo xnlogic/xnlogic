@@ -128,6 +128,7 @@ module Xnlogic
       templates = {
         "Gemfile.tt" => "Gemfile",
         "config/vagrant.provision.tt" => "config/vagrant.provision",
+        "config/xnlogic.conf.tt" => "config/xnlogic.conf",
       }
       _generate_templates(templates, 'vagrant', template_options, 'Updating configuration')
 
