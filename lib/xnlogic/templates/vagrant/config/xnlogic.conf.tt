@@ -23,7 +23,7 @@ server {
   }
 
   location ~ ^/assets/ {
-	root /vagrant/<%= config[:name] %>/assets/;
+	root /home/vagrant/<%= config[:name] %>/assets/;
     gzip_http_version 1.0; # Required for CloudFront
     gzip_proxied any; # Required for CloudFront
     gzip_static on; # to serve pre-gzipped version
