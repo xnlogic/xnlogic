@@ -9,10 +9,6 @@ environment:
   APPS_PATH: /opt/xn_apps
   XN_BKP_PATH: /opt/xn_bkp
   XN_CLIENT: '<%= config[:namespaced_path] %>'
-  # In production:
-  # APPS_PATH: /home/deploy/xn_apps
-  # XN_BKP_PATH: /home/deploy/xn_bkp
-
 
 topics:
   /topics/jobs:
