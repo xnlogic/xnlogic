@@ -16,13 +16,7 @@ cd $HOME/xn.dev
 
 mkdir -p $XN_LOG_DIR
 cd $XN_LOG_DIR
-touch xn.js.log xnlogic.json development.log ${XN_CLIENT}-assets.log
-cd -
-
-cd fe/xn.js
-sudo npm install
-cake serve &> $XN_LOG_DIR/xn.js.log &
-echo "xn.js started"
+touch xnlogic.json development.log ${XN_CLIENT}-assets.log
 cd -
 
 ASSETS_DIR=$HOME/$XN_CLIENT/assets
@@ -42,7 +36,7 @@ if [ -x $START_APPS ]; then
 fi
 
 cd $HOME/xn.dev
-tail -n 0 -f fe/fe-server/log/development.log $XN_LOG_DIR/xn.js.log $XN_LOG_DIR/${XN_CLIENT}-assets.log &
+tail -n 0 -f fe/fe-server/log/development.log $XN_LOG_DIR/${XN_CLIENT}-assets.log &
 tail -n 0 -f $XN_LOG_DIR/server.log | grep -E "Deployed|Starting deployment|TOPLEVEL_BINDING" &
 tail -n 0 -f $XN_LOG_DIR/xnlogic.json | while read line; do echo "$line" | json -i; done &
 
