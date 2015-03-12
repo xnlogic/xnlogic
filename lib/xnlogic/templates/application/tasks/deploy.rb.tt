@@ -10,6 +10,10 @@ EOF
   STDIN.gets
 
   Xn::DeployUtils.deploy package_gems: true
+
+  if File.exists? 'apps/apps.deploy.sh'
+    system 'apps/apps.deploy.sh'
+  end
 end
 
 task :undeploy => 'torquebox:remote:undeploy'
