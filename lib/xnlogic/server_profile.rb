@@ -11,8 +11,12 @@ class DeployConfig
 
     # config_binding is the binding taken from the Capistrano configuration file
     def apply_cap_config(config_binding)
-      roles.each { |role, user| config_binding.eval("role #{role.inspect}, #{user.inspect}") }
-      variables.each { |name, val| config_binding.eval("set #{name.inspect}, #{val.inspect}") }
+      roles.each do |role, user|
+        config_binding.eval("role #{role.inspect}, #{user.inspect}")
+      end
+      variables.each do |name, val|
+        config_binding.eval("set #{name.inspect}, #{val.inspect}")
+      end
     end
 
     # Setters
@@ -82,10 +86,15 @@ if defined?(Capistrano)
       end
 
       # config_binding is the binding taken from the Capistrano configuration file
-      def apply_config(config_binding)
-        roles.each { |role, user| config_binding.eval("role #{role.inspect}, #{user.inspect}") }
-        variables.each { |name, val| config_binding.eval("set #{name.inspect}, #{val.inspect}") }
+      def apply_cap_config(config_binding)
+        roles.each do |role, user|
+          config_binding.eval("role #{role.inspect}, #{user.inspect}")
+        end
+        variables.each do |name, val|
+          config_binding.eval("set #{name.inspect}, #{val.inspect}")
+        end
       end
+      alias apply_config apply_cap_config
 
       # Setters
 
