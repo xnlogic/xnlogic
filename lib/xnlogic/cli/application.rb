@@ -192,6 +192,7 @@ module Xnlogic
         "gemspec.tt" => "#{namespaced_path}.gemspec",
         "Rakefile.tt" => "Rakefile",
         "Readme.md.tt" => "Readme.md",
+        "logback.xml.tt" => "logback.xml",
         "config.ru.tt" => "config.ru",
         "dev/console.rb.tt" => "dev/console.rb",
         "tasks/deploy.rb.tt" => "tasks/deploy.rb",
