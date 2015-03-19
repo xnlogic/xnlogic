@@ -56,7 +56,7 @@ trap 'terminator' SIGINT
 
 export RELOAD=true
 echo "starting torquebox"
-lsof -i :8080 -sTCP:listen | grep . || torquebox run &> /dev/null  &
+lsof -i :8080 -sTCP:listen | grep . || torquebox run -J "-Xmx1g -XX:MaxPermSize=128m -Ddatomic.objectCacheMax=128m" &> /dev/null  &
 echo "Hit Ctrl+C to terminate"
 # Using cat to keep processes live
 cat
