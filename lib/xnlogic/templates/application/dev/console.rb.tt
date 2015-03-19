@@ -1,7 +1,2 @@
 require 'torquebox-messaging'
 require '<%= config[:namespaced_path] %>'
-
-# Silence Datomic's verbose console logs
-factory = org.slf4j.LoggerFactory.getILoggerFactory
-factory.reset if factory.respond_to? :reset
-
