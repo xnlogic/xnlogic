@@ -215,6 +215,8 @@ module Xnlogic
         "assets/Gemfile" => "assets/Gemfile",
         "assets/packages.json" => "assets/packages.json",
 
+        "users/xn_infra_admin" => "users/xn_infra_admin",
+
         "spec/spec_helper.rb.tt" => "spec/spec_helper.rb",
         "spec/gemname/gemname_spec.rb.tt" => "spec/#{namespaced_path}/#{name}_spec.rb",
       }
