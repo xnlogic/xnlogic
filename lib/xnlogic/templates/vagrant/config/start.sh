@@ -14,6 +14,10 @@ echo '{"note":"Suppressing Torquebox logs."}' | json -i | cat
 
 cd $HOME/xn.dev
 
+echo "(Re)starting the datomic transactor:"
+sudo initctl reload-configuration
+sudo service datomic restart
+
 mkdir -p $XN_LOG_DIR
 cd $XN_LOG_DIR
 touch xnlogic.json development.log ${XN_CLIENT}-assets.log
