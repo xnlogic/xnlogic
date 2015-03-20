@@ -155,15 +155,27 @@ module Xnlogic
     end
 
 
-    def _generate_templates(template_src_to_dst, template_folder, opts, ui_message=nil)
+    def ui_alert(ui_message)
       if(not ui_message.nil?)
         Xnlogic.ui.info ""
         Xnlogic.ui.info ui_message
         Xnlogic.ui.info ""
       end
+    end
+
+    def _generate_templates(template_src_to_dst, template_folder, opts, ui_message=nil)
+      ui_alert ui_message
 
       template_src_to_dst.each do |src, dst|
         thor.template("#{template_folder}/#{src}", app.join(dst), opts)
+      end
+    end
+
+    def _copy_libs(libs_src_to_dst, template_folder, opts, ui_message=nil)
+      ui_alert ui_message
+
+      libs_src_to_dst.each do |src, dst|
+        thor.copy_file("#{template_folder}/#{src}", app.join(dst), opts)
       end
     end
 
@@ -210,29 +222,47 @@ module Xnlogic
         "lib/gemname/type.rb.tt" => "lib/#{namespaced_path}/type.rb",
         "lib/fixtures/sample_fixtures.rb.tt" => "lib/fixtures/sample_fixtures.rb",
         "fe/index.html.tt" => "fe/index.html",
+        "fe/Gemfile.tt" => "fe/Gemfile",
+
         "fe/script/generate_filter_groups.rb.tt" => "fe/script/generate_filter_groups.rb",
         "fe/script/generate_model_actions.rb.tt" => "fe/script/generate_model_actions.rb",
         "fe/script/generate_model_parts.rb.tt" => "fe/script/generate_model_parts.rb",
         "fe/script/generate_search_results.rb.tt" => "fe/script/generate_search_results.rb",
 
-        "fe/assets/images/xnlogic-logo-site.png" => "fe/assets/images/xnlogic-logo-site.png",
-        "fe/assets/images/xnlogic-logo-site-x2.png" => "fe/assets/images/xnlogic-logo-site-x2.png",
-        "fe/Gemfile" => "fe/Gemfile",
-        "fe/packages.json" => "fe/packages.json",
-        "fe/assets/javascripts/xn.js" => "fe/assets/javascripts/xn.js",
-        "fe/assets/javascripts/user_mgmt/index.coffee" => "fe/assets/javascripts/user_mgmt/index.coffee",
-        "fe/assets/javascripts/user_mgmt/menu.coffee" => "fe/assets/javascripts/user_mgmt/menu.coffee",
-
-        "users/xn_infra_admin" => "users/xn_infra_admin",
-
         "spec/spec_helper.rb.tt" => "spec/spec_helper.rb",
         "spec/gemname/gemname_spec.rb.tt" => "spec/#{namespaced_path}/#{name}_spec.rb",
       }
 
+      libs = {
+        "users/xn_infra_admin" => "users/xn_infra_admin",
+
+        "fe/Capfile" => "fe/Capfile",
+        "deploy.command" => "deploy.command",
+        "fe/deploy.command" => "fe/deploy.command",
+        "fe/config/deploy.rb" => "fe/config/deploy.rb",
+        "fe/package.json" => "fe/package.json",
+        "fe/script/build.sh" => "fe/script/build.sh",
+        "fe/script/push_fe.sh" => "fe/script/push_fe.sh",
+        "fe/script/server.sh" => "fe/script/server.sh",
+        "fe/script/duster" => "fe/script/duster",
+        "fe/lib/duster.js" => "fe/lib/duster.js",
+
+        "fe/assets/images/xnlogic-logo-site.png" => "fe/assets/images/xnlogic-logo-site.png",
+        "fe/assets/images/xnlogic-logo-site-x2.png" => "fe/assets/images/xnlogic-logo-site-x2.png",
+        "fe/assets/javascripts/user_mgmt/index.coffee" => "fe/assets/javascripts/user_mgmt/index.coffee",
+        "fe/assets/javascripts/user_mgmt/menu.coffee" => "fe/assets/javascripts/user_mgmt/menu.coffee",
+        "fe/assets/templates/.gitkeep" => "fe/assets/templates/.gitkeep",
+
+        "fe/views/layouts/_notifications.erb" => "fe/views/layouts/_notifications.erb",
+        "fe/views/layouts/_top_bar.html.erb" => "fe/views/layouts/_top_bar.html.erb",
+        "fe/views/layouts/_top_menu.html.erb" => "fe/views/layouts/_top_menu.html.erb",
+        "fe/views/layouts/user_mgmt.html.erb" => "fe/views/layouts/user_mgmt.html.erb",
+        "fe/views/layouts/application.html.erb" => "fe/views/layouts/application.html.erb",
+      }
+
       _generate_templates(templates, 'application', opts, 'Creating application templates')
+      _copy_libs(libs, 'application', opts, 'Copying application libs & binaries')
     end
-
-
   end
 end
 

@@ -1,0 +1,79 @@
+<div id='menu'>
+  <div class='menu-tabs'>
+    <div id=menu-tab-1 class='menu-tab' data-groups="app_admins group_1 group_2">All</div>
+    <div id=menu-tab-2 class='menu-tab' data-groups="app_admins group_1">User group 1</div>
+    <div id=menu-tab-3 class='menu-tab' data-groups="app_admins group_2 ">User Group 2</div>
+  </div>
+  <div id=menu-pane-1 class='menu-pane'>
+    <div class='menu-name'>All Users</div>
+    <div class='menu-section'>
+      <div class='menu-section-name'>Section 1</div>
+      <a class='menu-item' href='/is/part1,part2'>Query 1</a>
+      <a class='menu-item' href='/is/part1,part2'>Query 2</a>
+      <a class='menu-item' href='/is/part1,part2'>Query 3</a>
+    </div>
+    <div class='menu-section'>
+      <div class='menu-section-name'>Section 2</div>
+      <a class='menu-item' href='/is/part1,part2'>Query 1</a>
+      <a class='menu-item' href='/is/part1,part2'>Query 2</a>
+      <a class='menu-item' href='/is/part1,part2'>Query 3</a>
+    </div>
+    <div class='menu-section'>
+      <div class='menu-section-name'>Section 3</div>
+      <a class='menu-item' href='/is/part1,part2'>Query 1</a>
+      <a class='menu-item' href='/is/part1,part2'>Query 2</a>
+      <a class='menu-item' href='/is/part1,part2'>Query 3</a>
+    </div>
+  </div>
+  <div id=menu-pane-1 class='menu-pane hide'>
+    <div class='menu-name'>User Group 1</div>
+    <div class='menu-section'>
+      <div class='menu-section-name'>Section 1</div>
+      <a class='menu-item' href='/is/part1,part2'>Query 1</a>
+      <a class='menu-item' href='/is/part1,part2'>Query 2</a>
+      <a class='menu-item' href='/is/part1,part2'>Query 3</a>
+    </div>
+    <div class='menu-section'>
+      <div class='menu-section-name'>Section 2</div>
+      <a class='menu-item' href='/is/part1,part2'>Query 1</a>
+      <a class='menu-item' href='/is/part1,part2'>Query 2</a>
+      <a class='menu-item' href='/is/part1,part2'>Query 3</a>
+    </div>
+    <div class='menu-section'>
+      <div class='menu-section-name'>Section 3</div>
+      <a class='menu-item' href='/is/part1,part2'>Query 1</a>
+      <a class='menu-item' href='/is/part1,part2'>Query 2</a>
+      <a class='menu-item' href='/is/part1,part2'>Query 3</a>
+    </div>
+  </div>
+  <div id=menu-pane-1 class='menu-pane hide'>
+    <div class='menu-name'>User Group 2</div>
+    <div class='menu-section'>
+      <div class='menu-section-name'>Section 1</div>
+      <a class='menu-item' href='/is/part1,part2'>Query 1</a>
+      <a class='menu-item' href='/is/part1,part2'>Query 2</a>
+      <a class='menu-item' href='/is/part1,part2'>Query 3</a>
+    </div>
+    <div class='menu-section'>
+      <div class='menu-section-name'>Section 2</div>
+      <a class='menu-item' href='/is/part1,part2'>Query 1</a>
+      <a class='menu-item' href='/is/part1,part2'>Query 2</a>
+      <a class='menu-item' href='/is/part1,part2'>Query 3</a>
+    </div>
+    <div class='menu-section'>
+      <div class='menu-section-name'>Section 3</div>
+      <a class='menu-item' href='/is/part1,part2'>Query 1</a>
+      <a class='menu-item' href='/is/part1,part2'>Query 2</a>
+      <a class='menu-item' href='/is/part1,part2'>Query 3</a>
+    </div>
+  </div>
+  <div class='account-pane'>
+    <div class='account-section right'>
+      <div class='menu-section-name' data-bind=username><%=current_user_name%></div>
+      <div class='menu-info' data-bind=group></div>
+      <a class='menu-item' href='/users/change_pass' data-external-url>Change Password</a>
+      <a class='menu-item' data-event=logout href=#>Logout</a>
+    </div>
+  </div>
+</div>
+<%= yield :top_bar %>
