@@ -229,6 +229,8 @@ module Xnlogic
         "fe/script/generate_model_parts.rb.tt" => "fe/script/generate_model_parts.rb",
         "fe/script/generate_search_results.rb.tt" => "fe/script/generate_search_results.rb",
 
+        "fe/assets/javascripts/strings.js.tt" => "fe/assets/javascripts/strings.js",
+
         "spec/spec_helper.rb.tt" => "spec/spec_helper.rb",
         "spec/gemname/gemname_spec.rb.tt" => "spec/#{namespaced_path}/#{name}_spec.rb",
       }
