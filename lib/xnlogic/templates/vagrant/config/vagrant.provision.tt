@@ -59,14 +59,6 @@ source script/setup_stack
 echo jruby-${jruby_version} > .ruby-version
 rake --quiet new_tb_version bundle_fe_server fresh_fe_config fe_server_db_init
 
-if [ -d $HOME/$XN_CLIENT/assets ]; then
-  hr
-  echo "Configuring Assets"
-  cd $HOME/$XN_CLIENT/assets
-  bundle install
-  npm install
-fi
-
 ## Uncomment to upgrade Datomic
 # export DATOMIC_VERSION=0.9.5130
 # hr
@@ -105,6 +97,17 @@ echo "alias gdc='git diff -w --cached'" >> ~/.zshrc
 sudo apt-get install -y dos2unix
 silent dos2unix $SERVER_START_SCRIPT
 chmod +x $SERVER_START_SCRIPT
+
+
+if [ -d $HOME/$XN_CLIENT/fe ]; then
+  hr
+  echo "Configuring Assets"
+  cd $HOME/$XN_CLIENT/fe
+  silent dos2unix "script/*"
+  chmod +x "script/*"
+  bundle install
+  npm install
+fi
 
 git config --global --add alias.co "checkout"
 git config --global --add alias.ci "commit"
