@@ -210,6 +210,11 @@ module Xnlogic
         "lib/gemname/type.rb.tt" => "lib/#{namespaced_path}/type.rb",
         "lib/fixtures/sample_fixtures.rb.tt" => "lib/fixtures/sample_fixtures.rb",
         "fe/index.html.tt" => "fe/index.html",
+        "fe/script/generate_filter_groups.rb.tt" => "fe/script/generate_filter_groups.rb",
+        "fe/script/generate_model_actions.rb.tt" => "fe/script/generate_model_actions.rb",
+        "fe/script/generate_model_parts.rb.tt" => "fe/script/generate_model_parts.rb",
+        "fe/script/generate_search_results.rb.tt" => "fe/script/generate_search_results.rb",
+
         "fe/assets/images/xnlogic-logo-site.png" => "fe/assets/images/xnlogic-logo-site.png",
         "fe/assets/images/xnlogic-logo-site-x2.png" => "fe/assets/images/xnlogic-logo-site-x2.png",
         "fe/Gemfile" => "fe/Gemfile",

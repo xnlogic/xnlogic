@@ -1,0 +1,122 @@
+#!/usr/bin/env ruby
+require 'json'
+require 'net/http'
+require 'pathname'
+require 'active_support/inflector'
+require '../lib/<%= config[:name] %>/initializers/inflections'
+require 'awesome_print'
+
+raise "Please set LMTOKEN and try again" unless ENV['LMTOKEN']
+
+root = Pathname.new 'http://localhost:8080/v1/is'
+
+def http_get(path)
+  uri = URI path.to_s
+  Net::HTTP.start(uri.host, uri.port) do |http|
+    request = Net::HTTP::Get.new uri.request_uri
+    request['Authorization'] = ENV['LMTOKEN']
+    response = http.request request # Net::HTTPResponse object
+    response.body
+  end
+end
+
+parts = JSON.parse http_get(root.to_s)
+
+def get_metadata(root, part)
+  path = root + part + 'metadata'
+  begin
+    metadata = JSON.parse(http_get(path.to_s))
+    print '.'
+  rescue Exception => e
+    puts
+    puts path.to_s
+    puts "error"
+    puts e.message
+  end
+  props = metadata['methods']
+  props.delete_if { |k,v| v['part'] != part }
+  props
+end
+
+def get_order(part, props)
+  if File.exist? fn(part)
+    order = File.read(fn(part)).scan(/^\s*name="(\w+)"/).flatten.compact.uniq
+    order.select! { |n| props.key? n }
+    append = props.keys.reject { |k| order.include? k }
+    order + append
+  else
+    props.keys
+  end
+end
+
+def fn(part)
+  "assets/templates/model/action/#{part}.dust"
+end
+
+def add_traversal(file, name, props)
+  traversal = props[name]
+  title = name.titleize
+  file.puts <<-str
+{#traversal label=#{title.to_json} name="#{name}" type="#{traversal['type']}"/}
+  str
+end
+
+def add_action(file, name, props)
+  action = props[name]
+  title = name.titleize
+  file.write "{#action label=#{title.to_json} name=\"#{name}\" type=\"#{action['type']}\""
+  if action['arguments'].size > 0
+    file.puts "}"
+    action['arguments'].each do |arg_name, meta|
+      case meta['type']
+      when 'vertex'
+        add_vertex_arg(file, arg_name, meta)
+      else
+        add_prop_arg(file, arg_name, meta)
+      end
+    end
+    file.puts "{/action}"
+  else
+    file.puts "/}"
+  end
+end
+
+def add_vertex_arg(file, name, rel)
+  title = name.titleize
+  file.puts <<-str
+    {#relationship label=#{title.to_json} name="#{name}"/}
+  str
+end
+
+def add_prop_arg(file, name, prop)
+  return if name == 'display_name'
+  type = prop['type']
+  title = name.titleize
+  filter = ' filter="long"' if type == 'date'
+  unit = prop['unit']
+  unit = " #{unit}" if unit and unit.length > 1
+  unit = " unit=#{unit.to_json}" if unit
+  file.puts <<-str
+    {#property label=#{title.to_json} name="#{name}"#{filter}#{unit}/}
+  str
+end
+
+parts.each do |part|
+  next if %w[ m record client_record ].include? part
+  props = get_metadata root, part
+  if props.none?
+    File.delete fn(part) if File.exist? fn(part)
+  else
+    order = get_order part, props
+    File.open fn(part), 'w' do |file|
+      order.each do |name|
+        case props[name]['type']
+        when 'traversal', 'route_traversal', 'document'
+          add_traversal file, name, props
+        when 'action', 'job'
+          add_action file, name, props
+        end
+      end
+    end
+  end
+end

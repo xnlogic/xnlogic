@@ -1,0 +1,109 @@
+#!/usr/bin/env ruby
+require 'json'
+require 'net/http'
+require 'pathname'
+require 'active_support/inflector'
+require '../lib/<%= config[:name] %>/initializers/inflections'
+
+raise "Please set LMTOKEN and try again" unless ENV['LMTOKEN']
+
+root = Pathname.new 'http://localhost:8080/v1/is'
+
+def http_get(path)
+  uri = URI path.to_s
+  Net::HTTP.start(uri.host, uri.port) do |http|
+    request = Net::HTTP::Get.new uri.request_uri
+    request['Authorization'] = ENV['LMTOKEN']
+    response = http.request request # Net::HTTPResponse object
+    response.body
+  end
+end
+
+parts = JSON.parse http_get(root.to_s)
+
+def get_metadata(root, part)
+  path = root + part + 'metadata'
+  begin
+    metadata = JSON.parse(http_get(path.to_s))
+    print '.'
+  rescue Exception => e
+    puts
+    puts path.to_s
+    puts "error"
+    puts e.message
+  end
+  props = metadata['properties'].merge(metadata['relationships']).merge(metadata['displays'])
+  props.delete_if { |k,v| v['part'] != part }
+  props
+end
+
+def get_order(part, props)
+  if File.exist? fn(part)
+    order = File.read(fn(part)).scan(/ value="(\w+)"/).flatten.compact.uniq
+    order.select! { |n| props.key? n }
+    append = props.keys.reject { |k| order.include? k }
+    order + append
+  else
+    props.keys
+  end
+end
+
+def fn(part)
+  "assets/templates/r/is/#{part}.dust"
+end
+
+def add_rel(file, name, props)
+  rel = props[name]
+  title = name.titleize
+  file.puts <<-str
+  {#field label=#{title.to_json} if=rel.#{name}}
+    {#rn_inline}.rel.#{name}{/rn_inline}
+  {/field}
+  str
+end
+
+def add_prop(file, name, props)
+  return if name == 'display_name'
+  prop = props[name]
+  type = prop['type']
+  title = name.titleize
+  filter = ' filter="long"' if type == 'date'
+  unit = prop['unit']
+  unit = " #{unit}" if unit and unit.length > 1
+  unit = " unit=#{unit.to_json}" if unit
+  if type == 'date'
+    file.puts <<-str
+  {#field label=#{title.to_json} value=#{name}}{.|#{type}}{/field}#{unit}
+    str
+  else
+    file.puts <<-str
+  {#field label=#{title.to_json} value=#{name}#{unit}/}
+    str
+  end
+end
+
+parts.each do |part|
+  next if %w[ m record client_record ].include? part
+  props = get_metadata root, part
+  if props.none?
+    File.delete fn(part) if File.exist? fn(part)
+  else
+    order = get_order part, props
+    File.open fn(part), 'w' do |file|
+      file.puts <<-str
+{>result/}
+{<r_details}
+      str
+      order.each do |name|
+        if props[name]['direction']
+          add_rel file, name, props
+        else
+          add_prop file, name, props
+        end
+      end
+      file.puts <<-str
+{/r_details}
+      str
+    end
+  end
+end
