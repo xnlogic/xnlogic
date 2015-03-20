@@ -125,6 +125,16 @@ EOD
       exec 'vagrant ssh'
     end
 
+    desc "halt", "halt / suspend the VM"
+    def halt
+      exec 'vagrant halt'
+    end
+
+    desc "destroy", "stop and remove the VM"
+    def destroy
+      exec 'vagrant destroy'
+    end
+
     desc "key XN_KEY", "Set the key (i.e. xn_user:xn_password) for this application."
     def key(xn_key)
       app = Application.new(options, self)
