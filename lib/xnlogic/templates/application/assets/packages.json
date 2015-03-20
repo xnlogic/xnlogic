@@ -1,0 +1,52 @@
+{
+  "name": "dusterjs",
+  "preferGlobal": true,
+  "version": "0.3.2",
+  "author": "Lee Houghton <lee+dusterjs@theconnectgroup.net>",
+  "description": "A tool to watch and compile a directory of dust.js templates",
+  "contributors": [
+    {
+      "name": "Dan McGrady",
+      "email": "dan@dmix.ca"
+    },
+    {
+      "name": "Dillon Grove"
+    },
+    {
+      "name": "Lee Houghton",
+      "email": "lee+dusterjs@theconnectgroup.net"
+    }
+  ],
+  "bin": {
+    "duster": "./bin/cli.js"
+  },
+  "scripts": {},
+  "main": "./lib/duster.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lee-houghton/dusterjs.git"
+  },
+  "keywords": [
+    "cli",
+    "dust",
+    "dustjs",
+    "compile",
+    "precompile",
+    "watch"
+  ],
+  "dependencies": {
+    "watch": "~0.8.0",
+    "dustjs-linkedin": "~2.3.2",
+    "optimist": "~0.6.0",
+    "colors": "~0.6.2",
+    "diveSync": "~0.2.0",
+    "uglify-js": "~2.4.8",
+    "node-fs": "~0.1.7"
+  },
+  "devDependencies": {},
+  "license": "MIT",
+  "engines": {
+    "node": ">=0.10"
+  }
+}
+

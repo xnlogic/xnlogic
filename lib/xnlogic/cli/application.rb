@@ -212,6 +212,8 @@ module Xnlogic
         "assets/index.html.tt" => "assets/index.html",
         "assets/images/xnlogic-logo-site.png" => "assets/images/xnlogic-logo-site.png",
         "assets/images/xnlogic-logo-site-x2.png" => "assets/images/xnlogic-logo-site-x2.png",
+        "assets/Gemfile" => "assets/Gemfile",
+        "assets/packages.json" => "assets/packages.json",
 
         "spec/spec_helper.rb.tt" => "spec/spec_helper.rb",
         "spec/gemname/gemname_spec.rb.tt" => "spec/#{namespaced_path}/#{name}_spec.rb",
