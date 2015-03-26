@@ -19,7 +19,6 @@ printf "%$(tput cols)s\n"|tr " " "-"
 
 hr
 echo "Configuring environment"
-hr
 export XN_CLIENT=<%= config[:name] %>
 export DATOMIC_VERSION=0.9.4755
 export DEBIAN_FRONTEND=noninteractive
@@ -58,6 +57,7 @@ cd xn.dev
 source script/setup_stack
 echo jruby-${jruby_version} > .ruby-version
 rake --quiet new_tb_version bundle_fe_server fresh_fe_config fe_server_db_init
+
 
 ## Uncomment to upgrade Datomic
 # export DATOMIC_VERSION=0.9.5130
@@ -105,8 +105,12 @@ if [ -d $HOME/$XN_CLIENT/fe ]; then
   cd $HOME/$XN_CLIENT/fe
   silent dos2unix "script/*"
   chmod +x "script/*"
-  bundle install
-  npm install
+  if [ -f Gemfile ]; then
+    bundle install
+  fi
+  if [ -f package.json ]; then
+    npm install
+  fi
 fi
 
 git config --global --add alias.co "checkout"
