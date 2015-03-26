@@ -62,8 +62,12 @@ if [ -d $HOME/$XN_CLIENT/assets ]; then
   hr
   echo "Configuring Assets"
   cd $HOME/$XN_CLIENT/assets
-  bundle install
-  npm install
+  if [ -f Gemfile ]; then
+    bundle install
+  fi
+  if [ -f package.json ]; then
+    npm install
+  fi
 fi
 
 ## Uncomment to upgrade Datomic
