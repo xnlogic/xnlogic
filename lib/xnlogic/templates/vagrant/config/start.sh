@@ -23,12 +23,16 @@ cd $XN_LOG_DIR
 touch xnlogic.json development.log ${XN_CLIENT}-assets.log
 cd -
 
-ASSETS_DIR=$HOME/$XN_CLIENT/assets
+ASSETS_DIR=$HOME/$XN_CLIENT/fe
 if [ -d $ASSETS_DIR ]; then
   ASSETS_PORT=3031
   cd $ASSETS_DIR
-  script/duster -w assets/templates assets/javascripts/templates.js &> $XN_LOG_DIR/duster.js.log &
-  bundle exec rackup -p $ASSETS_PORT &> $XN_LOG_DIR/${XN_CLIENT}-assets.log &
+  if [ -d assets/templates ]; then
+    script/duster -w assets/templates assets/javascripts/templates.js &> $XN_LOG_DIR/duster.js.log &
+  fi
+  if [ -f config.ru ]; then
+    bundle exec rackup -p $ASSETS_PORT &> $XN_LOG_DIR/${XN_CLIENT}-assets.log &
+  fi
   cd -
 fi
 
