@@ -19,7 +19,6 @@ printf "%$(tput cols)s\n"|tr " " "-"
 
 hr
 echo "Configuring environment"
-hr
 export XN_CLIENT=<%= config[:name] %>
 export DATOMIC_VERSION=0.9.4755
 export DEBIAN_FRONTEND=noninteractive
