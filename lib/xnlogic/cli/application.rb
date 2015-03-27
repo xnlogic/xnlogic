@@ -210,6 +210,7 @@ module Xnlogic
         "tasks/deploy.rb.tt" => "tasks/deploy.rb",
         "torquebox.yml.tt" => "torquebox.yml",
         "torquebox_init.rb.tt" => "torquebox_init.rb",
+        "config/server_profiles/www.sample.com.rb.tt" => "config/server_profiles/www.#{namespaced_path}.com.rb",
         "lib/gemname.rb.tt" => "lib/#{namespaced_path}.rb",
         "lib/gemname/version.rb.tt" => "lib/#{namespaced_path}/version.rb",
         "lib/gemname/initializers/inflections.rb.tt" => "lib/#{namespaced_path}/initializers/inflections.rb",

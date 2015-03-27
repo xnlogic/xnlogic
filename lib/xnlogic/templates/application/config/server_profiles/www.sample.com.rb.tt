@@ -1,0 +1,12 @@
+require "xnlogic/server_profile"
+
+
+server_profile do
+  torquebox_home '/opt/torquebox/current'
+  hostname 'www.<%= config[:name] %>.com'
+  port '22'
+  user 'deploy'
+  # Uncomment and configure the below if you disable forward_agent in Vagrantfile
+  # key "#{ENV['HOME']}/.ssh/id_rsa"
+end
+
