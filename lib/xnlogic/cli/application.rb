@@ -240,10 +240,10 @@ module Xnlogic
         "users/xn_infra_admin" => "users/xn_infra_admin",
 
         "fe/Capfile" => "fe/Capfile",
-        "deploy.command" => "deploy.command",
+        "fe/config.ru" => "fe/config.ru",
         "fe/deploy.command" => "fe/deploy.command",
-        "fe/config/deploy.rb" => "fe/config/deploy.rb",
         "fe/package.json" => "fe/package.json",
+        "fe/config/deploy.rb" => "fe/config/deploy.rb",
         "fe/script/build.sh" => "fe/script/build.sh",
         "fe/script/push_fe.sh" => "fe/script/push_fe.sh",
         "fe/script/server.sh" => "fe/script/server.sh",
