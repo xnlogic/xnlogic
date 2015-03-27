@@ -14,11 +14,6 @@ module TorqueBox
 
       # RUBYOPT has to be unset from the environment so bundler doesn't lose its shit
       env_vars = { 'RUBYOPT' => nil }
-
-
-
-
-
       system(env_vars, "#{cmd} 2>&1")
     end
 
@@ -70,6 +65,7 @@ module Xn
           fail "No configuration file found at #{ENV['CONFIG_FILE']}"
         end
 
+        # See other options here: https://www.omniref.com/ruby/gems/torquebox-rake-support/3.0.1/symbols/TorqueBox::DeployUtils/create_archive
         puts "Creating application knob with options #{ options.inspect }"
         path = TorqueBox::DeployUtils.create_archive options
         puts "Archive created: #{path} size: #{File.size(path)}"

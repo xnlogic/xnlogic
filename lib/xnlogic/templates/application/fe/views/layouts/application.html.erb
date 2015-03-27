@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style type="text/css">@page{margin:1in}</style>
+  <meta charset=utf8>
+  <title>xnlogic</title>
+  <%= stylesheet_link_tag '/assets/application', media: 'screen,print' %>
+  <%= inline_style_asset 'print_rule' %>
+  <%= csrf_meta_tags %>
+</head>
+<body <%= "class=development-env" if Rails.env.development? %>>
+  <div class="main-layout box-layout vertical">
+    <header class="primary-header hidden-print">
+      <div id=logo-bar class=menu-toggle-target>
+        <h1 id=logo class=ir>xnlogic</h1>
+      </div>
+      <%= render 'layouts/top_menu' %>
+      <%= render 'layouts/notifications' %>
+    </header>
+    <div class=flexible>
+      <div id=frame class=scrollable>
+        <%= content_for?(:content) ? yield(:content) : yield %>
+      </div>
+    </div>
+  </div>
+
+  <%# Used for printing the contents of non-root controllers %>
+  <div id=print-frame class=hidden-screen>
+  </div>
+
+  <%= javascript_include_tag "/assets/xn" %>
+
+  <%= javascript_include_tag "/assets/app" %>
+  <%= yield :javascript %>
+</body>
+</html>
+

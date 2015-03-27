@@ -14,17 +14,25 @@ echo '{"note":"Suppressing Torquebox logs."}' | json -i | cat
 
 cd $HOME/xn.dev
 
+echo "(Re)starting the datomic transactor:"
+sudo initctl reload-configuration
+sudo service datomic restart
+
 mkdir -p $XN_LOG_DIR
 cd $XN_LOG_DIR
 touch xnlogic.json development.log ${XN_CLIENT}-assets.log
 cd -
 
-ASSETS_DIR=$HOME/$XN_CLIENT/assets
+ASSETS_DIR=$HOME/$XN_CLIENT/fe
 if [ -d $ASSETS_DIR ]; then
   ASSETS_PORT=3031
   cd $ASSETS_DIR
-  script/duster -w assets/templates assets/javascripts/templates.js &> $XN_LOG_DIR/duster.js.log &
-  bundle exec rackup -p $ASSETS_PORT &> $XN_LOG_DIR/${XN_CLIENT}-assets.log &
+  if [ -d assets/templates ]; then
+    script/duster -w assets/templates assets/javascripts/templates.js &> $XN_LOG_DIR/duster.js.log &
+  fi
+  if [ -f config.ru ]; then
+    bundle exec rackup -p $ASSETS_PORT &> $XN_LOG_DIR/${XN_CLIENT}-assets.log &
+  fi
   cd -
 fi
 
@@ -56,7 +64,7 @@ trap 'terminator' SIGINT
 
 export RELOAD=true
 echo "starting torquebox"
-lsof -i :8080 -sTCP:listen | grep . || torquebox run -J "-Xmx1g -XX:MaxPermSize=128m -Ddatomic.objectCacheMax=128m" &> /dev/null  &
+lsof -i :8080 -sTCP:listen | grep . || torquebox run -J "-Xmx1g -XX:MaxPermSize=256m -Ddatomic.objectCacheMax=128m" &> /dev/null  &
 echo "Hit Ctrl+C to terminate"
 # Using cat to keep processes live
 cat

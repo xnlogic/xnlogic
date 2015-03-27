@@ -1,0 +1,27 @@
+<% if config[:xn_key] -%>
+source "https://<%= config[:xn_key] %>@gems.xnlogic.com"
+<% else -%>
+puts "No key found. You must set the key by running:"
+puts "  xnlogic vm_config --key <your key>"
+puts "then try again."
+exit 1
+<% end -%>
+source "http://rubygems.org"
+
+gem 'sprockets'
+gem 'coffee-script'
+gem 'coffee-script-source', '1.4.0'
+gem 'compass', '0.12.6'
+gem 'animation', '0.1.alpha.3'
+gem 'rake', '10.1.1'
+gem 'rack-cors'
+gem 'awesome_print'
+
+gem 'capistrano', "2.15.5"
+gem 'xnlogic', ">= 1.0.35"
+gem 'xnjs', '~>0.0.2'
+
+# A little cheeky here:
+gem 'activesupport-inflector'
+gem 'i18n'
+

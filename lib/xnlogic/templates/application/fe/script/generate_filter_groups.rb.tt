@@ -1,0 +1,74 @@
+#!/usr/bin/env ruby
+require 'json'
+require 'net/http'
+require 'pathname'
+require 'active_support/inflector'
+require '../lib/<%= config[:name] %>/initializers/inflections'
+
+root = Pathname.new 'http://localhost:8080/v1/is'
+
+def http_get(path)
+  uri = URI path.to_s
+  Net::HTTP.start(uri.host, uri.port) do |http|
+    request = Net::HTTP::Get.new uri.request_uri
+    request['Authorization'] = ENV['LMTOKEN']
+    response = http.request request # Net::HTTPResponse object
+    response.body
+  end
+end
+parts = JSON.parse http_get(root.to_s)
+shared = JSON.parse http_get(root + 'record' + 'filters')
+
+def fn(part)
+  "assets/templates/filter/is/#{part}.dust"
+end
+
+def in_order(part, filters)
+  if File.exist? fn(part)
+    order = File.read(fn(part)).scan(/ for="(\w+)"/).flatten.compact.uniq
+    order.select! { |n| filters.include? n }
+    append = filters.reject { |k| order.include? k }
+    order + append
+  else
+    filters
+  end
+end
+
+parts.each do |part|
+  next if %w[ m record client_record ].include? part
+  path = root + part + 'filters'
+  begin
+    filters = JSON.parse(http_get(path.to_s)) - shared
+    print '.'
+  rescue Exception => e
+    puts
+    puts path.to_s
+    puts "error"
+    puts e.message
+    next
+  end
+  if filters.none?
+    File.delete fn(part) if File.exist? fn(part)
+  else
+    ordered = in_order(part, filters)
+    if File.exist? fn(part)
+      existing = File.read(fn(part)).lines.group_by { |line| line.scan(/for="(\w+)"/).flatten.first }
+    else
+      existing = {}
+    end
+    File.open fn(part), 'w' do |file|
+      file.puts "<div class=filter-group-name>#{ part.titleize }</div>"
+      ordered.each do |filter|
+        if existing[filter]
+          file.puts existing[filter].first
+        else
+          title = filter.sub(/related_/, '').titleize
+          if filter =~ /related_/
+            title = title.pluralize
+          end
+          file.puts "{#filter label=\"#{ title }\" for=\"#{ filter }\"/}"
+        end
+      end
+    end
+  end
+end

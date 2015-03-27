@@ -1,0 +1,8 @@
+<%= render 'layouts/top_bar' %>
+<% content_for :content do %>
+  <%= yield %>
+  <% content_for :javascript do %>
+    <%= javascript_include_tag 'user_mgmt' %>
+  <% end %>
+<% end %>
+<%= render :template => 'layouts/application' %>

@@ -1,0 +1,11 @@
+ADMIN_TOKEN=/opt/xn_apps/admin_token
+
+if [ -f $ADMIN_TOKEN ]; then
+  unset LMCONFIRM
+  export LMSERVER='http://127.0.0.1:8080'
+  . $ADMIN_TOKEN
+else
+  echo "Admin token not available at $ADMIN_TOKEN"
+  echo "Please start your server with 'xn-server' and try again."
+fi
+

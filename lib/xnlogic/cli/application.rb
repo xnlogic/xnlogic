@@ -155,15 +155,27 @@ module Xnlogic
     end
 
 
-    def _generate_templates(template_src_to_dst, template_folder, opts, ui_message=nil)
+    def ui_alert(ui_message)
       if(not ui_message.nil?)
         Xnlogic.ui.info ""
         Xnlogic.ui.info ui_message
         Xnlogic.ui.info ""
       end
+    end
+
+    def _generate_templates(template_src_to_dst, template_folder, opts, ui_message=nil)
+      ui_alert ui_message
 
       template_src_to_dst.each do |src, dst|
         thor.template("#{template_folder}/#{src}", app.join(dst), opts)
+      end
+    end
+
+    def _copy_libs(libs_src_to_dst, template_folder, opts, ui_message=nil)
+      ui_alert ui_message
+
+      libs_src_to_dst.each do |src, dst|
+        thor.copy_file("#{template_folder}/#{src}", app.join(dst), opts)
       end
     end
 
@@ -198,6 +210,7 @@ module Xnlogic
         "tasks/deploy.rb.tt" => "tasks/deploy.rb",
         "torquebox.yml.tt" => "torquebox.yml",
         "torquebox_init.rb.tt" => "torquebox_init.rb",
+        "config/server_profiles/www.sample.com.rb.tt" => "config/server_profiles/www.#{namespaced_path}.com.rb",
         "lib/gemname.rb.tt" => "lib/#{namespaced_path}.rb",
         "lib/gemname/version.rb.tt" => "lib/#{namespaced_path}/version.rb",
         "lib/gemname/initializers/inflections.rb.tt" => "lib/#{namespaced_path}/initializers/inflections.rb",
@@ -209,18 +222,50 @@ module Xnlogic
         "lib/gemname/permissions.rb.tt" => "lib/#{namespaced_path}/permissions.rb",
         "lib/gemname/type.rb.tt" => "lib/#{namespaced_path}/type.rb",
         "lib/fixtures/sample_fixtures.rb.tt" => "lib/fixtures/sample_fixtures.rb",
-        "assets/index.html.tt" => "assets/index.html",
-        "assets/images/xnlogic-logo-site.png" => "assets/images/xnlogic-logo-site.png",
-        "assets/images/xnlogic-logo-site-x2.png" => "assets/images/xnlogic-logo-site-x2.png",
+        "fe/index.html.tt" => "fe/index.html",
+        "fe/Gemfile.tt" => "fe/Gemfile",
+
+        "fe/script/generate_filter_groups.rb.tt" => "fe/script/generate_filter_groups.rb",
+        "fe/script/generate_model_actions.rb.tt" => "fe/script/generate_model_actions.rb",
+        "fe/script/generate_model_parts.rb.tt" => "fe/script/generate_model_parts.rb",
+        "fe/script/generate_search_results.rb.tt" => "fe/script/generate_search_results.rb",
+
+        "fe/assets/javascripts/strings.js.tt" => "fe/assets/javascripts/strings.js",
 
         "spec/spec_helper.rb.tt" => "spec/spec_helper.rb",
         "spec/gemname/gemname_spec.rb.tt" => "spec/#{namespaced_path}/#{name}_spec.rb",
       }
 
+      libs = {
+        "users/xn_infra_admin" => "users/xn_infra_admin",
+
+        "fe/Capfile" => "fe/Capfile",
+        "fe/config.ru" => "fe/config.ru",
+        "fe/deploy.command" => "fe/deploy.command",
+        "fe/package.json" => "fe/package.json",
+        "fe/config/deploy.rb" => "fe/config/deploy.rb",
+        "fe/script/build.sh" => "fe/script/build.sh",
+        "fe/script/push_fe.sh" => "fe/script/push_fe.sh",
+        "fe/script/server.sh" => "fe/script/server.sh",
+        "fe/script/duster" => "fe/script/duster",
+        "fe/lib/duster.js" => "fe/lib/duster.js",
+
+        "fe/assets/images/xnlogic-logo-site.png" => "fe/assets/images/xnlogic-logo-site.png",
+        "fe/assets/images/xnlogic-logo-site-x2.png" => "fe/assets/images/xnlogic-logo-site-x2.png",
+        "fe/assets/javascripts/user_mgmt/index.coffee" => "fe/assets/javascripts/user_mgmt/index.coffee",
+        "fe/assets/javascripts/user_mgmt/menu.coffee" => "fe/assets/javascripts/user_mgmt/menu.coffee",
+        "fe/assets/templates/.gitkeep" => "fe/assets/templates/.gitkeep",
+
+        "fe/views/layouts/_notifications.erb" => "fe/views/layouts/_notifications.erb",
+        "fe/views/layouts/_top_bar.html.erb" => "fe/views/layouts/_top_bar.html.erb",
+        "fe/views/layouts/_top_menu.html.erb" => "fe/views/layouts/_top_menu.html.erb",
+        "fe/views/layouts/user_mgmt.html.erb" => "fe/views/layouts/user_mgmt.html.erb",
+        "fe/views/layouts/application.html.erb" => "fe/views/layouts/application.html.erb",
+      }
+
       _generate_templates(templates, 'application', opts, 'Creating application templates')
+      _copy_libs(libs, 'application', opts, 'Copying application libs & binaries')
     end
-
-
   end
 end
 

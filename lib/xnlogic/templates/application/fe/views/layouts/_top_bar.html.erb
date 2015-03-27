@@ -1,0 +1,17 @@
+<% content_for :top_bar do %>
+  <div class="navbar wf-topbar">
+    <div class=navbar-inner>
+      <div class=container>
+        <ul class=nav>
+          <li>
+            <a href='/users'>Users</a>
+          </li>
+        </ul>
+        <a class=brand><%=yield :title %></a>
+        <div class=pull-right>
+          <%=yield :actions %>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>

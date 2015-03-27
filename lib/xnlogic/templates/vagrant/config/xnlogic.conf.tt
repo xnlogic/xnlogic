@@ -22,19 +22,33 @@ server {
 
   }
 
+  ########################################################
+  # Running assets from a sprockets server in development:
+  #
   location ~ ^/assets/ {
-	root /home/vagrant/<%= config[:name] %>/;
-    gzip_http_version 1.0; # Required for CloudFront
-    gzip_proxied any; # Required for CloudFront
-    gzip_static on; # to serve pre-gzipped version
-    expires 365d;
-    add_header Cache-Control public;
-    add_header ETag "";
+    proxy_pass          http://localhost:3031;
+    proxy_read_timeout  90;
 
-    # CORS headers
-    add_header 'Access-Control-Allow-Origin' '*.xnlogic.com';
-    add_header 'Access-Control-Allow-Credentials' 'true';
-    add_header 'Access-Control-Allow-Methods' 'GET';
-    add_header 'Access-Control-Allow-Headers' 'DNT,X-Mx-ReqToken,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type';
   }
+
+
+  #######################################################
+  # Uncomment the below if you only need to serve static
+  # assets
+
+  # location ~ ^/assets/ {
+  # root /home/vagrant/<%= config[:name] %>/fe/;
+  #   gzip_http_version 1.0; # Required for CloudFront
+  #   gzip_proxied any; # Required for CloudFront
+  #   gzip_static on; # to serve pre-gzipped version
+  #   expires 365d;
+  #   add_header Cache-Control public;
+  #   add_header ETag "";
+
+  #   # CORS headers
+  #   add_header 'Access-Control-Allow-Origin' '*.xnlogic.com';
+  #   add_header 'Access-Control-Allow-Credentials' 'true';
+  #   add_header 'Access-Control-Allow-Methods' 'GET';
+  #   add_header 'Access-Control-Allow-Headers' 'DNT,X-Mx-ReqToken,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type';
+  # }
 }
