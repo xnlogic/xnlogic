@@ -50,7 +50,7 @@ sudo mkdir -p /opt/xn_apps
 sudo chown vagrant /opt/xn_apps
 cd
 
-wget http://s3.amazonaws.com/xn-dev/dist/xn.dev.1.0.37.tbz -O $HOME/xn.dev.tbz --quiet
+wget http://s3.amazonaws.com/xn-dev/dist/xn.dev.1.0.38.tbz -O $HOME/xn.dev.tbz --quiet
 tar -xjf xn.dev.tbz
 rm xn.dev.tbz
 cd xn.dev
