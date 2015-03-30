@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.xnlogic</groupId>
+  <artifactId>pro</artifactId>
+  <name>pro</name>
+  <packaging>jar</packaging>
+  <version>0.0.0</version>
+  <repositories>
+    <repository>
+      <id>my.datomic.com</id>
+      <url>https://my.datomic.com/repo</url>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+    </repository>
+  </repositories>
+  <dependencies>
+    <dependency>
+      <groupId>com.datomic</groupId>
+      <artifactId>datomic-pro</artifactId>
+      <version><%= config[:datomic_version] || config[:default_datomic_version] %></version>
+    </dependency>
+  </dependencies>
+</project>

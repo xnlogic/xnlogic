@@ -69,6 +69,16 @@ module Xnlogic
         "Update the VM with the new provisioning settings"
       method_option "up", type: :boolean, banner:
         "Start the the VM (will provision automatically only on the first run)"
+      method_option "datomic_version", type: :string, banner:
+        "Optionally specify the desired Datomic version number"
+      method_option "datomic_pro", type: :boolean, banner:
+        "Use pacer-mcfly-pro instead of pacer-mcfly-free"
+      method_option "datomic_mysql", type: :boolean, banner:
+        "Add pacer-mcfly-mysql dependency. Implies datomic-pro."
+      method_option "datomic_username", type: :string, banner:
+        "Your my.datomic.com account username, needed for Datomic jar downloads"
+      method_option "datomic_key", type: :string, banner:
+        "Your my.datomic.com download key, needed for Datomic jar downloads"
     end
 
     desc "application [NAME] [OPTIONS]", <<EOD

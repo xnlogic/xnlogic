@@ -144,14 +144,20 @@ module Xnlogic
       git_user_name = `git config user.name`.chomp
       git_user_email = `git config user.email`.chomp
       {
-        :name            => name,
-        :namespaced_path => namespaced_path,
-        :constant_name   => constant_name,
-        :author          => git_user_name.empty? ? "TODO: Write your name" : git_user_name,
-        :email           => git_user_email.empty? ? "TODO: Write your email address" : git_user_email,
-        :vm_cpus         => options['cpus'],
-        :vm_memory       => options['memory'],
-        :xn_key          => options['key'],
+        :name                    => name,
+        :namespaced_path         => namespaced_path,
+        :constant_name           => constant_name,
+        :author                  => git_user_name.empty? ? "TODO: Write your name" : git_user_name,
+        :email                   => git_user_email.empty? ? "TODO: Write your email address" : git_user_email,
+        :vm_cpus                 => options['cpus'],
+        :vm_memory               => options['memory'],
+        :xn_key                  => options['key'],
+        :datomic_pro             => options.fetch('datomic_pro', options['datomic_mysql']),
+        :datomic_mysql           => options['datomic_mysql'],
+        :datomic_version         => options['datomic_version'],
+        :default_datomic_version => "0.9.5130",
+        :datomic_username        => options.fetch('datomic_username', '[username from my.datomic.com]'),
+        :datomic_key             => options.fetch('datomic_key', '[key from my.datomic.com]'),
       }
     end
 
@@ -179,6 +185,11 @@ module Xnlogic
         "config/transactor.properties" => "config/transactor.properties",
         "config/xnlogic.conf.tt" => "config/xnlogic.conf",
       }
+
+      if options['datomic_pro'] || options['datomic_mysql']
+        base_templates['datomic/m2_settings.xml.tt'] = 'config/m2_settings.xml'
+        base_templates['datomic/pom.xml.tt'] = 'config/pom.xml'
+      end
 
       _generate_templates(base_templates, 'vagrant', template_options, 'Creating Vagrant configuration')
     end
