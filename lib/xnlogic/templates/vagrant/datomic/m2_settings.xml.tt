@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <settings xmlns="http://maven.apache.org/SETTINGS/1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">
-  <server>
-    <id>my.datomic.com</id>
-    <username><%= config[:datomic_username] %></username>
-    <password><%= config[:datomic_key] %></password>
-  </server>
+  <servers>
+    <server>
+      <id>my.datomic.com</id>
+      <username><%= config[:datomic_username] %></username>
+      <password><%= config[:datomic_key] %></password>
+    </server>
+  </servers>
 </settings>

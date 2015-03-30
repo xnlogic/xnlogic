@@ -184,6 +184,7 @@ module Xnlogic
         "config/start.sh" => "config/start.sh",
         "config/transactor.properties" => "config/transactor.properties",
         "config/xnlogic.conf.tt" => "config/xnlogic.conf",
+        'datomic/update_datomic.sh.tt' => 'script/update_datomic.sh',
       }
 
       if options['datomic_pro'] || options['datomic_mysql']
