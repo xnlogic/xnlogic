@@ -1,0 +1,59 @@
+---
+development:
+  protocol: free
+  peer:
+    # These settings will only be effective on first load. They will have no effect after datomic is started.
+    "datomic.objectCacheMax": '64m'
+
+production:
+  protocol: free
+  peer:
+    # These settings will only be effective on first load. They will have no effect after datomic is started.
+    "datomic.objectCacheMax": '512m'
+    # I am not certain that the memoryIndex* ones have any effect at all.
+    "datomic.memoryIndexMax":
+    "datomic.memoryIndexThreshold":
+
+sample_sql:
+  protocol: sql
+  engine: mysql
+  database: datomic
+  user: datomic
+  password: datomic
+  host:
+  port:
+
+sample_free:
+  protocol: free
+  host:
+  port:
+  h2port:
+  h2webport:
+
+sample_dev:
+  protocol: dev
+  host:
+
+sample_dynamo_db:
+  protocol: ddb
+  table: datomic
+  region: 
+  accesskeyid:
+  secretkey:
+
+sample_riak:
+  protocol: riak
+  bucket: datomic
+  interface: protobuf
+  host:
+  port:
+
+sample_couchbase:
+  protocol: couchbase
+  bucket: datomic
+  password:
+
+sample_infinispan:
+  protocol: inf
+  host:
+  port:

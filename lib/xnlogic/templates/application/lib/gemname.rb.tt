@@ -30,6 +30,14 @@ module <%= config[:constant_name] %>
       Pathname.new(File.expand_path(__FILE__)).parent
     end
 
+    def config_file(name)
+      Lightmesh.lib_dir.parent + 'config' + name
+    end
+
+    def env
+      ENV['XN_ENV'] || 'development'
+    end
+
     def sample_app(args)
       unless args.is_a? Hash
         puts "sample_app takes an args hash with :graph and :client_name required."
@@ -83,6 +91,8 @@ end
 
 require '<%= config[:namespaced_path] %>/version'
 require '<%= config[:namespaced_path] %>/type'
+
+PacerModel.load_mcfly_config_yaml(<%= config[:constant_name] %>.config_file('mcfly_config.yaml'), <%= config[:constant_name] %>.env)
 
 PacerModel.applications['<%= config[:name] %>'] = <%= config[:constant_name] %>
 PacerModel.property_namespaces << <%= config[:constant_name] %>::Type::Property
