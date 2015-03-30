@@ -22,7 +22,7 @@
     <dependency>
       <groupId>com.datomic</groupId>
       <artifactId>datomic-pro</artifactId>
-      <version><%= config[:datomic_version] || config[:default_datomic_version] %></version>
+      <version><%= config[:datomic_version] %></version>
     </dependency>
   </dependencies>
 </project>

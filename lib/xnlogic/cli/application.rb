@@ -137,27 +137,53 @@ module Xnlogic
       write_options
     end
 
+    def datomic_pro?
+      options.fetch('datomic_pro', options['datomic_mysql'])
+    end
+
+    def check_arguments
+      if datomic_pro?
+        if options['datomic_license']
+          unless datomic_license
+            Xnlogic.ui.info "[WARN] Datomic licence file #{ options['datomic_license'] } not found."
+          end
+        else
+          Xnlogic.ui.info "[WARN] No datomic-license specified. Pro transacter will not start."
+        end
+        unless options['datomic_username'] and options['datomic_key']
+          Xnlogic.ui.info "[WARN] No datomic-username or datomic-key. Will not be able to fetch datomic pro jar dependencies."
+        end
+      end
+    end
+
+    def datomic_license
+      if options['datomic_license'] and File.exist? options['datomic_license']
+        File.read(options['datomic_license']).sub(/^license-key=/, '')
+      end
+    end
 
     def template_options
       namespaced_path = name
       constant_name = namespaced_path.split('_').map{|p| p[0..0].upcase + p[1..-1] }.join
       git_user_name = `git config user.name`.chomp
       git_user_email = `git config user.email`.chomp
+      check_arguments
       {
-        :name                    => name,
-        :namespaced_path         => namespaced_path,
-        :constant_name           => constant_name,
-        :author                  => git_user_name.empty? ? "TODO: Write your name" : git_user_name,
-        :email                   => git_user_email.empty? ? "TODO: Write your email address" : git_user_email,
-        :vm_cpus                 => options['cpus'],
-        :vm_memory               => options['memory'],
-        :xn_key                  => options['key'],
-        :datomic_pro             => options.fetch('datomic_pro', options['datomic_mysql']),
-        :datomic_mysql           => options['datomic_mysql'],
-        :datomic_version         => options['datomic_version'],
-        :default_datomic_version => "0.9.5130",
-        :datomic_username        => options.fetch('datomic_username', '[username from my.datomic.com]'),
-        :datomic_key             => options.fetch('datomic_key', '[key from my.datomic.com]'),
+        :name                     => name,
+        :namespaced_path          => namespaced_path,
+        :constant_name            => constant_name,
+        :author                   => git_user_name.empty? ? "TODO: Write your name" : git_user_name,
+        :email                    => git_user_email.empty? ? "TODO: Write your email address" : git_user_email,
+        :vm_cpus                  => options['cpus'],
+        :vm_memory                => options['memory'],
+        :xn_key                   => options['key'],
+        :datomic_pro              => datomic_pro?,
+        :datomic_license          => datomic_license,
+        :datomic_mysql            => options['datomic_mysql'],
+        :datomic_optional_version => options['datomic_version'],
+        :datomic_version          => (options['datomic_version'] || "0.9.5130"),
+        :datomic_username         => options.fetch('datomic_username', '[username from my.datomic.com]'),
+        :datomic_key              => options.fetch('datomic_key', '[key from my.datomic.com]'),
       }
     end
 
@@ -176,20 +202,33 @@ module Xnlogic
 
 
     def generate_vm_config
+      transactor_properties = if options['datomic_mysql']
+                                "datomic/mysql.properties"
+                              elsif options['datomic_pro']
+                                "datomic/pro.properties"
+                              else
+                                "datomic/free.properties"
+                              end
+      datomic_installer = if datomic_pro?
+                            'datomic/install_pro_transactor.sh.tt'
+                          else
+                            'datomic/install_free_transactor.sh.tt'
+                          end
       base_templates = {
         "Vagrantfile.tt" => "Vagrantfile",
         "Gemfile.tt" => "Gemfile",
         "config/vagrant.provision.tt" => "config/vagrant.provision",
         "config/datomic.conf" => "config/datomic.conf",
         "config/start.sh" => "config/start.sh",
-        "config/transactor.properties" => "config/transactor.properties",
+        transactor_properties => "config/transactor.properties",
         "config/xnlogic.conf.tt" => "config/xnlogic.conf",
-        'datomic/update_datomic.sh.tt' => 'script/update_datomic.sh',
+        datomic_installer => 'script/install_transactor.sh',
       }
 
-      if options['datomic_pro'] || options['datomic_mysql']
+      if datomic_pro?
         base_templates['datomic/m2_settings.xml.tt'] = 'config/m2_settings.xml'
         base_templates['datomic/pom.xml.tt'] = 'config/pom.xml'
+        base_templates['datomic/get_datomic_jar.sh.tt'] = 'script/get_datomic_jar.sh'
       end
 
       _generate_templates(base_templates, 'vagrant', template_options, 'Creating Vagrant configuration')

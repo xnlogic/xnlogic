@@ -26,12 +26,12 @@ Gem::Specification.new do |s|
   s.add_dependency 'pacer-neo4j'
   s.add_dependency 'pacer-mcfly'
 <% if config[:datomic_pro] -%>
-  s.add_dependency 'pacer-mcfly-pro'<%= ", " + config[:datomic_version].inspect if config[:datomic_version] %>
-  <% if config[:datomic_mysql] -%>
+  s.add_dependency 'pacer-mcfly-pro'<%= ", " + config[:optional_datomic_version].inspect if config[:optional_datomic_version] %>
+<% if config[:datomic_mysql] -%>
   s.add_dependency 'pacer-mcfly-mysql'
-  <% end -%>
+<% end -%>
 <% else -%>
-  s.add_dependency 'pacer-mcfly-free'<%= ", " + config[:datomic_version].inspect if config[:datomic_version] %>
+  s.add_dependency 'pacer-mcfly-free'<%= ", " + config[:optional_datomic_version].inspect if config[:optional_datomic_version] %>
 <% end -%>
 
   s.add_dependency 'jruby-openssl', '0.9.6'

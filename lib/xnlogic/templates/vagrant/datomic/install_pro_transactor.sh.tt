@@ -1,0 +1,24 @@
+#! /bin/bash
+
+echo "Installing Datomic Pro <%=config[:datomic_version]%> Transactor"
+cd $HOME
+wget --http-user=<%=config[:datomic_username]%> --http-password=<%=config[:datomic_key]%> https://my.datomic.com/repo/com/datomic/datomic-pro/<%=config[:datomic_version]%>/datomic-pro-<%=config[:datomic_version]%>.zip -O datomic.zip
+unzip datomic.zip
+rm datomic.zip
+sudo mkdir -p /opt/datomic
+sudo chown vagrant:vagrant /opt/datomic
+mv datomic-pro-<%=config[:datomic_version]%> /opt/datomic
+sudo mkdir -p /etc/datomic
+sudo rm -f /etc/datomic/transactor.properties
+sudo ln -s $HOME/$XN_CLIENT/config/transactor.properties /etc/datomic/transactor.properties
+<% if config[:datomic_mysql] -%>
+  wget http://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java-5.1.35.tar.gz -O mysql.tgz
+  tar -xvzf mysql.tgz --include '*bin.jar'
+  sudo mv mysql-connector-java-5.1.35/*.jar /opt/datomic/datomic-pro-<%=config[:datomic_version]%>/lib
+  rm mysql.tgz
+<% end -%>
+sudo service datomic stop
+rm /opt/datomic/current
+ln -s /opt/datomic/datomic-pro-<%=config[:datomic_version]%> current
+sudo service datomic start
+cd -
