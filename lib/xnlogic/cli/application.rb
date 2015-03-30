@@ -2,7 +2,7 @@ require 'xnlogic/cli/core'
 
 module Xnlogic
   class CLI::Application < CLI::Core
-    attr_reader :app_name, :base_name, :name, :root
+    attr_reader :app_name, :base_name, :name, :root, :existing
 
     def initialize(options, thor)
       super
@@ -30,6 +30,7 @@ module Xnlogic
     end
 
     def in_existing_project
+      @existing = true
       @root = options.fetch('root', '.')
       @app = Pathname.pwd.join(root)
       super()
@@ -62,7 +63,7 @@ module Xnlogic
       options['application_version'] = Xnlogic::VERSION
       write_options
       Xnlogic.ui.info "Initializing git repo in #{app}"
-      Dir.chdir(app) { system 'git init' and system 'git add .' }
+      Dir.chdir(app) { system 'git init' and system 'git add .' } unless existing
 
       install_vagrant_note
       if options['up']
