@@ -1,0 +1,20 @@
+#! /bin/bash
+
+silent() {
+  if [[ $debug ]] ; then
+    "$@"
+  else
+    "$@" &>/dev/null
+  fi
+}
+hr() {
+printf "%$(tput cols)s\n"|tr " " "-"
+}
+
+silent dos2unix $SERVER_START_SCRIPT $HOME/$XN_CLIENT/script/*
+chmod +x $SERVER_START_SCRIPT
+chmod +x $HOME/$XN_CLIENT/script/*
+
+<% if config[:datomic_pro] -%>
+$HOME/$XN_CLIENT/script/get_datomic_jar.sh
+<% end -%>

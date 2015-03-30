@@ -218,6 +218,7 @@ module Xnlogic
         "Vagrantfile.tt" => "Vagrantfile",
         "Gemfile.tt" => "Gemfile",
         "config/vagrant.provision.tt" => "config/vagrant.provision",
+        "config/vagrant.up.tt" => "config/vagrant.up",
         "config/datomic.conf" => "config/datomic.conf",
         "config/start.sh" => "config/start.sh",
         transactor_properties => "config/transactor.properties",

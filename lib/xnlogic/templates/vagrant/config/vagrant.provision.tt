@@ -99,9 +99,6 @@ echo "alias gd='git diff -w'" >> ~/.zshrc
 echo "alias gdc='git diff -w --cached'" >> ~/.zshrc
 
 sudo apt-get install -y dos2unix
-silent dos2unix $SERVER_START_SCRIPT $HOME/$XN_CLIENT/script/*
-chmod +x $SERVER_START_SCRIPT
-chmod +x $HOME/$XN_CLIENT/script/update_datomic.sh
 
 git config --global --add alias.co "checkout"
 git config --global --add alias.ci "commit"

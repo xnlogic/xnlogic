@@ -92,4 +92,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     s.path = "config/vagrant.provision"
     s.privileged = false
   end
+
+  config.vm.provision "shell", run: 'always' do |s|
+    s.path = "config/vagrant.up"
+    s.privileged = false
+  end
 end
