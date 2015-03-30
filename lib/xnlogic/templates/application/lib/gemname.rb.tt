@@ -31,7 +31,7 @@ module <%= config[:constant_name] %>
     end
 
     def config_file(name)
-      Lightmesh.lib_dir.parent + 'config' + name
+      lib_dir.parent + 'config' + name
     end
 
     def env
