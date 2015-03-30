@@ -35,6 +35,9 @@ silent sudo dpkg-reconfigure --frontend noninteractive tzdata
 hr
 echo "Configuring XN gems"
 hr
+## We need to stick to 1.7.11 in order to be able bundle a new XN app (xnlogic dependency)
+gem uninstall -Ix /home/vagrant/.rvm/gems/jruby-*@global bundler
+gem install bundler -v 1.7.11
 
 <% if config[:xn_key] -%>
 silent gem sources --add https://<%= config[:xn_key] %>@gems.xnlogic.com/
