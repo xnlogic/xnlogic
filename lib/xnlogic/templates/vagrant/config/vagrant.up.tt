@@ -18,5 +18,8 @@ chmod +x $SERVER_START_SCRIPT
 chmod +x $HOME/$XN_CLIENT/script/*
 
 <% if config[:datomic_pro] -%>
-$HOME/$XN_CLIENT/script/get_datomic_jar.sh
+silent $HOME/$XN_CLIENT/script/get_datomic_jar.sh
+if [ $? -ne 0 ]; then
+  >&2 echo "Failed to get Datomic dependency. Run $HOME/$XN_CLIENT/script/get_datomic_jar.sh for details."
+fi
 <% end -%>
