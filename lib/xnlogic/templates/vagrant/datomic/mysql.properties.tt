@@ -9,7 +9,7 @@ port=4334
 ################################################################
 # See http://docs.datomic.com/storage.html
 
-license-key=<%= config[:datomic_license_key] %>
+license-key=<%= config[:datomic_license] %>
 
 
 

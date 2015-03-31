@@ -79,6 +79,8 @@ module Xnlogic
         "Your my.datomic.com account username, needed for Datomic jar downloads"
       method_option "datomic_key", type: :string, banner:
         "Your my.datomic.com download key, needed for Datomic jar downloads"
+      method_option "datomic_license", type: :string, banner:
+        "File location of your my.datomic.com license key, needed for the Datomic Pro transactor"
     end
 
     desc "application [NAME] [OPTIONS]", <<EOD

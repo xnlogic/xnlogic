@@ -145,13 +145,13 @@ module Xnlogic
       if datomic_pro?
         if options['datomic_license']
           unless datomic_license
-            Xnlogic.ui.info "[WARN] Datomic licence file #{ options['datomic_license'] } not found."
+            Xnlogic.ui.warn "[WARN] Datomic license file '#{ options['datomic_license'] }' not found."
           end
         else
-          Xnlogic.ui.info "[WARN] No datomic-license specified. Pro transacter will not start."
+          Xnlogic.ui.warn "[WARN] No datomic-license specified. Pro transacter will not start."
         end
         unless options['datomic_username'] and options['datomic_key']
-          Xnlogic.ui.info "[WARN] No datomic-username or datomic-key. Will not be able to fetch datomic pro jar dependencies."
+          Xnlogic.ui.warn "[WARN] No datomic-username or datomic-key. Will not be able to fetch datomic pro jar dependencies."
         end
       end
     end
@@ -203,11 +203,11 @@ module Xnlogic
 
     def generate_vm_config
       transactor_properties = if options['datomic_mysql']
-                                "datomic/mysql.properties"
+                                "datomic/mysql.properties.tt"
                               elsif options['datomic_pro']
-                                "datomic/pro.properties"
+                                "datomic/pro.properties.tt"
                               else
-                                "datomic/free.properties"
+                                "datomic/free.properties.tt"
                               end
       datomic_installer = if datomic_pro?
                             'datomic/install_pro_transactor.sh.tt'
