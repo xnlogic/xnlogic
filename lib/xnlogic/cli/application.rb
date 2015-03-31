@@ -230,6 +230,11 @@ module Xnlogic
         base_templates['datomic/m2_settings.xml.tt'] = 'config/m2_settings.xml'
         base_templates['datomic/pom.xml.tt'] = 'config/pom.xml'
         base_templates['datomic/get_datomic_jar.sh.tt'] = 'script/get_datomic_jar.sh'
+        if options['datomic_mysql']
+          base_templates['datomic/mysql/db.sql'] = 'config/mysql/db.sql'
+          base_templates['datomic/mysql/table.sql'] = 'config/mysql/table.sql'
+          base_templates['datomic/mysql/user.sql'] = 'config/mysql/user.sql'
+        end
       end
 
       _generate_templates(base_templates, 'vagrant', template_options, 'Creating Vagrant configuration')
