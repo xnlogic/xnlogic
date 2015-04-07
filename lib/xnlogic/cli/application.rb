@@ -253,7 +253,7 @@ module Xnlogic
         "logback.xml.tt" => "logback.xml",
         "config.ru.tt" => "config.ru",
         "dev/console.rb.tt" => "dev/console.rb",
-        "config/mcfly_config.yaml.tt" => "config/mcfly_config.yaml",
+        "config/mcfly_config.yml.tt" => "config/mcfly_config.yml",
         "tasks/deploy.rb.tt" => "tasks/deploy.rb",
         "torquebox.yml.tt" => "torquebox.yml",
         "torquebox_init.rb.tt" => "torquebox_init.rb",
