@@ -92,7 +92,7 @@ end
 require '<%= config[:namespaced_path] %>/version'
 require '<%= config[:namespaced_path] %>/type'
 
-PacerModel.load_mcfly_config_yaml(<%= config[:constant_name] %>.config_file('mcfly_config.yaml'), <%= config[:constant_name] %>.env)
+PacerModel.load_mcfly_config_yaml(<%= config[:constant_name] %>.config_file('mcfly_config.yml'), <%= config[:constant_name] %>.env)
 
 PacerModel.applications['<%= config[:name] %>'] = <%= config[:constant_name] %>
 PacerModel.property_namespaces << <%= config[:constant_name] %>::Type::Property
