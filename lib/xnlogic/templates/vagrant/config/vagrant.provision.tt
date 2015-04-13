@@ -80,7 +80,7 @@ hr
 echo "Starting Datomic Service"
 hr
 sudo rm -f /etc/init/datomic.conf
-sudo ln -sf $HOME/$XN_CLIENT/config/datomic.conf /etc/init/datomic.conf
+sudo cp $HOME/$XN_CLIENT/config/datomic.conf /etc/init/datomic.conf
 sudo initctl reload-configuration
 sudo service datomic restart
 
