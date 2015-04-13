@@ -13,14 +13,22 @@ Example:
 
 ## DESCRIPTION
 
-XN Logic is a graph database-backed application framework.
+XN Logic is a graph database-backed application framework, designed for creating web applications and data-services layers with ease.
+
 
 For more information, see:
-* [XN Logic corporate](http://xnlogic.com):
-* [The XN Logic wiki](https://github.com/xnlogic/xnlogic/wiki) for information on getting:
-* [Getting Started guide](http://xnlogic.github.io/getting_started/):
 
-Or for support requests, please see [https://xnlogic.zendesk.com/hc/en-us](https://xnlogic.zendesk.com/hc/en-us).
+* **XN Logic corporate**: 
+  http://xnlogic.com
+
+* **The XN Logic wiki**:
+  https://github.com/xnlogic/xnlogic/wiki
+
+* **Getting Started guide**:
+  http://xnlogic.github.io/getting_started/
+
+* **Support requests**: 
+  https://xnlogic.zendesk.com/hc/en-us
 
 ## COMMANDS
 
