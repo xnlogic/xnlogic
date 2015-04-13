@@ -45,7 +45,11 @@ You can get more information on each command using
 
     $ xnlogic help COMMAND
 
-
+## See Also
+  * [Getting Started](http://xnlogic.github.io/getting_started/)
+  * [xnlogic wiki](https://github.com/xnlogic/xnlogic/wiki)
+  * [xnlogic support](https://xnlogic.zendesk.com/hc/en-us)
+  * [xnlogic corporate](http://xnlogic.com)
 
 ## Contributing
 
