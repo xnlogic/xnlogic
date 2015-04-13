@@ -8,7 +8,7 @@ silent() {
   fi
 }
 hr() {
-printf "%$(tput cols)s\n"|tr " " "-"
+  printf "%$(tput cols)s\n"|tr " " "-"
 }
 
 export XN_CLIENT=<%= config[:name] %>
