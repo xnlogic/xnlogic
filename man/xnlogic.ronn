@@ -15,8 +15,12 @@ Example:
 
 XN Logic is a graph database-backed application framework.
 
-See [the XN Logic website](https://xnlogic.com) for information on getting
-started, or https://xnlogic.zendesk.com/hc/en-us for support.
+For more information, see:
+* [XN Logic corporate](http://xnlogic.com) 
+* [the XN Logic wiki](https://github.com/xnlogic/xnlogic/wiki) for information on getting
+* [Getting Started guide](http://xnlogic.github.io/getting_started/)
+
+Or for support requests, please see [https://xnlogic.zendesk.com/hc/en-us](https://xnlogic.zendesk.com/hc/en-us).
 
 ## COMMANDS
 
