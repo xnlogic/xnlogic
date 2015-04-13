@@ -6,10 +6,10 @@ require 'xnlogic/version'
 Gem::Specification.new do |spec|
   spec.name          = "xnlogic"
   spec.version       = Xnlogic::VERSION
-  spec.authors       = ["Darrick Wiebe"]
-  spec.email         = ["dw@xnlogic.com"]
+  spec.authors       = ["Darrick Wiebe", "David Colebatch"]
+  spec.email         = ["dw@xnlogic.com", "dc@xnlogic.com"]
   spec.summary       = %q{XN Logic command-line tools}
-  spec.description   = %q{Build graph applications with XN Logic.}
+  spec.description   = %q{Graph application framework with xnlogic.com}
   spec.homepage      = "https://xnlogic.com"
 
   spec.files         = `git ls-files -z`.split("\x0")
