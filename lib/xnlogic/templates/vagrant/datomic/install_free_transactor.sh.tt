@@ -3,9 +3,10 @@
 echo "Installing Datomic Free <%= config[:datomic_version] %> Transactor"
 cd $HOME
 wget https://my.datomic.com/downloads/free/<%=config[:datomic_version]%> --quiet -O datomic.zip
-unzip datomic.zip
+unzip -o datomic.zip
 rm datomic.zip
-sudo mv datomic-free-<%= config[:datomic_version] %> /usr/local/lib/datomic
+sudo rm -r /opt/datomic/datomic-free-<%=config[:datomic_version]%>
+sudo mv datomic-free-<%=config[:datomic_version]%> /opt/datomic
 sudo mkdir -p /opt/datomic
 sudo chown vagrant:vagrant /opt/datomic
 mv datomic-free-<%=config[:datomic_version]%> /opt/datomic

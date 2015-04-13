@@ -3,11 +3,12 @@
 echo "Installing Datomic Pro <%=config[:datomic_version]%> Transactor"
 cd $HOME
 wget --http-user=<%=config[:datomic_username]%> --http-password=<%=config[:datomic_key]%> https://my.datomic.com/repo/com/datomic/datomic-pro/<%=config[:datomic_version]%>/datomic-pro-<%=config[:datomic_version]%>.zip -O datomic.zip
-unzip datomic.zip
+unzip -o datomic.zip
 rm datomic.zip
 sudo mkdir -p /opt/datomic
 sudo chown vagrant:vagrant /opt/datomic
-mv datomic-pro-<%=config[:datomic_version]%> /opt/datomic
+sudo rm -r /opt/datomic/datomic-pro-<%=config[:datomic_version]%>
+sudo mv datomic-pro-<%=config[:datomic_version]%> /opt/datomic
 sudo mkdir -p /etc/datomic
 sudo rm -f /etc/datomic/transactor.properties
 sudo ln -s $HOME/$XN_CLIENT/config/transactor.properties /etc/datomic/transactor.properties
