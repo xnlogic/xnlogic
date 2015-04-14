@@ -75,6 +75,19 @@ fi
 
 sudo apt-get install -y dos2unix
 
+<% if config[:datomic_mysql] -%>
+hr
+echo "Installing and configuring MySQL"
+sudo debconf-set-selections <<< 'mysql-server mysql-server/root_password password password'
+sudo debconf-set-selections <<< 'mysql-server mysql-server/root_password_again password password'
+silent sudo apt-get install -y mysql-server
+cd $HOME/$XN_CLIENT
+mysql -uroot -ppassword < config/mysql/db.sql
+mysql -uroot -ppassword < config/mysql/user.sql
+mysql -uroot -ppassword datomic < config/mysql/table.sql
+cd -
+<% end -%>
+
 hr
 echo "Configuring Datomic Service"
 sudo rm -f /etc/init/datomic.conf
@@ -83,6 +96,8 @@ sudo initctl reload-configuration
 dos2unix $HOME/$XN_CLIENT/script/install_transactor.sh
 chmod +x $HOME/$XN_CLIENT/script/install_transactor.sh
 $HOME/$XN_CLIENT/script/install_transactor.sh
+
+
 
 
 SERVER_START_SCRIPT="$HOME/$XN_CLIENT/config/start.sh"
@@ -130,19 +145,6 @@ silent sudo apt-get install -y nginx
 sudo rm -rf /etc/nginx/sites-enabled/default
 sudo cp $HOME/$XN_CLIENT/config/xnlogic.conf /etc/nginx/sites-enabled/xnlogic.conf
 sudo service nginx restart 
-
-<% if config[:datomic_mysql] -%>
-hr
-echo "Installing and configuring MySQL"
-sudo debconf-set-selections <<< 'mysql-server mysql-server/root_password password password'
-sudo debconf-set-selections <<< 'mysql-server mysql-server/root_password_again password password'
-silent sudo apt-get install -y mysql-server
-cd $HOME/$XN_CLIENT
-mysql -uroot -ppassword < config/mysql/db.sql
-mysql -uroot -ppassword < config/mysql/user.sql
-mysql -uroot -ppassword datomic < config/mysql/table.sql
-cd -
-<% end -%>
 
 hr
 echo "Done!"
