@@ -76,21 +76,14 @@ fi
 sudo apt-get install -y dos2unix
 
 hr
-echo "Installing to correct Datomic transactor"
+echo "Configuring Datomic Service"
+sudo rm -f /etc/init/datomic.conf
+sudo cp $HOME/$XN_CLIENT/config/datomic.conf /etc/init/datomic.conf
+sudo initctl reload-configuration
 dos2unix $HOME/$XN_CLIENT/script/install_transactor.sh
 chmod +x $HOME/$XN_CLIENT/script/install_transactor.sh
 $HOME/$XN_CLIENT/script/install_transactor.sh
 
-
-hr
-echo "Starting Datomic Service"
-hr
-sudo rm -f /etc/init/datomic.conf
-sudo cp $HOME/$XN_CLIENT/config/datomic.conf /etc/init/datomic.conf
-sudo initctl reload-configuration
-sudo service datomic restart
-
-hr
 
 SERVER_START_SCRIPT="$HOME/$XN_CLIENT/config/start.sh"
 
