@@ -221,6 +221,7 @@ module Xnlogic
         "config/vagrant.up.tt" => "config/vagrant.up",
         "config/datomic.conf" => "config/datomic.conf",
         "config/start.sh" => "config/start.sh",
+        "config/diagnostics.sh" => "config/diagnostics.sh",
         transactor_properties => "config/transactor.properties",
         "config/xnlogic.conf.tt" => "config/xnlogic.conf",
         datomic_installer => 'script/install_transactor.sh',
