@@ -23,3 +23,5 @@ if [ $? -ne 0 ]; then
   >&2 echo "Failed to get Datomic dependency. Run $HOME/$XN_CLIENT/script/get_datomic_jar.sh for details."
 fi
 <% end -%>
+
+npm install -g xn-cli
