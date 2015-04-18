@@ -2,25 +2,25 @@
 
 echo "Installing Datomic Pro <%=config[:datomic_version]%> Transactor"
 cd $HOME
-wget --http-user=<%=config[:datomic_username]%> --http-password=<%=config[:datomic_key]%> https://my.datomic.com/repo/com/datomic/datomic-pro/<%=config[:datomic_version]%>/datomic-pro-<%=config[:datomic_version]%>.zip -O datomic.zip
+wget -nv --http-user=<%=config[:datomic_username]%> --http-password=<%=config[:datomic_key]%> https://my.datomic.com/repo/com/datomic/datomic-pro/<%=config[:datomic_version]%>/datomic-pro-<%=config[:datomic_version]%>.zip -O datomic.zip
 unzip -o datomic.zip
 rm datomic.zip
 sudo mkdir -p /opt/datomic
-sudo chown vagrant:vagrant /opt/datomic
 sudo rm -r /opt/datomic/datomic-pro-<%=config[:datomic_version]%>
 sudo mv datomic-pro-<%=config[:datomic_version]%> /opt/datomic
 sudo mkdir -p /etc/datomic
 sudo rm -f /etc/datomic/transactor.properties
 sudo ln -s $HOME/$XN_CLIENT/config/transactor.properties /etc/datomic/transactor.properties
 <% if config[:datomic_mysql] -%>
-  wget http://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java-5.1.35.tar.gz -O mysql.tgz
+  wget -nv http://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java-<%=config[:mysql_version]%>.tar.gz -O mysql.tgz
   tar -xvzf mysql.tgz
-  sudo mv mysql-connector-java-5.1.35/*.jar /opt/datomic/datomic-pro-<%=config[:datomic_version]%>/lib
-  rm -r mysql-connector-java-5.1.35
+  cp mysql-connector-java-<%=config[:mysql_version]%>/mysql-connector-java-<%=config[:mysql_version]%>-bin.jar <%=config[:name]%>/lib
+  sudo mv mysql-connector-java-<%=config[:mysql_version]%>/mysql-connector-java-<%=config[:mysql_version]%>-bin.jar /opt/datomic/current/lib
+  rm -r mysql-connector-java-<%=config[:mysql_version]%>
   rm mysql.tgz
 <% end -%>
 sudo service datomic stop
-rm /opt/datomic/current
-ln -s /opt/datomic/datomic-pro-<%=config[:datomic_version]%> /opt/datomic/current
+sudo rm /opt/datomic/current
+sudo ln -s /opt/datomic/datomic-pro-<%=config[:datomic_version]%> /opt/datomic/current
 sudo service datomic start
 cd -

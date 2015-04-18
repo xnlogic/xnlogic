@@ -16,6 +16,10 @@ require 'active_support/core_ext'
 require 'pacer'
 require 'pacer-model'
 require 'pathname'
+<% if config[:datomic_mysql] -%>
+require 'pacer-mcfly-mysql'
+#require 'mysql-connector-java-<%=config[:mysql_version]%>-bin.jar'
+<% end -%>
 
 require '<%= config[:namespaced_path] %>/initializers/inflections'
 

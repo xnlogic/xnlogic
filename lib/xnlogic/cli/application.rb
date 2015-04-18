@@ -182,6 +182,7 @@ module Xnlogic
         :datomic_mysql            => options['datomic_mysql'],
         :datomic_optional_version => options['datomic_version'],
         :datomic_version          => (options['datomic_version'] || "0.9.5130"),
+        :mysql_version            => '5.1.35',
         :datomic_username         => options.fetch('datomic_username', '[username from my.datomic.com]'),
         :datomic_key              => options.fetch('datomic_key', '[key from my.datomic.com]'),
       }
