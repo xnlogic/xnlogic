@@ -1,13 +1,15 @@
 # Some of our part/model names aren't inflected correctly by default.
 # Here we exclude them:
 ActiveSupport::Inflector.inflections do |inflect|
-  inflect.uncountable "media"
   inflect.uncountable "software"
 
-  inflect.irregular "vrf", "vrfs"
+  inflect.irregular "genus", "genera"
+
+  # Singular definition is rarely needed, except when a singular word naively
+  # looks like it may be plural.
+  inflect.singular "genus", "genus"
 
   inflect.acronym 'DNS'
-  inflect.acronym 'FEX'
   inflect.acronym 'GW'
   inflect.acronym 'GWs'
 end
