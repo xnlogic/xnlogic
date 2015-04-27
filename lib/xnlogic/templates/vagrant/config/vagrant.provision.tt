@@ -27,6 +27,7 @@ export LC_ALL=en_US.UTF-8
 
 # make jruby processes boot faster
 export JRUBY_OPTS=--dev
+silent sudo apt-get update
 
 hr
 echo "Setting timezone:"
