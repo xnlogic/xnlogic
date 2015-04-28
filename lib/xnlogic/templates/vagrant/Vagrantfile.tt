@@ -38,8 +38,14 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # Setup auxiliary synced folder
   if nfs_setting
     config.vm.synced_folder Dir.pwd, "/home/vagrant/" + app_name, create: true, id: app_name, :nfs => true, :mount_options => ['nolock,vers=3,udp']
+    if Dir.exists? "../#{app_name}-compiled"
+      config.vm.synced_folder "../#{app_name}-compiled", "/home/vagrant/#{app_name}-compiled", create: true, id: "#{app_name}-compiled", :nfs => true, :mount_options => ['nolock,vers=3,udp']
+    end
   else
     config.vm.synced_folder Dir.pwd, "/home/vagrant/" + app_name, create: true, id: app_name
+    if Dir.exists? "../#{app_name}-compiled"
+      config.vm.synced_folder "../#{app_name}-compiled", "/home/vagrant/#{app_name}-compiled", create: true, id: "#{app_name}-compiled"
+    end
   end
   
   # Allow caching to be used (see the vagrant-cachier plugin)
