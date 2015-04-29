@@ -1,3 +1,3 @@
 module Xnlogic
-  VERSION = "1.0.47.pre"
+  VERSION = "1.0.47"
 end
