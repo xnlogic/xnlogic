@@ -6,7 +6,6 @@ wget https://my.datomic.com/downloads/free/<%=config[:datomic_version]%> --quiet
 unzip -o datomic.zip
 rm datomic.zip
 sudo rm -r /opt/datomic/datomic-free-<%=config[:datomic_version]%>
-sudo mv datomic-free-<%=config[:datomic_version]%> /opt/datomic
 sudo mkdir -p /opt/datomic
 sudo chown vagrant:vagrant /opt/datomic
 mv datomic-free-<%=config[:datomic_version]%> /opt/datomic
