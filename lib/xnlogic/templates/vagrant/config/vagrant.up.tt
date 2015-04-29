@@ -24,4 +24,4 @@ if [ $? -ne 0 ]; then
 fi
 <% end -%>
 
-npm install -g xn-cli
+sudo npm install -g xn-cli
