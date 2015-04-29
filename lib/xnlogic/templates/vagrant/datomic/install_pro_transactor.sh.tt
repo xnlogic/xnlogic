@@ -5,8 +5,9 @@ cd $HOME
 wget -nv --http-user=<%=config[:datomic_username]%> --http-password=<%=config[:datomic_key]%> https://my.datomic.com/repo/com/datomic/datomic-pro/<%=config[:datomic_version]%>/datomic-pro-<%=config[:datomic_version]%>.zip -O datomic.zip
 unzip -o datomic.zip
 rm datomic.zip
-sudo mkdir -p /opt/datomic
 sudo rm -r /opt/datomic/datomic-pro-<%=config[:datomic_version]%>
+sudo mkdir -p /opt/datomic
+sudo chown vagrant:vagrant /opt/datomic
 sudo mv datomic-pro-<%=config[:datomic_version]%> /opt/datomic
 sudo mkdir -p /etc/datomic
 sudo rm -f /etc/datomic/transactor.properties
