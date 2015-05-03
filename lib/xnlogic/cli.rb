@@ -63,6 +63,10 @@ module Xnlogic
         "Number of Virtual CPUs the Development VM should use (default 2)"
       method_option "memory", type: :numeric, banner:
         "Amount of RAM to allow the Development VM to use (default 2048, in MB)"
+      method_option "graph", type: :string,
+        default: 'neo4j',
+        enum: %w[neo4j neo4j-enterprise orient history-graph],
+        banner: "The graph engine to use by default"
       method_option "root", type: :string, banner:
         "Optionally specify a different root directory name"
       method_option "provision", type: :boolean, banner:

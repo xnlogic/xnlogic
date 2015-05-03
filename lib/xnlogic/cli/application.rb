@@ -162,6 +162,18 @@ module Xnlogic
       end
     end
 
+    def orient?
+      options['graph'] == 'orient'
+    end
+
+    def neo?
+      options['graph'] =~ /neo4j/
+    end
+
+    def neo_ent?
+      options['graph'] == 'neo4j-enterprise'
+    end
+
     def template_options
       namespaced_path = name
       constant_name = namespaced_path.split('_').map{|p| p[0..0].upcase + p[1..-1] }.join
@@ -177,6 +189,10 @@ module Xnlogic
         :vm_cpus                  => options['cpus'],
         :vm_memory                => options['memory'],
         :xn_key                   => options['key'],
+        :graph                    => options['graph'],
+        :neo4j                    => neo?,
+        :neo4j_enterprise         => neo_ent?,
+        :orient                   => orient?,
         :datomic_pro              => datomic_pro?,
         :datomic_license          => datomic_license,
         :datomic_mysql            => options['datomic_mysql'],
@@ -227,6 +243,10 @@ module Xnlogic
         "config/xnlogic.conf.tt" => "config/xnlogic.conf",
         datomic_installer => 'script/install_transactor.sh',
       }
+
+      if neo?
+        base_templates['config/neo4j.properties.tt'] = 'config/neo4j.properties'
+      end
 
       if datomic_pro?
         base_templates['datomic/m2_settings.xml.tt'] = 'config/m2_settings.xml'

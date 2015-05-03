@@ -23,13 +23,20 @@ Gem::Specification.new do |s|
   s.add_dependency 'rack', '1.5.2'
   s.add_dependency 'pacer', '>= 2.0.6'
   s.add_dependency 'pacer-model'
-  s.add_dependency 'pacer-neo4j'
+<% if config[:neo4j] -%>
+  s.add_dependency 'pacer-neo4j2'
+<%   if config[:neo4j_enterprise] -%>
+  s.add_dependency 'pacer-neo4j2-enterprise'
+<%   end -%>
+<% elsif config[:orient] -%>
+  s.add_dependency 'pacer-orient'
+<% end -%>
   s.add_dependency 'pacer-mcfly'
 <% if config[:datomic_pro] -%>
   s.add_dependency 'pacer-mcfly-pro'<%= ", " + config[:optional_datomic_version].inspect if config[:optional_datomic_version] %>
-<% if config[:datomic_mysql] -%>
+<%   if config[:datomic_mysql] -%>
   s.add_dependency 'pacer-mcfly-mysql'
-<% end -%>
+<%   end -%>
 <% else -%>
   s.add_dependency 'pacer-mcfly-free'<%= ", " + config[:optional_datomic_version].inspect if config[:optional_datomic_version] %>
 <% end -%>
