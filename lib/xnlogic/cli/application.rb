@@ -18,7 +18,12 @@ module Xnlogic
       @root = options.fetch('root', @name)
       @app = Pathname.pwd.join(root)
       options['name'] = @name
+      set_default_options!
       self
+    end
+
+    def set_default_options!
+      options['graph'] ||= 'neo4j2'
     end
 
     def options_filename
@@ -35,6 +40,7 @@ module Xnlogic
       @app = Pathname.pwd.join(root)
       super()
       @name ||= options['name']
+      set_default_options!
       self
     end
 
@@ -171,7 +177,7 @@ module Xnlogic
     end
 
     def neo_ent?
-      options['graph'] == 'neo4j-enterprise'
+      options['graph'] == 'neo4j2-enterprise'
     end
 
     def template_options
