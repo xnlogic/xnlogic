@@ -1,12 +1,7 @@
-if RUBY_VERSION == '1.8.7'
-  STDERR.puts <<WARNING
-WARNING: XN Logic is developed using JRuby in 1.9 mode. I recommend you
-  restart JRuby in 1.9 mode, either with the --1.9 flag, or by
-  defaulting to 1.9 mode by setting the environment variable
-  JRUBY_OPTS=--1.9
-WARNING
-  raise "1.8 mode: no go"
-end
+require 'java'
+
+# XN settings must be configured before calling require 'pacer-model'
+java.lang.System.setProperty("xn.relVersion", "2")
 
 require 'rubygems'
 require 'bundler/setup'
@@ -96,6 +91,7 @@ end
 require '<%= config[:namespaced_path] %>/version'
 require '<%= config[:namespaced_path] %>/type'
 
+PacerModel.default_graph_engine = <%= config[:graph].inspect %>
 PacerModel.load_mcfly_config_yaml(<%= config[:constant_name] %>.config_file('mcfly_config.yml'), <%= config[:constant_name] %>.env)
 
 PacerModel.applications['<%= config[:name] %>'] = <%= config[:constant_name] %>
