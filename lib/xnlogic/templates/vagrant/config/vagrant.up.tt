@@ -12,16 +12,8 @@ hr() {
 }
 
 export XN_CLIENT=<%= config[:name] %>
-SERVER_START_SCRIPT="$HOME/$XN_CLIENT/config/start.sh"
-silent dos2unix $SERVER_START_SCRIPT $HOME/$XN_CLIENT/script/*
+silent dos2unix $HOME/$XN_CLIENT/script/*
 chmod +x $SERVER_START_SCRIPT
 chmod +x $HOME/$XN_CLIENT/script/*
-
-<% if config[:datomic_pro] -%>
-silent $HOME/$XN_CLIENT/script/get_datomic_jar.sh
-if [ $? -ne 0 ]; then
-  >&2 echo "Failed to get Datomic dependency. Run $HOME/$XN_CLIENT/script/get_datomic_jar.sh for details."
-fi
-<% end -%>
 
 sudo npm install -g xn-cli

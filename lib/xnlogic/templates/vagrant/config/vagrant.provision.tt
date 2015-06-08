@@ -20,99 +20,28 @@ hr() {
 hr
 echo "Configuring environment"
 export XN_CLIENT=<%= config[:name] %>
-export DATOMIC_VERSION=<%= config[:datomic_version] %>
 export DEBIAN_FRONTEND=noninteractive
 export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 
 # make jruby processes boot faster
-export JRUBY_OPTS=--dev
-silent sudo apt-get update
+#silent sudo apt-get update
 
 hr
 echo "Setting timezone:"
 echo "$timezone" | sudo tee /etc/timezone
 silent sudo dpkg-reconfigure --frontend noninteractive tzdata
 hr
-echo "Configuring XN gems"
-hr
-## We need to stick to 1.7.11 in order to be able bundle a new XN app (xnlogic dependency)
-gem uninstall -Ix -i /home/vagrant/.rvm/gems/jruby-*@global bundler
-gem install bundler -v 1.7.11
-
-<% if config[:xn_key] -%>
-silent gem sources --add https://<%= config[:xn_key] %>@gems.xnlogic.com/
-<% else -%>
-echo "No key found. You must set the key by running:"
-echo "  xnlogic vm_config --key <your key> --provision"
-exit 1
-<% end -%>
-
-hr
-echo "Configuring XN"
-sudo mkdir -p /opt/xn_apps
-sudo chown vagrant /opt/xn_apps
-cd
-
-wget http://s3.amazonaws.com/xn-dev/dist/xn.dev.1.0.47.tbz -O $HOME/xn.dev.tbz --quiet
-tar -xjf xn.dev.tbz
-rm xn.dev.tbz
-cd xn.dev
-source script/setup_stack
-echo jruby-${jruby_version} > .ruby-version
-rake --quiet new_tb_version bundle_fe_server fresh_fe_config fe_server_db_init
-
-if [ -d $HOME/$XN_CLIENT/assets ]; then
-  hr
-  echo "Configuring Assets"
-  cd $HOME/$XN_CLIENT/assets
-  if [ -f Gemfile ]; then
-    bundle install
-  fi
-  if [ -f package.json ]; then
-    npm install
-  fi
-fi
 
 sudo apt-get install -y dos2unix
-
-<% if config[:datomic_mysql] -%>
-hr
-echo "Installing and configuring MySQL"
-sudo debconf-set-selections <<< 'mysql-server mysql-server/root_password password password'
-sudo debconf-set-selections <<< 'mysql-server mysql-server/root_password_again password password'
-silent sudo apt-get install -y mysql-server
-cd $HOME/$XN_CLIENT
-mysql -uroot -ppassword < config/mysql/db.sql
-mysql -uroot -ppassword < config/mysql/user.sql
-mysql -uroot -ppassword datomic < config/mysql/table.sql
-cd -
-<% end -%>
-
-hr
-echo "Configuring Datomic Service"
-sudo rm -f /etc/init/datomic.conf
-sudo cp $HOME/$XN_CLIENT/config/datomic.conf /etc/init/datomic.conf
-sudo initctl reload-configuration
-dos2unix $HOME/$XN_CLIENT/script/install_transactor.sh
-chmod +x $HOME/$XN_CLIENT/script/install_transactor.sh
-$HOME/$XN_CLIENT/script/install_transactor.sh
-
-
-
-
-SERVER_START_SCRIPT="$HOME/$XN_CLIENT/config/start.sh"
 
 echo "Customizing .zshrc for $XN_CLIENT development"
 echo "export XN_CLIENT=$XN_CLIENT" >> ~/.zshrc
 echo "alias xn-server=$SERVER_START_SCRIPT" >> ~/.zshrc
 echo 'alias xn-console="(cd ~/$XN_CLIENT && bundle exec jruby -J-Xmx1g -J-XX:MaxPermSize=200m -J-Ddatomic.objectCacheMax=128m -S irb -I lib -r dev/console)"' >> ~/.zshrc
-echo '[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*' >> ~/.zshrc
-echo 'JRUBY_OPTS=--dev source $HOME/xn.dev/script/setup_stack' >> ~/.zshrc
 echo "alias gs='git status'" >> ~/.zshrc
 echo "alias gd='git diff -w'" >> ~/.zshrc
 echo "alias gdc='git diff -w --cached'" >> ~/.zshrc
-
 
 git config --global --add alias.co "checkout"
 git config --global --add alias.ci "commit"
@@ -124,21 +53,6 @@ git config --global --add alias.unadd "reset HEAD"
 git config --global --add alias.lg "log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)[%an]%Creset' --abbrev-commit"
 git config --global --add alias.lga "lg --all"
 git config --global --add alias.branches "submodule foreach 'git branch | grep \*'"
-
-hr
-echo "Configuring $XN_CLIENT"
-cd $HOME/$XN_CLIENT
-bundle
-torquebox deploy
-
-PROVISION_APPS=$HOME/$XN_CLIENT/apps/apps.provision.sh
-if [ -x $PROVISION_APPS ]; then
-  hr
-  echo "Provisioning Custom Apps"
-  cd $HOME/$XN_CLIENT/apps
-  $PROVISION_APPS
-  cd -
-fi
 
 hr
 echo "Configuring nginx"

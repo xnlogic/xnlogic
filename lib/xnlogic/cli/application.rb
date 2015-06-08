@@ -225,44 +225,23 @@ module Xnlogic
 
 
     def generate_vm_config
-      transactor_properties = if options['datomic_mysql']
-                                "datomic/mysql.properties.tt"
-                              elsif options['datomic_pro']
-                                "datomic/pro.properties.tt"
-                              else
-                                "datomic/free.properties.tt"
-                              end
-      datomic_installer = if datomic_pro?
-                            'datomic/install_pro_transactor.sh.tt'
-                          else
-                            'datomic/install_free_transactor.sh.tt'
-                          end
+      #transactor_properties = if options['datomic_mysql']
+      #                          "datomic/mysql.properties.tt"
+      #                        elsif options['datomic_pro']
+      #                          "datomic/pro.properties.tt"
+      #                        else
+      #                          "datomic/free.properties.tt"
+      #                        end
       base_templates = {
         "Vagrantfile.tt" => "Vagrantfile",
         "Gemfile.tt" => "Gemfile",
         "config/vagrant.provision.tt" => "config/vagrant.provision",
         "config/vagrant.up.tt" => "config/vagrant.up",
-        "config/datomic.conf" => "config/datomic.conf",
-        "config/start.sh" => "config/start.sh",
-        "config/diagnostics.sh" => "config/diagnostics.sh",
-        transactor_properties => "config/transactor.properties",
         "config/xnlogic.conf.tt" => "config/xnlogic.conf",
-        datomic_installer => 'script/install_transactor.sh',
       }
 
       if neo?
         base_templates['config/neo4j.properties.tt'] = 'config/neo4j.properties'
-      end
-
-      if datomic_pro?
-        base_templates['datomic/m2_settings.xml.tt'] = 'config/m2_settings.xml'
-        base_templates['datomic/pom.xml.tt'] = 'config/pom.xml'
-        base_templates['datomic/get_datomic_jar.sh.tt'] = 'script/get_datomic_jar.sh'
-        if options['datomic_mysql']
-          base_templates['datomic/mysql/db.sql'] = 'config/mysql/db.sql'
-          base_templates['datomic/mysql/table.sql'] = 'config/mysql/table.sql'
-          base_templates['datomic/mysql/user.sql'] = 'config/mysql/user.sql'
-        end
       end
 
       _generate_templates(base_templates, 'vagrant', template_options, 'Creating Vagrant configuration')
@@ -280,7 +259,6 @@ module Xnlogic
         "Readme.md.tt" => "Readme.md",
         "logback.xml.tt" => "logback.xml",
         "config.ru.tt" => "config.ru",
-        "dev/console.rb.tt" => "dev/console.rb",
         "config/mcfly_config.yml.tt" => "config/mcfly_config.yml",
         "tasks/deploy.rb.tt" => "tasks/deploy.rb",
         "torquebox.yml.tt" => "torquebox.yml",
