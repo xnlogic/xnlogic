@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+# Usage: script/create_sample_db
+
+echo Running: xn --token admin create-sample-db
+xn --token admin create-sample-db
+
+# TODO: trigger user update in auth container
+#echo "Running fe-server's rake task 'users' ..."
+#cd ~/xn.dev/fe/fe-server
+#rake users

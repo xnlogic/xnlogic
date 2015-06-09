@@ -1,0 +1,10 @@
+FROM xnlogic/api-base
+
+ENV XN_CLIENT   <%= config[:name] %>
+ENV XN_ENV      development
+
+COPY . /app
+
+RUN ruby --dev bundle install --path $VENDOR_BUNDLE
+
+ENV PACER_MANUAL_JARS true

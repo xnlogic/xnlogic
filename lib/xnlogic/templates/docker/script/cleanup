@@ -1,0 +1,29 @@
+#! /bin/sh
+
+cd $HOME/$XN_CLIENT
+
+if [ -z "$1" ]; then
+  regex="\\b${XN_CLIENT}_[a-z]\\+_run_[0-9]\\+\\b"
+else
+  regex="\\b${XN_CLIENT}_${1}_run_[0-9]\\+\\b"
+fi
+
+containers=$(docker ps -a | \
+  grep $regex | \
+  grep 'Exited ([0-9]\+)' | \
+  cut -d ' ' -f 1)
+
+if [ "$containers" ]; then
+  docker rm $containers
+fi
+
+if [ "$(docker images -af dangling=true -q)" ]; then 
+  docker images -af dangling=true -q | \
+    xargs docker rmi -f
+fi
+
+# clean up orphaned data volumes
+if [ "--data" = "$1" ]; then
+  docker run -v /var/run/docker.sock:/var/run/docker.sock -v /var/lib/docker:/var/lib/docker --rm martin/docker-cleanup-volumes
+fi
+

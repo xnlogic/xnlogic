@@ -1,0 +1,5 @@
+#! /bin/sh
+
+cd $HOME/$XN_CLIENT
+
+docker-compose up -d --no-recreate api

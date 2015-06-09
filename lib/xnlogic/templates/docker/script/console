@@ -1,0 +1,4 @@
+#! /bin/sh
+
+cd $HOME/$XN_CLIENT
+docker-compose run --rm --service-ports api console

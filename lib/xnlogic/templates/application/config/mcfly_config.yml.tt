@@ -1,18 +1,23 @@
 ---
 development:
   protocol: free
+  host: $DATOMIC_PORT_4334_TCP_ADDR
+  port: $DATOMIC_PORT_4334_TCP_PORT
+  h2port: $DATOMIC_PORT_4335_TCP_PORT
+  h2webport: $DATOMIC_PORT_4336_TCP_PORT
   peer:
     # These settings will only be effective on first load. They will have no effect after datomic is started.
     "datomic.objectCacheMax": '64m'
 
 production:
   protocol: free
+  host: $DATOMIC_PORT_4334_TCP_ADDR
+  port: $DATOMIC_PORT_4334_TCP_PORT
+  h2port: $DATOMIC_PORT_4335_TCP_PORT
+  h2webport: $DATOMIC_PORT_4336_TCP_PORT
   peer:
     # These settings will only be effective on first load. They will have no effect after datomic is started.
     "datomic.objectCacheMax": '512m'
-    # I am not certain that the memoryIndex* ones have any effect at all.
-    "datomic.memoryIndexMax":
-    "datomic.memoryIndexThreshold":
 
 sample_sql:
   protocol: sql
@@ -20,19 +25,15 @@ sample_sql:
   database: datomic
   user: datomic
   password: datomic
-  host:
-  port:
-
-sample_free:
-  protocol: free
-  host:
-  port:
-  h2port:
-  h2webport:
+  host: $MYSQL_PORT_3306_TCP_ADDR
+  port: $MYSQL_PORT_3306_TCP_PORT
 
 sample_dev:
   protocol: dev
-  host:
+  host: $DATOMIC_PORT_4334_TCP_ADDR
+  port: $DATOMIC_PORT_4334_TCP_PORT
+  h2port: $DATOMIC_PORT_4335_TCP_PORT
+  h2webport: $DATOMIC_PORT_4336_TCP_PORT
 
 sample_dynamo_db:
   protocol: ddb

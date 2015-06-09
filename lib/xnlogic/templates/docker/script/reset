@@ -1,0 +1,13 @@
+#! /bin/sh
+
+cd $HOME/$XN_CLIENT
+
+docker-compose stop
+docker-compose rm -v -f
+if [ -d vendor/bundle ]; then
+  rm -r vendor/bundle
+fi
+if [ -d vendor/jars ]; then
+  rm -r vendor/jars
+fi
+script/build

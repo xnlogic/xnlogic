@@ -238,6 +238,15 @@ module Xnlogic
         "config/vagrant.provision.tt" => "config/vagrant.provision",
         "config/vagrant.up.tt" => "config/vagrant.up",
         "config/xnlogic.conf.tt" => "config/xnlogic.conf",
+        "docker/Dockerfile.tt" => "Dockerfile",
+        "docker/docker-compose.yml.tt" => "docker-compose.yml",
+        "docker/docker/api-prod/Dockerfile.tt" => "docker/api-prod/Dockerfile",
+        "docker/script/build" => "docker/script/build",
+        "docker/script/cleanup" => "docker/script/cleanup",
+        "docker/script/console" => "docker/script/console",
+        "docker/script/create_sample_db" => "docker/script/create_sample_db",
+        "docker/script/reset" => "docker/script/reset",
+        "docker/script/server" => "docker/script/server",
       }
 
       if neo?
@@ -261,8 +270,6 @@ module Xnlogic
         "config.ru.tt" => "config.ru",
         "config/mcfly_config.yml.tt" => "config/mcfly_config.yml",
         "tasks/deploy.rb.tt" => "tasks/deploy.rb",
-        "torquebox.yml.tt" => "torquebox.yml",
-        "torquebox_init.rb.tt" => "torquebox_init.rb",
         "lib/gemname.rb.tt" => "lib/#{namespaced_path}.rb",
         "lib/gemname/version.rb.tt" => "lib/#{namespaced_path}/version.rb",
         "lib/gemname/initializers/inflections.rb.tt" => "lib/#{namespaced_path}/initializers/inflections.rb",

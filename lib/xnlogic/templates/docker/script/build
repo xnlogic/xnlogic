@@ -1,0 +1,15 @@
+#! /bin/sh
+
+cd $HOME/$XN_CLIENT
+
+if [ -z "$1" ]; then
+  container="api"
+else
+  container="$1"
+fi
+
+docker-compose stop $container
+docker-compose rm -f $container
+docker-compose build $container
+docker-compose run --no-deps $container deps
+script/cleanup $container

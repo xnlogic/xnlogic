@@ -20,9 +20,7 @@ Gem::Specification.new do |s|
   s.required_rubygems_version = '>= 2.2.0'
   s.metadata['allowed_push_host'] = 'https://your.server.here'
 
-  s.add_dependency 'rack', '1.5.2'
-  s.add_dependency 'pacer', '>= 2.0.6'
-  s.add_dependency 'pacer-model'
+  s.add_dependency 'pacer-model', '>= 2.0.0'
 <% if config[:neo4j] -%>
   s.add_dependency 'pacer-neo4j2'
 <%   if config[:neo4j_enterprise] -%>
@@ -41,10 +39,6 @@ Gem::Specification.new do |s|
   s.add_dependency 'pacer-mcfly-free'<%= ", " + config[:optional_datomic_version].inspect if config[:optional_datomic_version] %>
 <% end -%>
 
-  s.add_dependency 'jruby-openssl', '0.9.6'
-  s.add_dependency 'torquebox', '3.1.1'
-  s.add_dependency 'torquebox-messaging', '3.1.1'
-  s.add_development_dependency 'torquebox-remote-deployer', '0.1.1'
   s.add_development_dependency 'xnlogic'
 
   s.add_development_dependency 'rspec-core', '~>2.13.0'

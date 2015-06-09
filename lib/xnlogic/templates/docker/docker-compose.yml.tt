@@ -1,0 +1,31 @@
+data:
+  image: xnlogic/api-data
+datomicfree:
+  image: xnlogic/datomic-free
+  volumes_from:
+    - data
+api:
+  build: .
+  links:
+    - datomicfree:datomic
+  volumes:
+    - ./:/app
+  volumes_from:
+    - data
+  environment:
+    XN_ENV: development
+    RELOAD: true
+    JAVA_OPTS: "-XX:+UseCodeCacheFlushing -Xmx2g -XX:MaxPermSize=256m -Ddatomic.objectCacheMax=64m"
+  ports:
+    - '8080:8080'
+prod:
+  build: docker/api-prod
+  links:
+    - datomicfree:datomic
+  volumes_from:
+    - data
+  environment:
+    JAVA_OPTS: "-server -XX:+UseCodeCacheFlushing -Xmx2g -XX:MaxPermSize=256m -Ddatomic.objectCacheMax=64m"
+  ports:
+    - '8080:8080'
+

@@ -1,9 +1,13 @@
+puts 'Booting xnlogic core'
+$:.unshift File.expand_path('../lib', __FILE__)
 begin
-  require 'pacer-model'
   require '<%= config[:namespaced_path] %>'
-  logger = TorqueBox::Logger.new("XN")
-  container = PacerModel::AppsContainer.new(ENV['APPS_PATH'], logger)
-  run PacerModel::RackWrapper.new(container)
+  require 'rack/static'
+  container = PacerModel::AppsContainer.new(ENV['APPS_PATH'])
+  map '/v1' do
+    use Rack::Static, :urls => ["/public"]
+    run PacerModel::RackWrapper.new(container)
+  end
 rescue LoadError => e
   puts "ERROR: failed to load <%= config[:name] %>"
   puts e
