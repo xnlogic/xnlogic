@@ -1,122 +1,29 @@
 require 'java'
+require 'rubygems'
 
-# XN settings must be configured before calling require 'pacer-model'
 java.lang.System.setProperty("xn.relVersion", "2")
 
-require 'rubygems'
-require 'bundler/setup'
-require 'active_model'
-require 'active_model/naming'
-require 'active_support/core_ext'
-require 'pacer'
-require 'pacer-model'
-require 'pathname'
+require 'pacer-model/loader'
 <% if config[:datomic_mysql] -%>
 require 'pacer-mcfly-mysql'
 #require 'mysql-connector-java-<%=config[:mysql_version]%>-bin.jar'
+
 <% end -%>
+PacerModel.project(binding, __FILE__, "<%= config[:constant_name] %>", '<%= config[:name] %>', '<%= config[:graph] %>')
 
-require '<%= config[:namespaced_path] %>/initializers/inflections'
-
-module <%= config[:constant_name] %>
-  VertexDsl = PacerModel::VertexDsl
-  START_TIME = Time.now unless const_defined? :START_TIME
-
-  class << self
-    include PacerModel::AppBase
-
-    def lib_dir
-      Pathname.new(File.expand_path(__FILE__)).parent
-    end
-
-    def config_file(name)
-      lib_dir.parent + 'config' + name
-    end
-
-    def env
-      ENV['XN_ENV'] || 'development'
-    end
-
-    def sample_app(args)
-      unless args.is_a? Hash
-        puts "sample_app takes an args hash with :graph and :client_name required."
-        return
-      end
-      unless args.keys.include? :client_name and args.keys.include? :graph
-        puts ":graph and :client_name are required arguments"
-        return
-      end
-      require '<%= config[:namespaced_path] %>/fixtures'
-      Dir[<%= config[:constant_name] %>.lib_dir + "fixtures/*.{rb,class}"].each do |file|
-        require Pathname.new(file).relative_path_from(<%= config[:constant_name] %>.lib_dir)
-      end
-      a = app(args)
-      Fixtures.load_fixtures(a)
-      a
-    end
-
-    # Usage: permission_models[x].new(app).load!
-    # Note, it's load! method must be idempotent.
-    def permission_models
-      {
-        'role_based' => <%= config[:constant_name] %>::RoleBasedPermissions
-      }
-    end
-
-    # Returns the time pacer was last reloaded (or when it was started).
-    def reload_time
-      if defined? @reload_time
-        @reload_time
-      else
-        START_TIME
-      end
-    end
-
-    # Reload all Ruby modified files in the Pacer library. Useful for debugging
-    # in the console. Does not do any of the fancy stuff that Rails reloading
-    # does.  Certain types of changes will still require restarting the
-    # session.
-    def reload!
-      lib_dir.find do |path|
-        if path.extname == '.rb' and path.mtime > reload_time
-          puts path.to_s
-          load path.to_s rescue nil
-        end
-      end
-      @reload_time = Time.now
-    end
-  end
+if PacerModel.env == 'development'
+  PacerModel.default_user_strategy = PacerModel::AdminUserStrategy
+else
+  PacerModel.default_user_strategy = PacerModel::TokenUserStrategy
 end
 
-require '<%= config[:namespaced_path] %>/version'
-require '<%= config[:namespaced_path] %>/type'
-
-PacerModel.default_graph_engine = <%= config[:graph].inspect %>
-PacerModel.load_mcfly_config_yaml(<%= config[:constant_name] %>.config_file('mcfly_config.yml'), <%= config[:constant_name] %>.env)
-
-PacerModel.applications['<%= config[:name] %>'] = <%= config[:constant_name] %>
-PacerModel.property_namespaces << <%= config[:constant_name] %>::Type::Property
-PacerModel.argument_namespaces << <%= config[:constant_name] %>::Type::Argument
-PacerModel.part_namespaces << <%= config[:constant_name] %>
-PacerModel.on_part_registered << lambda do |part|
-  if part.name =~ /^<%= config[:constant_name] %>::/
-    <%= config[:constant_name] %>.parts[part.key.to_s] = part
-  end
-end
-
-#NOTE: meta contains some common parts. So, load meta first to ensure
-#      common parts are loaded into other parts on boot
-Dir[<%= config[:constant_name] %>.lib_dir + '<%= config[:namespaced_path] %>/meta/*.{class,rb}'].each do |file|
-  require Pathname.new(file).relative_path_from(<%= config[:constant_name] %>.lib_dir)
-end
+# NOTE: All common parts (and no other parts) should be required before this line:
 <%= config[:constant_name] %>.common_parts!
-# dirs under lib/<%= config[:namespaced_path] %> that contain groupings of parts
+
+# Dirs under lib/<%= config[:namespaced_path] %> that contain groupings of parts
 sections = %w[
   parts
 ]
-
-# Now that we have DEFAULT_CONSTANTS being referenced, if load order is important...
-#require <%= config[:constant_name] %>.lib_dir + "<%= config[:namespaced_path] %>/group/part"
 
 Dir[<%= config[:constant_name] %>.lib_dir + "<%= config[:namespaced_path] %>/{#{sections.join ','}}/*.{rb,class}"].each do |file|
   require Pathname.new(file).relative_path_from(<%= config[:constant_name] %>.lib_dir)
