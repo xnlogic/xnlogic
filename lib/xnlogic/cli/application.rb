@@ -65,6 +65,7 @@ module Xnlogic
     def application
       require_key
       generate_vm_config if options['vm_config']
+      generate_docker_config if options['docker_config']
       generate_application
       options['application_version'] = Xnlogic::VERSION
       write_options
@@ -96,6 +97,7 @@ module Xnlogic
 
     def vm_config
       generate_vm_config
+      generate_docker_config if options['docker_config']
       options['vm_config_version'] = Xnlogic::VERSION
       write_options
       install_vagrant_note
@@ -225,6 +227,23 @@ module Xnlogic
 
 
     def generate_vm_config
+      base_templates = {
+        "Vagrantfile.tt" => "Vagrantfile",
+        "Gemfile.tt" => "Gemfile",
+        "config/vagrant.provision.tt" => "config/vagrant.provision",
+        "config/vagrant.up.tt" => "config/vagrant.up",
+        "config/xnlogic.conf.tt" => "config/xnlogic.conf",
+      }
+
+      if neo?
+        base_templates['config/neo4j.properties.tt'] = 'config/neo4j.properties'
+      end
+
+      _generate_templates(base_templates, 'vagrant', template_options, 'Creating Vagrant configuration')
+    end
+
+    def generate_docker_config
+      # use same logic to choose datomic docker image?
       #transactor_properties = if options['datomic_mysql']
       #                          "datomic/mysql.properties.tt"
       #                        elsif options['datomic_pro']
@@ -233,27 +252,18 @@ module Xnlogic
       #                          "datomic/free.properties.tt"
       #                        end
       base_templates = {
-        "Vagrantfile.tt" => "Vagrantfile",
-        "Gemfile.tt" => "Gemfile",
-        "config/vagrant.provision.tt" => "config/vagrant.provision",
-        "config/vagrant.up.tt" => "config/vagrant.up",
-        "config/xnlogic.conf.tt" => "config/xnlogic.conf",
-        "docker/Dockerfile.tt" => "Dockerfile",
-        "docker/docker-compose.yml.tt" => "docker-compose.yml",
-        "docker/docker/api-prod/Dockerfile.tt" => "docker/api-prod/Dockerfile",
-        "docker/script/build" => "docker/script/build",
-        "docker/script/cleanup" => "docker/script/cleanup",
-        "docker/script/console" => "docker/script/console",
-        "docker/script/create_sample_db" => "docker/script/create_sample_db",
-        "docker/script/reset" => "docker/script/reset",
-        "docker/script/server" => "docker/script/server",
+        "Dockerfile.tt" => "Dockerfile",
+        "docker-compose.yml.tt" => "docker-compose.yml",
+        "docker/api-prod/Dockerfile.tt" => "docker/api-prod/Dockerfile",
+        "script/build" => "script/build",
+        "script/cleanup" => "script/cleanup",
+        "script/console" => "script/console",
+        "script/create_sample_db" => "script/create_sample_db",
+        "script/reset" => "script/reset",
+        "script/server" => "script/server",
       }
 
-      if neo?
-        base_templates['config/neo4j.properties.tt'] = 'config/neo4j.properties'
-      end
-
-      _generate_templates(base_templates, 'vagrant', template_options, 'Creating Vagrant configuration')
+      _generate_templates(base_templates, 'docker', template_options, 'Creating Docker configuration')
     end
 
 

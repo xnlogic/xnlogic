@@ -59,6 +59,8 @@ module Xnlogic
     def self.vm_config_options
       method_option "key", type: :string, banner:
         "You must supply an XN key to be able to download the proprietary dependencies needed to boot your application"
+      method_option "docker_config", type: :boolean, default: true, banner:
+        "Generate Docker configuration files"
       method_option "cpus", type: :numeric, banner:
         "Number of Virtual CPUs the Development VM should use (default 2)"
       method_option "memory", type: :numeric, banner:

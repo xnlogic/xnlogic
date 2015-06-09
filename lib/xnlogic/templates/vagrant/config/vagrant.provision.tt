@@ -18,14 +18,20 @@ hr() {
 }
 
 hr
+echo "Upgrading Docker"
+silent sudo sh -c "curl https://get.docker.io/gpg | apt-key add -"
+silent sudo sh -c "echo deb http://get.docker.io/ubuntu docker main > /etc/apt/sources.list.d/docker.list"
+silent sudo apt-get update
+sudo apt-get install lxc-docker -y
+silent sudo curl -L https://github.com/docker/compose/releases/download/1.2.0/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
+sudo chmod +x /usr/local/bin/docker-compose
+
+hr
 echo "Configuring environment"
 export XN_CLIENT=<%= config[:name] %>
 export DEBIAN_FRONTEND=noninteractive
 export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
-
-# make jruby processes boot faster
-#silent sudo apt-get update
 
 hr
 echo "Setting timezone:"

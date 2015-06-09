@@ -13,7 +13,6 @@ hr() {
 
 export XN_CLIENT=<%= config[:name] %>
 silent dos2unix $HOME/$XN_CLIENT/script/*
-chmod +x $SERVER_START_SCRIPT
 chmod +x $HOME/$XN_CLIENT/script/*
 
 sudo npm install -g xn-cli
