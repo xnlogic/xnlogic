@@ -8,4 +8,4 @@ else
   container="$1"
 fi
 
-docker-compose run --rm $container console
+docker-compose run --rm $container deps

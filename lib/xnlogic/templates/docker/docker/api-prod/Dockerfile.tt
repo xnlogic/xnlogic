@@ -10,4 +10,4 @@ ENV PACER_MANUAL_JARS true
 COPY . /app
 
 # Bundle in deployment mode
-RUN ruby --dev bundle install --deployment --path $VENDOR_BUNDLE
+RUN ruby --dev -S bundle install --deployment --path $VENDOR_BUNDLE

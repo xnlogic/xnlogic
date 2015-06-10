@@ -16,7 +16,7 @@ server {
   access_log            /var/log/nginx/http_app.xnlogic.com.access.log;
   error_log             /var/log/nginx/http_app.xnlogic.com.error.log;
 
-  location / {
+  location /v1 {
     proxy_pass          http://localhost:8080;
     proxy_read_timeout  90;
 

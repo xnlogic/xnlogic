@@ -20,6 +20,7 @@ Gem::Specification.new do |s|
   s.required_rubygems_version = '>= 2.2.0'
   s.metadata['allowed_push_host'] = 'https://your.server.here'
 
+  s.add_dependency 'puma'
   s.add_dependency 'pacer-model', '>= 2.0.0'
 <% if config[:neo4j] -%>
   s.add_dependency 'pacer-neo4j2'
