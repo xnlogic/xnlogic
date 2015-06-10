@@ -8,4 +8,19 @@ else
   container="$1"
 fi
 
-docker-compose up -d --no-recreate $container
+message() {
+  echo Initiated server boot for $container
+  echo
+  echo Use the docker-compose tool from the \~/$XN_CLIENT directory to 
+  echo manage your running containers.
+  echo
+  echo 'Key commands:'
+  echo '  docker-compose ps       - show running containers'
+  echo '  docker-compose stop api - shut down the api server'
+  echo '  docker-compose logs api - show the api log'
+  echo '  docker-compose logs     - show all container logs'
+  echo
+  docker-compose ps
+}
+
+docker-compose up -d --no-recreate $container && message
