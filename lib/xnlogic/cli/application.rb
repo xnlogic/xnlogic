@@ -256,11 +256,13 @@ module Xnlogic
         "docker-compose.yml.tt" => "docker-compose.yml",
         "docker/api-prod/Dockerfile.tt" => "docker/api-prod/Dockerfile",
         "script/build" => "script/build",
+        "script/bundle" => "script/bundle",
         "script/cleanup" => "script/cleanup",
         "script/console" => "script/console",
         "script/create_sample_db" => "script/create_sample_db",
         "script/reset" => "script/reset",
         "script/server" => "script/server",
+        "script/upgrade" => "script/upgrade",
       }
 
       _generate_templates(base_templates, 'docker', template_options, 'Creating Docker configuration')
