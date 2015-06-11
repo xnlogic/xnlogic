@@ -260,6 +260,7 @@ module Xnlogic
         "script/cleanup" => "script/cleanup",
         "script/console" => "script/console",
         "script/create_sample_db" => "script/create_sample_db",
+        "script/dev_vm_upgrade" => "script/dev_vm_upgrade",
         "script/export_data" => "script/export_data",
         "script/import_data" => "script/import_data",
         "script/reset" => "script/reset",

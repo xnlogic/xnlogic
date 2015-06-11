@@ -1,0 +1,41 @@
+#!/bin/sh
+
+silent() {
+  if [[ $debug ]] ; then
+    "$@"
+  else
+    "$@" &>/dev/null
+  fi
+}
+hr() {
+  printf "%$(tput cols)s\n"|tr " " "-"
+}
+
+hr
+echo Removing legacy stuff from VM
+silent sudo service datomic stop
+sudo rm -rf /etc/datomic /etc/init/datomic.conf
+silent rvm implode --force
+sed -i -e /rvm/d .profile .zshrc .bashrc
+
+hr
+echo "Upgrading Docker"
+silent sudo sh -c "curl https://get.docker.io/gpg | apt-key add -"
+silent sudo sh -c "echo deb http://get.docker.io/ubuntu docker main > /etc/apt/sources.list.d/docker.list"
+silent sudo apt-get update
+silent sudo apt-get install lxc-docker -y
+wget -q -O docker-compose https://github.com/docker/compose/releases/download/1.2.0/docker-compose-`uname -s`-`uname -m`
+chmod +x docker-compose
+sudo mv docker-compose /usr/local/bin/docker-compose
+sudo cp /usr/local/bin/docker-compose /usr/local/bin/fig
+
+hr
+echo "Simplifying Ruby installation"
+silent sudo apt-get install ruby -y
+silent gem install xnlogic
+
+hr
+echo Copying data into docker data container
+cd $HOME/$XN_CLIENT
+docker-compose up -d --no-recreate data
+script/import_data
