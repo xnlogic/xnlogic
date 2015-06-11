@@ -1,0 +1,14 @@
+#!/bin/sh
+
+cd $HOME/$XN_CLIENT
+
+if [ -z "$1" ]; then
+  echo "Usage $0 /absolute/path/to/target"
+  exit 1
+fi
+
+docker-compose stop
+mkdir -p $1
+echo Aliasing $1 to /outside
+docker run --rm --volumes-from ${XN_CLIENT}_data_1 -v $1:/outside busybox \
+  find /opt/xn_apps -maxdepth 1 -exec cp -a {} /outside +

@@ -1,0 +1,7 @@
+#!/bin/sh
+
+cd $HOME/$XN_CLIENT
+
+docker-compose stop
+docker run --rm --volumes-from ${XN_CLIENT}_data_1 -v /opt/xn_apps:/outside busybox \
+  find /outside -maxdepth 1 -exec echo cp -a {} /opt/xn_apps +
