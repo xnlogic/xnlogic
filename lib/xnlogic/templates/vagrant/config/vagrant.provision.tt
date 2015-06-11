@@ -22,10 +22,10 @@ echo "Upgrading Docker"
 silent sudo sh -c "curl https://get.docker.io/gpg | apt-key add -"
 silent sudo sh -c "echo deb http://get.docker.io/ubuntu docker main > /etc/apt/sources.list.d/docker.list"
 silent sudo apt-get update
-sudo apt-get install lxc-docker -y
-silent curl -L https://github.com/docker/compose/releases/download/1.2.0/docker-compose-`uname -s`-`uname -m` > docker-compose
+silent sudo apt-get install lxc-docker -y
+curl --progress-bar -L https://github.com/docker/compose/releases/download/1.2.0/docker-compose-`uname -s`-`uname -m` > docker-compose
+chmod +x docker-compose
 sudo mv docker-compose /usr/local/bin/docker-compose
-sudo chmod +x /usr/local/bin/docker-compose
 sudo cp /usr/local/bin/docker-compose /usr/local/bin/fig
 
 hr
@@ -45,8 +45,8 @@ sudo apt-get install -y dos2unix
 
 echo "Customizing .zshrc for $XN_CLIENT development"
 echo "export XN_CLIENT=$XN_CLIENT" >> ~/.zshrc
-echo "alias xn-server=$SERVER_START_SCRIPT" >> ~/.zshrc
-echo 'alias xn-console="(cd ~/$XN_CLIENT && bundle exec jruby -J-Xmx1g -J-XX:MaxPermSize=200m -J-Ddatomic.objectCacheMax=128m -S irb -I lib -r dev/console)"' >> ~/.zshrc
+echo "alias xn-server=~/$XN_CLIENT/script/server" >> ~/.zshrc
+echo "alias xn-console=~/$XN_CLIENT/script/console" >> ~/.zshrc
 echo "alias gs='git status'" >> ~/.zshrc
 echo "alias gd='git diff -w'" >> ~/.zshrc
 echo "alias gdc='git diff -w --cached'" >> ~/.zshrc

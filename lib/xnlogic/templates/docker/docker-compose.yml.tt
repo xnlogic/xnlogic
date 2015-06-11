@@ -5,7 +5,7 @@ datomicfree:
   volumes_from:
     - data
 api:
-  build: .
+  build: docker/api-dev
   links:
     - datomicfree:datomic
   volumes:
@@ -19,7 +19,7 @@ api:
   ports:
     - '8080:8080'
 prod:
-  build: docker/api-prod
+  build: .
   links:
     - datomicfree:datomic
   volumes_from:
@@ -28,4 +28,3 @@ prod:
     JAVA_OPTS: "-server -XX:+UseCodeCacheFlushing -Xmx2g -XX:MaxPermSize=256m -Ddatomic.objectCacheMax=64m"
   ports:
     - '8080:8080'
-

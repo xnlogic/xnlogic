@@ -1,10 +1,13 @@
 FROM xnlogic/api-base
 
+# NB: This is the PRODUCTION Dockerfile. See also docker/api-dev.
+
 ENV XN_CLIENT   <%= config[:name] %>
-ENV XN_ENV      development
+ENV XN_ENV      production
+ENV PACER_MANUAL_JARS true
+#ENV XN_BKP_GPG_EMAIL  ...
 
 COPY . /app
 
-RUN ruby --dev -S bundle install --path $VENDOR_BUNDLE
-
-ENV PACER_MANUAL_JARS true
+# Bundle in deployment mode. This will only work if the app has been bundled before
+RUN ruby --dev -S bundle install --deployment --path $VENDOR_BUNDLE

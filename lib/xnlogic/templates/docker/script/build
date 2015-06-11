@@ -10,6 +10,8 @@ fi
 
 docker-compose stop $container
 docker-compose rm -f $container
+docker-compose pull
+docker pull xnlogic/api-base
 docker-compose build $container
 docker-compose run --no-deps $container deps
 script/cleanup $container

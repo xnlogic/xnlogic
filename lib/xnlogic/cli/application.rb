@@ -254,7 +254,7 @@ module Xnlogic
       base_templates = {
         "Dockerfile.tt" => "Dockerfile",
         "docker-compose.yml.tt" => "docker-compose.yml",
-        "docker/api-prod/Dockerfile.tt" => "docker/api-prod/Dockerfile",
+        "docker/api-dev/Dockerfile.tt" => "docker/api-dev/Dockerfile",
         "script/build" => "script/build",
         "script/bundle" => "script/bundle",
         "script/cleanup" => "script/cleanup",
@@ -262,7 +262,6 @@ module Xnlogic
         "script/create_sample_db" => "script/create_sample_db",
         "script/reset" => "script/reset",
         "script/server" => "script/server",
-        "script/upgrade" => "script/upgrade",
       }
 
       _generate_templates(base_templates, 'docker', template_options, 'Creating Docker configuration')

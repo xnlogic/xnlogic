@@ -14,11 +14,11 @@ message() {
   echo Use the docker-compose tool from the \~/$XN_CLIENT directory to 
   echo manage your running containers.
   echo
-  echo 'Key commands:'
-  echo '  docker-compose ps       - show running containers'
-  echo '  docker-compose stop api - shut down the api server'
-  echo '  docker-compose logs api - show the api log'
-  echo '  docker-compose logs     - show all container logs'
+  echo "Key commands:"
+  echo "  docker-compose ps       - show running containers"
+  echo "  docker-compose stop $container - shut down the $container server"
+  echo "  docker-compose logs $container - show the $container log"
+  echo "  docker-compose logs     - show all container logs"
   echo
   docker-compose ps
 }
