@@ -15,4 +15,5 @@ export XN_CLIENT=<%= config[:name] %>
 silent dos2unix $HOME/$XN_CLIENT/script/*
 chmod +x $HOME/$XN_CLIENT/script/*
 
-sudo npm install -g xn-cli
+silent sudo npm install -g xn-cli
+silent sudo gem install xnlogic

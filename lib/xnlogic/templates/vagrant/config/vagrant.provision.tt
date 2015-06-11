@@ -17,13 +17,19 @@ hr() {
   printf "%$(tput cols)s\n"|tr " " "-"
 }
 
+# Remove legacy stuff from VM
+silent sudo service datomic stop
+sudo rm -rf /opt/datomic /opt/xn_apps /etc/datomic /etc/init/datomic.conf
+silent rvm implode --force
+sed -i -e /rvm/d .profile .zshrc .bashrc
+
 hr
 echo "Upgrading Docker"
 silent sudo sh -c "curl https://get.docker.io/gpg | apt-key add -"
 silent sudo sh -c "echo deb http://get.docker.io/ubuntu docker main > /etc/apt/sources.list.d/docker.list"
 silent sudo apt-get update
 silent sudo apt-get install lxc-docker -y
-curl --progress-bar -L https://github.com/docker/compose/releases/download/1.2.0/docker-compose-`uname -s`-`uname -m` > docker-compose
+wget -q -O docker-compose https://github.com/docker/compose/releases/download/1.2.0/docker-compose-`uname -s`-`uname -m`
 chmod +x docker-compose
 sudo mv docker-compose /usr/local/bin/docker-compose
 sudo cp /usr/local/bin/docker-compose /usr/local/bin/fig
@@ -34,6 +40,8 @@ export XN_CLIENT=<%= config[:name] %>
 export DEBIAN_FRONTEND=noninteractive
 export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
+silent sudo apt-get install -y ruby dos2unix
+
 
 hr
 echo "Setting timezone:"
@@ -41,7 +49,6 @@ echo "$timezone" | sudo tee /etc/timezone
 silent sudo dpkg-reconfigure --frontend noninteractive tzdata
 hr
 
-sudo apt-get install -y dos2unix
 
 echo "Customizing .zshrc for $XN_CLIENT development"
 echo "export XN_CLIENT=$XN_CLIENT" >> ~/.zshrc
