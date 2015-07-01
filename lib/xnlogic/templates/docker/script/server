@@ -3,7 +3,7 @@
 cd $HOME/$XN_CLIENT
 
 if [ -z "$1" ]; then
-  container="api"
+  container="dev"
 else
   container="$1"
 fi
@@ -23,5 +23,4 @@ message() {
   docker-compose ps
 }
 
-docker-compose stop $container
-docker-compose up -d --no-recreate $container && message
+docker-compose up -d $container && message

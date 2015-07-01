@@ -1,0 +1,13 @@
+#!/bin/sh
+
+if [ -z "$1" ]; then
+  echo Usage:
+  echo
+  echo '$0 TOKEN'
+  echo   NB: In development mode you can just use the desired database name as the token
+else
+  docker run --rm --link ${XN_CLIENT}_api_1:api -e "LMTOKEN='$1'" -v $(pwd):/app ${XN_CLIENT}_api bundle exec apps/admin/script/generate_filter_groups.rb
+  docker run --rm --link ${XN_CLIENT}_api_1:api -e "LMTOKEN='$1'" -v $(pwd):/app ${XN_CLIENT}_api bundle exec apps/admin/script/generate_model_parts.rb
+  docker run --rm --link ${XN_CLIENT}_api_1:api -e "LMTOKEN='$1'" -v $(pwd):/app ${XN_CLIENT}_api bundle exec apps/admin/script/generate_search_results.rb
+  docker run --rm --link ${XN_CLIENT}_api_1:api -e "LMTOKEN='$1'" -v $(pwd):/app ${XN_CLIENT}_api bundle exec apps/admin/script/generate_model_actions.rb
+fi

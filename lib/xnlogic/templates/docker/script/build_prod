@@ -1,0 +1,133 @@
+#!/bin/bash
+
+cd $HOME/$XN_CLIENT
+
+rev=$(script/git-revision)
+
+rebuild() {
+  list=$(docker images | grep $1 | tr -s ' ' | cut -d ' ' -f -2 | tr ' ' :)
+  if [ "$list" ]; then
+    docker rmi $list
+  fi
+  docker build -t $1 .
+  docker tag $1 $1:$rev
+}
+
+pull() {
+  echo "Pulling base images"
+  docker pull xnlogic/api-base \
+    && echo "Updating caches" \
+    && docker pull $XN_CLIENT/api \
+    && docker pull $XN_CLIENT/simple-auth \
+    && docker pull $XN_CLIENT/nginx
+  return $!
+}
+
+build_api() {
+  echo Building $XN_CLIENT/api image
+  rebuild $XN_CLIENT/api
+  return $!
+}
+
+build_auth() {
+  echo Building $XN_CLIENT/simple-auth image
+  cd apps/simple-auth
+  rebuild $XN_CLIENT/simple-auth
+  auth=$!
+  cd -
+  return $auth
+}
+
+build_nginx() {
+  echo Building static assets into $XN_CLIENT/nginx image
+
+  # compile apps/admin
+  docker-compose run --rm admin script/_build.sh
+  admin=$!
+  rm -rf docker/nginx/root
+  cp -R apps/admin/pkg docker/nginx/root
+
+  # build container
+  cd docker/nginx
+  rebuild $XN_CLIENT/nginx
+  cd -
+  nginx=$!
+  if [ $admin -a $lmui -a $nginx ]; then
+    return 0
+  else
+    return 1
+  fi
+}
+
+build() {
+  pull
+  api=build_api
+  auth=build_auth
+  nginx=build_nginx
+  if [ $api -a $auth -a $nginx ]; then
+    echo Build successful.
+    return 0
+  else
+    echo Build failed.
+    return 1
+  fi
+}
+
+push_api() {
+  echo docker push $XN_CLIENT/api \
+   && docker push $XN_CLIENT/api
+  return $!
+}
+
+push_auth() {
+  echo docker push $XN_CLIENT/simple-auth \
+    && docker push $XN_CLIENT/simple-auth
+  return $!
+}
+
+push_nginx() {
+  echo docker push $XN_CLIENT/nginx \
+    && docker push $XN_CLIENT/nginx
+  return $!
+}
+
+push() {
+  push_api && push_auth && push_nginx \
+    && echo "Push successful"
+}
+
+boot() {
+  fig stop
+  cd docker
+  fig stop
+  fig rm -f api auth prod
+  fig up -d prod
+  fig ps
+  cd -
+}
+
+if [[ "$1" == "build"* ]]; then
+  if $1; then
+    if [ "--push" = "$2" ]; then
+      push
+    elif [ "--boot" = "$2" ]; then
+      boot
+    else
+      echo Not pushing without --push
+    fi
+  fi
+elif [[ "$1" == "push"* ]]; then
+  $1
+elif [ "boot" = "$1" ]; then
+  boot
+else
+  echo Usage:
+  echo
+  echo "$0 build           Just build"
+  echo "$0 build --boot    Build and boot"
+  echo "$0 build --push    Build and push"
+  echo "$0 boot            Remove old prod containers and boot"
+  echo "$0 push            Push existing build to Docker Hub"
+  echo
+  echo "May also substitute 'build' for one of build_api, build_auth, build_nginx"
+fi

@@ -8,8 +8,10 @@ else
   container="$1"
 fi
 
-docker-compose stop $container
-docker-compose rm -f $container
+docker-compose stop
+if [ ! "$container" = "data" ]; then
+  docker-compose rm -f $container
+fi
 docker-compose pull
 docker pull xnlogic/api-base
 docker-compose build $container

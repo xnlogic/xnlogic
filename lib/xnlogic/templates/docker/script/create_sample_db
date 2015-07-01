@@ -2,10 +2,7 @@
 
 # Usage: script/create_sample_db
 
-echo Running: xn --token admin create-sample-db
-xn --token admin create-sample-db
-
-# TODO: trigger user update in auth container
-#echo "Running fe-server's rake task 'users' ..."
-#cd ~/xn.dev/fe/fe-server
-#rake users
+echo Creating sample db...
+xn --dev admin create-sample-db -g neo4j
+echo Creating users in auth server
+docker-compose run --rm auth rake users

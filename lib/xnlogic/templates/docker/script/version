@@ -1,0 +1,3 @@
+#!/bin/sh
+
+grep -o 'VERSION.*' lib/$XN_CLIENT/version.rb | cut -d '"' -f 2
