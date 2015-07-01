@@ -1,0 +1,10 @@
+#!/bin/sh
+
+export XN_CLIENT=<%= config[:name] %>
+
+alias xn-server=~/$XN_CLIENT/script/server
+alias xn-console=~/$XN_CLIENT/script/console
+alias gs='git status'
+alias gd='git diff -w'
+alias gdc='git diff -w --cached'
+alias on='docker-compose -f ~/$XN_CLIENT/docker-compose.yml run --rm'
