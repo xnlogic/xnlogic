@@ -1,0 +1,41 @@
+data:
+  image: xnlogic/api-data
+datomicfree:
+  image: xnlogic/datomic-free
+  volumes_from:
+    - data
+prodapi:
+  image: <%= config[:name] %>/api
+  links:
+    - datomicfree:datomic
+  volumes_from:
+    - data
+  environment:
+    # TODO: adjust heap size as appropriate to your server config.
+    JAVA_OPTS: "-server -XX:+UseCodeCacheFlushing -Xmx2g -XX:MaxPermSize=256m -Ddatomic.objectCacheMax=64m"
+prodauth:
+  image: <%= config[:name] %>/simple-auth
+  links:
+    - prodapi
+  volumes_from:
+    - data
+  environment:
+    XN_ENV: production
+    RAILS_ENV: production
+    ADMIN_NAME: "Configure Me"
+    ADMIN_EMAIL: "admin@example.com"
+    ADMIN_PASSWORD: "..........."
+    DOMAIN_NAME: "example.com"
+    # TODO: use the following command to generate a valid secret key base:
+    # docker-compose run --rm auth rake token
+    # or
+    # docker-compose run --rm prodauth rake token
+    SECRET_KEY_BASE: "1111111111112222222222223333333333333444444444455555555555ea769acce8205ecd2bf960b82f1f37f39530cfb9f5ec8d4011f8041c0618a427f91415"
+prod:
+  image: <%= config[:name] %>/nginx
+  links:
+    - prodapi
+    - prodauth
+  ports:
+    - '80:80'
+    - '443:443'

@@ -1,0 +1,45 @@
+#!/bin/bash
+
+login() {
+  if [ ! -f $HOME/.docker/config.json ]; then
+    echo
+    echo Log in to Docker Hub:
+    docker login
+    return $!
+  else
+    return 0
+  fi
+}
+
+if ! which docker-compose; then
+  if [[ $(uname -r) == *"el6"* ]]; then
+    # RHEL 6
+    curl -O -sSL http://get.docker.com/docker/1.7.0/rpms/centos-6/RPMS/x86_64/docker-engine-1.7.0-0.1.el6.x86_64.rpm
+    sudo yum localinstall -y --nogpgcheck docker-engine-1.7.0-0.1.el6.x86_64.rpm
+    sudo service docker start
+    sudo chkconfig docker on
+  elif [[ $(uname -r) == *"el7"* ]]; then
+    # RHEL 7
+    curl -O -sSL https://get.docker.com/rpm/1.7.0/centos-7/RPMS/x86_64/docker-engine-1.7.0-1.el7.centos.x86_64.rpm
+    sudo yum localinstall -y --nogpgcheck docker-engine-1.7.0-1.el7.centos.x86_64.rpm
+    sudo service docker start
+    sudo chkconfig docker on
+  else
+    wget -qO- https://get.docker.com/ | sh
+  fi
+  curl -L https://github.com/docker/compose/releases/download/1.3.1/docker-compose-`uname -s`-`uname -m` > docker-compose
+  chmod +x docker-compose
+  sudo mv docker-compose /usr/local/bin/docker-compose
+  sudo usermod -aG docker $(whoami)
+else
+  if login; then
+    docker pull $XN_CLIENT/api
+    docker pull $XN_CLIENT/nginx
+    docker pull xnlogic/simple-auth
+    docker-compose up -d prod
+    docker-compose ps
+  else
+    echo Login failed. Run $0 to try again.
+  fi
+fi
+
