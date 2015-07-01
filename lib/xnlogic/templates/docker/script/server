@@ -23,4 +23,5 @@ message() {
   docker-compose ps
 }
 
+docker-compose stop $container
 docker-compose up -d --no-recreate $container && message
