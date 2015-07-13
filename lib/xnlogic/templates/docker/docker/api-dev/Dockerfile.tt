@@ -1,0 +1,9 @@
+FROM xnlogic/api-base
+
+ENV XN_CLIENT   <%= config[:name] %>
+ENV XN_ENV      development
+
+RUN mkdir -p /app
+RUN ruby --dev -S gem install puma
+
+ENV PACER_MANUAL_JARS true

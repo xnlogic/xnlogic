@@ -136,7 +136,6 @@ module Xnlogic
       # Gemerate the necessary templates
       templates = {
         "Gemfile.tt" => "Gemfile",
-        "config/aliases.sh.tt" => "config/aliases.sh",
         "config/vagrant.provision.tt" => "config/vagrant.provision",
       }
       _generate_templates(templates, 'vagrant', template_options, 'Updating configuration')
@@ -230,9 +229,10 @@ module Xnlogic
       base_templates = {
         "Vagrantfile.tt" => "Vagrantfile",
         "Gemfile.tt" => "Gemfile",
+        "config/aliases.sh.tt" => "config/aliases.sh",
+        "config/diagnostics.sh" => "config/diagnostics.sh",
         "config/vagrant.provision.tt" => "config/vagrant.provision",
         "config/vagrant.up.tt" => "config/vagrant.up",
-        "config/xnlogic.conf.tt" => "config/xnlogic.conf",
       }
 
       if neo?
@@ -253,6 +253,7 @@ module Xnlogic
       #                        end
       base_templates = {
         "Dockerfile.tt" => "Dockerfile",
+        "dockerignore" => ".dockerignore",
         "docker-compose.yml.tt" => "docker-compose.yml",
         "docker/api-dev/Dockerfile.tt" => "docker/api-dev/Dockerfile",
         "docker/bootstrap_prod" => "docker/bootstrap_prod",

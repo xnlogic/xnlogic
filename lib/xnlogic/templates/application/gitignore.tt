@@ -13,4 +13,4 @@ tmp/
 Gemfile-custom
 tags
 target
-vendor
+/vendor

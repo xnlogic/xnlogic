@@ -1,0 +1,6 @@
+.git
+apps
+docker
+tags
+.*.un~
+.*.sw?
