@@ -14,7 +14,7 @@ prodapi:
     # TODO: adjust heap size as appropriate to your server config.
     JAVA_OPTS: "-server -XX:+UseCodeCacheFlushing -Xmx2g -XX:MaxPermSize=256m -Ddatomic.objectCacheMax=64m"
 prodauth:
-  image: <%= config[:name] %>/simple-auth
+  image: xnlogic/simple-auth
   links:
     - prodapi
   volumes_from:
