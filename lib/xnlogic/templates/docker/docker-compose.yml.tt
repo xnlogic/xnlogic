@@ -16,15 +16,29 @@ api:
     XN_ENV: development
     RELOAD: true
     JAVA_OPTS: "-XX:+UseCodeCacheFlushing -Xmx2g -XX:MaxPermSize=256m -Ddatomic.objectCacheMax=64m"
-  ports:
-    - '8080:8080'
-prod:
-  build: .
+auth:
+  build: apps/simple-auth
   links:
-    - datomicfree:datomic
+    - api
   volumes_from:
     - data
+  volumes:
+    - ./apps/simple-auth:/app
   environment:
-    JAVA_OPTS: "-server -XX:+UseCodeCacheFlushing -Xmx2g -XX:MaxPermSize=256m -Ddatomic.objectCacheMax=64m"
+    XN_ENV: development
+    RAILS_ENV: development
+devassets:
+  build: apps/admin
+  volumes:
+    - ./assets:/app
+dev:
+  build: docker/nginx
+  links:
+    - api
+    - auth
+    - devassets
+  volumes:
+    - ./docker/nginx:/app
   ports:
-    - '8080:8080'
+    - '80:80'
+    - '443:443'

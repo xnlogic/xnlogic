@@ -50,7 +50,7 @@ hr
 
 
 echo "Customizing .zshrc for $XN_CLIENT development"
-echo "source ~/amdg/config/aliases.sh" >> ~/.zshrc
+echo "source ~/$XN_CLIENT/config/aliases.sh" >> ~/.zshrc
 
 git config --global --add alias.co "checkout"
 git config --global --add alias.ci "commit"
