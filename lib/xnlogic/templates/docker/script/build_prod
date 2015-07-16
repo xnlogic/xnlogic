@@ -4,13 +4,20 @@ cd $HOME/$XN_CLIENT
 
 rev=$(script/git-revision)
 
+
+_build() {
+  docker build -t $1 .
+  docker tag $1 $1:$rev
+}
+
+
 rebuild() {
   list=$(docker images | grep $1 | tr -s ' ' | cut -d ' ' -f -2 | tr ' ' :)
   if [ "$list" ]; then
-    docker rmi $list
+    docker rmi -f $list && _build $1
+  else
+    _build $1
   fi
-  docker build -t $1 .
-  docker tag $1 $1:$rev
 }
 
 pull() {
@@ -61,9 +68,12 @@ build_nginx() {
 
 build() {
   pull
-  api=build_api
-  auth=build_auth
-  nginx=build_nginx
+  build_api
+  api=$!
+  build_auth
+  auth=$!
+  build_nginx
+  nginx=$!
   if [ $api -a $auth -a $nginx ]; then
     echo Build successful.
     return 0
@@ -130,4 +140,5 @@ else
   echo "$0 push            Push existing build to Docker Hub"
   echo
   echo "May also substitute 'build' for one of build_api, build_auth, build_nginx"
+  echo "May also substitute 'push' for one of push_api, push_auth, push_nginx"
 fi

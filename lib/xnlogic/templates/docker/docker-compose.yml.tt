@@ -27,16 +27,16 @@ auth:
   environment:
     XN_ENV: development
     RAILS_ENV: development
-devassets:
+admin:
   build: apps/admin
   volumes:
-    - ./assets:/app
+    - ./apps/admin:/app
 dev:
   build: docker/nginx
   links:
     - api
     - auth
-    - devassets
+    - admin
   volumes:
     - ./docker/nginx:/app
   ports:
